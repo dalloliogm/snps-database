@@ -25,7 +25,7 @@ class SNP(Base):
     """
     Table 'SNP'.
     
-    This class represents both the table SNP, and the structure  
+    This class represents both the table SNP, and the structure of an instance of a SNP object
     
     # First, you have to instantiate a connection to a database, if you haven't already done it:
     >>> engine = create_engine('sqlite:///:memory:', echo=True)
@@ -58,6 +58,12 @@ class SNP(Base):
     physical_position       = Column(Integer)
     genetic_position        = Column(Integer)
     reference_allele_freq   = Column(Float)
+    derived_allele_freq     = Column(Float)
+    original_strand         = Column(String(1))
+    dbSNP_ref               = Column(String(10))
+    gene_hugo_symbol        = Column(String(20))
+    gene_refseq             = Column(String(20))
+    version                 = Column(Float)
     
     def __init__(self,  SNP_Id):
         # this method will be launched when you create an instance of a SNP object. 
@@ -68,7 +74,14 @@ class SNP(Base):
         # this method will be called when, in python code, you will do 'print SNP'.
         return 'SNP '  + self.SNP_Id
 
-
+class Genotype(Base):
+    __tablename__ = 'Genotype'
+    
+    SNP_Id                  = Column()
+    Individual_Id           = Column()
+    Genotype_Code           = Column()
+    
+    
 def _test():
     """tests the application"""
     import doctest
