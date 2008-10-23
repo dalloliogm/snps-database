@@ -35,8 +35,14 @@ class SNP(Base):
     genetic_position        = Column(Integer)
     reference_allele_freq   = Column(Float)
     
-    def __init__(self):
-        # this method will be launched when you create 
+    def __init__(self,  SNP_Id):
+        # this method will be launched when you create an instance of a SNP object. 
+        # e.g. when you call rs1334 = SNP(id='rs1334') 
+        self.SNP_Id = SNP_Id            # should check whether this already exists.
+        
+    def __repr__(self):
+        # this method will be called when, in python code, you will do 'print SNP'.
+        return 'SNP %' % SNP_Id
     
     
         
