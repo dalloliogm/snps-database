@@ -53,7 +53,7 @@ class SNP(Base):
     """
     __tablename__ = 'SNP'
     
-    SNP_Id                  = Column(String(10), primary_key=True)
+    snp_id                  = Column(String(10), primary_key=True)
     chromosome              = Column(String(10))        # should be a choice between 1-22-XY
     physical_position       = Column(Integer)
     genetic_position        = Column(Integer)
@@ -77,25 +77,25 @@ class SNP(Base):
 class Genotype(Base):
     __tablename__ = 'Genotype'
     
-    Genotype_Id             = Column(primary_key = True)
-    SNP_Id                  = Column()
-    Individual_Id           = Column()
-    Genotype_Code           = Column()
+    genotype_id             = Column(primary_key = True)
+    snp_id                  = Column()
+    individual_id           = Column()
+    genotype_code           = Column()
     version                 = Column()
     
 class Individual(Base):
     __tablename__ = 'Individual'
     
-    Individual_Id           = Column(primary_key = True)
-    Population              = Column()
+    individual_id           = Column(primary_key = True)
+    population              = Column()
     version                 = Column()
     
 class Population(Base):
     __tablename__ = 'Population'
     
-    Population_Id           = Column(primary_key = True)
-    Name                    = Column(String(50))
-    Geographycal_Area       = Column(String(30))
+    population_id           = Column(primary_key = True)
+    name                    = Column(String(50))
+    geographycal_area       = Column(String(30))
     version                 = Column()
     
 class Version(Base):
