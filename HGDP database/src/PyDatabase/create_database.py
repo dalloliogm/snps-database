@@ -77,10 +77,32 @@ class SNP(Base):
 class Genotype(Base):
     __tablename__ = 'Genotype'
     
+    Genotype_Id             = Column(primary_key = True)
     SNP_Id                  = Column()
     Individual_Id           = Column()
     Genotype_Code           = Column()
+    version                 = Column()
     
+class Individual(Base):
+    __tablename__ = 'Individual'
+    
+    Individual_Id           = Column(primary_key = True)
+    Population              = Column()
+    version                 = Column()
+    
+class Population(Base):
+    __tablename__ = 'Population'
+    
+    Population_Id           = Column(primary_key = True)
+    Name                    = Column(String(50))
+    Geographycal_Area       = Column(String(30))
+    version                 = Column()
+    
+class Version(Base):
+    __tablename__ = 'Version'
+    
+    Version_Id              = Column(primary_key = True) 
+    description             = Column(String(100))       
     
 def _test():
     """tests the application"""
