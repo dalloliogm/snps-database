@@ -26,6 +26,30 @@ class SNP(Base):
     Table 'SNP'.
     
     This class represents both the table SNP, and the structure  
+    
+    # First, you have to instantiate a connection to a database, if you haven't already done it:
+    >>> engine = create_engine('sqlite:///:memory:', echo=True)
+    >>> from sqlalchemy.orm import sessionmaker
+    >>> Session = sessionmaker(engine)
+    >>> session = Session()
+    
+    # Create a table called SNP in a temporary database:
+    >>> from create_database import SNP
+    >>> SNP.metadata.create_all(engine)    
+    
+    # Create a SNP object with the id rs1334:
+    >>> rs1334 = SNP('rs1334')
+    >>> rs1334.chromosome = 11
+    
+    # Insert SNP rs1334 into SNP table:
+    >>> session.add(rs1334)    #doctest +ELLIPSIS
+    >>> session.commit()
+    
+    # Get all SNPs in chromosome 11 (should be only rs1334)
+    >>> session.query(SNP).filter_by(chromosome = 11).all()
+    [SNP rs1334]
+
+    
     """
     __tablename__ = 'SNP'
     
@@ -42,7 +66,13 @@ class SNP(Base):
         
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.
-        return 'SNP %' % SNP_Id
+        return 'SNP '  + self.SNP_Id
+
+
+def _test():
+    """tests the application"""
+    import doctest
+    doctest.testmod()
     
-    
-        
+if __name__ == '__main__':
+    _test()
