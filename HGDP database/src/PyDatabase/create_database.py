@@ -16,6 +16,7 @@ import config
 # this will create a temporary database in Ram memory, using an engine called sqlite. 
 connection_line = "%s://%s:%s@%s:%s/%s" % (config.DBMS, config.db_user, config.db_password, config.db_host, config.db_port, config.db_name)
 engine = create_engine(connection_line, echo=False)
+engine.connect()
 
 # I will use declaration mapping in this code. This means that both the tables and the instances of every row will be defined at the same time.
 # see 'object mapping' on sqlalchemy manual.
@@ -78,7 +79,7 @@ class SNP(Base):
 class Genotype(Base):
     __tablename__ = 'Genotype'
     
-    genotype_id             = Column(primary_key = True)
+    genotype_id             = Column(Integer, primary_key = True)
     snp_id                  = Column(String(10))
     individual_id           = Column(Integer)
     genotype_code           = Column(Integer)
@@ -87,7 +88,7 @@ class Genotype(Base):
 class Individual(Base):
     __tablename__ = 'Individual'
     
-    individual_id           = Column(primary_key = True)
+    individual_id           = Column(Integer, primary_key = True)
     population_id           = Column(Integer)
     version                 = Column(Integer, ForeignKey('Version.id'))
     
