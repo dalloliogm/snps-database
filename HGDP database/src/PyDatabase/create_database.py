@@ -9,12 +9,13 @@ Refer to sqlalchemy manual, and in particular to this passage:
 
 """
 
-from sqlalchemy import create_engine, Table, Column, Integer, String, Float, MetaData, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-
+import config
 
 # this will create a temporary database in Ram memory, using an engine called sqlite. 
-engine = create_engine('sqlite:///:memory:', echo=True)
+connection_line = "%s://%s:%s@%s:%s/%s" % (config.DBMS, config.db_user, config.db_password, config.db_host, config.db_port, config.db_name)
+engine = create_engine(connection_line, echo=False)
 
 # I will use declaration mapping in this code. This means that both the tables and the instances of every row will be defined at the same time.
 # see 'object mapping' on sqlalchemy manual.
@@ -63,7 +64,7 @@ class SNP(Base):
     dbSNP_ref               = Column(String(10))
     gene_hugo_symbol        = Column(String(20))
     gene_refseq             = Column(String(20))
-    version                 = Column(Float)
+    version                 = Column(Integer, ForeignKey('Version.id'))
     
     def __init__(self,  SNP_Id):
         # this method will be launched when you create an instance of a SNP object. 
@@ -78,30 +79,30 @@ class Genotype(Base):
     __tablename__ = 'Genotype'
     
     genotype_id             = Column(primary_key = True)
-    snp_id                  = Column()
-    individual_id           = Column()
-    genotype_code           = Column()
-    version                 = Column()
+    snp_id                  = Column(String(10))
+    individual_id           = Column(Integer)
+    genotype_code           = Column(Integer)
+    version                 = Column(Integer, ForeignKey('Version.id'))
     
 class Individual(Base):
     __tablename__ = 'Individual'
     
     individual_id           = Column(primary_key = True)
-    population              = Column()
-    version                 = Column()
+    population_id           = Column(Integer)
+    version                 = Column(Integer, ForeignKey('Version.id'))
     
 class Population(Base):
     __tablename__ = 'Population'
     
-    population_id           = Column(primary_key = True)
+    population_id           = Column(Integer, primary_key = True)
     name                    = Column(String(50))
     geographycal_area       = Column(String(30))
-    version                 = Column()
+    version                 = Column(Integer, ForeignKey('Version.id'))
     
 class Version(Base):
     __tablename__ = 'Version'
     
-    Version_Id              = Column(primary_key = True) 
+    id                      = Column(Integer, primary_key = True) 
     description             = Column(String(100))       
     
 def _test():
@@ -110,4 +111,5 @@ def _test():
     doctest.testmod()
     
 if __name__ == '__main__':
-    _test()
+#    _test()
+    Base.metadata.create_all(engine)
