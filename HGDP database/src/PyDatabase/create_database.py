@@ -77,6 +77,9 @@ class SNP(Base):
         return 'SNP '  + self.SNP_Id
 
 class Genotype(Base):
+    """
+    Table 'Genotype'
+    """
     __tablename__ = 'Genotype'
     
     genotype_id             = Column(Integer, primary_key = True)
@@ -86,6 +89,9 @@ class Genotype(Base):
     version                 = Column(Integer, ForeignKey('Version.id'))
     
 class Individual(Base):
+    """
+    Table 'Individual'
+    """
     __tablename__ = 'Individual'
     
     individual_id           = Column(Integer, primary_key = True)
@@ -93,6 +99,9 @@ class Individual(Base):
     version                 = Column(Integer, ForeignKey('Version.id'))
     
 class Population(Base):
+    """
+    Table 'Population'
+    """
     __tablename__ = 'Population'
     
     population_id           = Column(Integer, primary_key = True)
@@ -101,6 +110,11 @@ class Population(Base):
     version                 = Column(Integer, ForeignKey('Version.id'))
     
 class Version(Base):
+    """
+    Table 'Version'
+    
+    Every SNP/Individual/Population row has a 'version' field, which indicates when it has been last changed 
+    """
     __tablename__ = 'Version'
     
     id                      = Column(Integer, primary_key = True) 
