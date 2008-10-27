@@ -23,7 +23,7 @@ engine.connect()
 # see also http://www.sqlalchemy.org/docs/05/ormtutorial.html#datamapping_declarative
 Base = declarative_base()
 
-class SNP(Base):
+class SNPs(Base):
     """
     Table 'SNP'.
     
@@ -76,7 +76,7 @@ class SNP(Base):
         # this method will be called when, in python code, you will do 'print SNP'.
         return 'SNP '  + self.SNP_Id
 
-class Genotype(Base):
+class Genotypes(Base):
     """
     Table 'Genotype'
     """
@@ -88,7 +88,7 @@ class Genotype(Base):
     genotype_code           = Column(Integer)
     version                 = Column(Integer, ForeignKey('Version.id'))
     
-class Individual(Base):
+class Individuals(Base):
     """
     Table 'Individual'
     """
@@ -98,7 +98,7 @@ class Individual(Base):
     population_id           = Column(Integer)
     version                 = Column(Integer, ForeignKey('Version.id'))
     
-class Population(Base):
+class Populations(Base):
     """
     Table 'Population'
     """
@@ -109,7 +109,7 @@ class Population(Base):
     geographycal_area       = Column(String(30))
     version                 = Column(Integer, ForeignKey('Version.id'))
     
-class Version(Base):
+class Versions(Base):
     """
     Table 'Version'
     
@@ -127,4 +127,6 @@ def _test():
     
 if __name__ == '__main__':
 #    _test()
+    Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
+    Base.metadata.drop_all(engine)
