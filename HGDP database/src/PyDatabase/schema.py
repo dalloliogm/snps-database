@@ -12,7 +12,7 @@ Refer to sqlalchemy manual, and in particular to this passage:
 from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
 from connection import engine, Base
 
-class SNPs(Base):
+class SNP(Base):
     """
     Table 'SNPs'.
     
@@ -64,7 +64,7 @@ class SNPs(Base):
         # this method will be called when, in python code, you will do 'print SNP'.
         return 'SNP '  + self.SNP_Id
 
-class Genotypes(Base):
+class Genotype(Base):
     """
     Table 'Genotypes'
     """
@@ -76,7 +76,7 @@ class Genotypes(Base):
     genotype_code           = Column(Integer)
     version                 = Column(Integer, ForeignKey('versions.id'))
     
-class Individuals(Base):
+class Individual(Base):
     """
     Table 'Individuals'
     """
@@ -86,7 +86,7 @@ class Individuals(Base):
     population_id           = Column(Integer)
     version                 = Column(Integer, ForeignKey('versions.id'))
     
-class Populations(Base):
+class Population(Base):
     """
     Table 'Populations'
     """
@@ -97,7 +97,7 @@ class Populations(Base):
     geographycal_area       = Column(String(30))
     version                 = Column(Integer, ForeignKey('versions.id'))
     
-class Versions(Base):
+class Version(Base):
     """
     Table 'Version'
     
