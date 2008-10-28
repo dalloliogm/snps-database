@@ -10,19 +10,7 @@ Refer to sqlalchemy manual, and in particular to this passage:
 """
 
 from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
-import config
-
-# create database connection. 
-#connection_line = "%s://%s:%s@%s:%s/%s" % (config.DBMS, config.db_user, config.db_password, config.db_host, config.db_port, config.db_name)
-connection_line = "%s://%s@%s:%s/%s" % (config.DBMS, config.db_user, config.db_host, config.db_port, config.db_name)
-engine = create_engine(connection_line, echo=False)
-engine.connect()
-
-# I will use declaration mapping in this code. This means that both the tables and the instances of every row will be defined at the same time.
-# see 'object mapping' on sqlalchemy manual.
-# see also http://www.sqlalchemy.org/docs/05/ormtutorial.html#datamapping_declarative
-Base = declarative_base()
+from connection import engine, Base
 
 class SNPs(Base):
     """
