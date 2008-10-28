@@ -5,4 +5,12 @@
 1. Calculate Fst pairwise for every population in HGDP
 	We would like to calculate the Fst for every pair of populations in the HGDP panel.
 	The results will be stored in a database table (~10^8 records).
-	We will have to create a table with the Fst by population, and one with Fst by Continent. 
+	We will have to create a table with the Fst by population, and one with Fst by Continent.
+	
+	
+2. Calculate EHH test for every SNP (in every population?)
+	Is it possible to calculate EHH with only SNP data?
+	
+	
+3.  Getting the full sequence of a gene containing a SNP
+	It would be good to have a quick link to the gene entry in "ncbi - gene"/ensembl/ucsc/other databases 

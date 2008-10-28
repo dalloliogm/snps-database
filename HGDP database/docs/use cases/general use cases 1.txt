@@ -12,13 +12,15 @@
 	This could be done via ORM (Object Relational Mapping) modules, or via SQL.
 
 
-3. 
+3. Adding/Modifing data to the database
+	 In principle, once the database is set, it shouldn't be possible to modify its data. 
+	 However, if some errors are found, or if new data is made available, it should be allowed to modify it, but the data of the changes should be saved. 
 
 
 4. Storing results 
-	The results of analysis done with HGDP data could be stored as flat files, or in the database itself.
+	The results of analysis done on HGDP data could be stored as flat files, or in the database itself.
 	Smaller result data could be saved in files, since it would be easier than creating new tables and modifying database's structure.
-	Larger results, especially those that are going to be used later for further calculations (e.g. Fst for every pair of population), could be saved in the database.
+	Larger results, especially those that are going to be used later for further calculations (e.g. Fst for every pair of population), could be saved in the database, in different tables.
 	
 	
 5. Manually browsing database to check if data is ok
