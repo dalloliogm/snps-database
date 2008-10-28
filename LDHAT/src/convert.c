@@ -10,15 +10,15 @@ main (int argc, char *argv[]) {
 	char fname[MAXNAME], bases[6]="0-TCAG", c, **seqnames;
 	FILE *ifp, *ofp, *loc, *inloc;
 
-	if (argc > 1) ifp = fopen(argv[1], "r"); 
+	if (argc > 1) ifp = fopen(argv[1], "r"); 	// get -seq argument
 	else {
 		printf("\n\nInput filename for seqs\n\n");
 		scanf("%s", &fname);
 		ifp = fopen(fname, "r");
 	}
 	if (ifp == NULL) nrerror("Error in opening sequence file");
-	
-	if (argc > 2) {
+
+	if (argc > 2) {								// get -loc argument
 		printf("\nUsing input location file: %s\n\n", argv[2]);
 		inloc = fopen(argv[2], "r");
 		if (!inloc) {printf("\n\nCannot open input locs\n\n"); exit(1);}
@@ -49,7 +49,7 @@ main (int argc, char *argv[]) {
 	nall = imatrix(1, lseq, 1, 6);
 	allele_count(seqs, nseq, lseq, nall);
 
-	printf("\n\nSegregating sites written to file	: sites\n"); 
+	printf("\n\nSegregating sites written to file	: sites\n");
 	printf("Locations of segregating sites to file	: locs\n\n");
 	ofp = fopen("sites", "w");
 	loc = fopen("locs", "w");
@@ -71,15 +71,15 @@ main (int argc, char *argv[]) {
 		}
 		if (nall[i][6]) psite++;
 	}
-	
+
 	if (psite==0) {printf("\n\nNo data to output\n\n"); exit(1);}
 	fprintf(ofp,"%i %i",nseq,psite);
 	fprintf(loc,"%i %i %c", psite, (argc > 2 ? ilseq : lseq), (argc > 2 ? c : 'L'));
 	for (i=1;i<=nseq;i++) {
 		fprintf(ofp,"\n>%s\n",seqnames[i]);
 		for (j=1,na=0;j<=lseq;j++) if (nall[j][6]) {
-			fprintf(ofp,"%c",bases[seqs[i][j]]); 
-			na++; 
+			fprintf(ofp,"%c",bases[seqs[i][j]]);
+			na++;
 			if ((na%50)==0) fprintf(ofp,"\n");
 		}
 	}
@@ -88,14 +88,14 @@ main (int argc, char *argv[]) {
 	fclose(loc);
 
 	for (i=1, sn=0, pwd=0, ns=0; i<=lseq; i++) if (nall[i][6]) {
-	  sn++; 
+	  sn++;
 	  for (j=2; j<=5; j++) if (nall[i][j]==1) ns++;
 	  for (j=2;j<=5;j++) pwd += (float) nall[i][j]*nall[i][j];
 	}
 	pwd = (float) sn-pwd/((float) nseq*nseq);
 	pwd *= (float) nseq/(nseq-1);
 
-	for (i=1, ctaj[0]=ctaj[1]=0.0; i<nseq; i++) {ctaj[0]+=(float) 1/i; ctaj[1]+= (float) 1/(i*i);}
+	for (i=1, ctaj[0]=ctaj[1]=0.0; i<nseq; i++) {ctaj[0]+=(float) 1/i; ctaj[1]+= (float) 1/(i*i);}	// calculating Tajima's D?
 	n = (float) nseq;
 	ctaj[2]=(float) (nseq+1)/(3*nseq-3);
 	ctaj[3]=(float) 2*(nseq*nseq+nseq+3)/(9*nseq*(nseq-1));
@@ -120,8 +120,8 @@ main (int argc, char *argv[]) {
 	printf("\nTajima D statistic     = %8.3f", (float) (pwd-sn/ctaj[0])/sqrt(ctaj[6]*sn+ctaj[7]*sn*(sn-1)));
 	printf("\nFu and Li D* statistic = %8.3f", (float) (nseq/(nseq-1)*sn-ctaj[0]*ns)/sqrt(ctaj[11]*sn+ctaj[10]*sn*sn));
 	printf("\n\n");
-	
-	/*	
+
+	/*
 	if (argc < 3) free_imatrix(seqs, 1, nseq, 1, lseq);
 	free_imatrix(nall,1,lseq,1,6);
 	free(sloc);
