@@ -14,7 +14,8 @@ from sqlalchemy.ext.declarative import declarative_base
 import config
 
 # create database connection. 
-connection_line = "%s://%s:%s@%s:%s/%s" % (config.DBMS, config.db_user, config.db_password, config.db_host, config.db_port, config.db_name)
+#connection_line = "%s://%s:%s@%s:%s/%s" % (config.DBMS, config.db_user, config.db_password, config.db_host, config.db_port, config.db_name)
+connection_line = "%s://%s@%s:%s/%s" % (config.DBMS, config.db_user, config.db_host, config.db_port, config.db_name)
 engine = create_engine(connection_line, echo=False)
 engine.connect()
 
@@ -50,9 +51,8 @@ class SNPs(Base):
     # Get all SNPs in chromosome 11 (should be only rs1334)
     >>> session.query(SNP).filter_by(chromosome = 11).all()
     [SNP rs1334]
-
-    
     """
+    
     __tablename__ = 'snps'
     
     snp_id                  = Column(String(10), primary_key=True)
@@ -127,5 +127,5 @@ def _test():
     
 if __name__ == '__main__':
 #    _test()
-    Base.metadata.drop_all(engine)
+#    Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
