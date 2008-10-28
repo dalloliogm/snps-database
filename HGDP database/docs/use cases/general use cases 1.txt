@@ -1,7 +1,7 @@
 # This file collect use cases for our HGDP project, e.g.: how are we going to use it, which operations.
 # This documentation will be of great help when we will design the database, so please contribute if you have ideas.
 
-1 - Storing HGDP data
+1. Storing HGDP data
 	We are going to store all HGDP data into the database.
 	HGDP is ~536.000 SNPs, over ~600 individuals, so we will have at least a table with 10^6 rows.
 	The tables with HGDP data should be read-only - it should be not possible to modify them after they have uploaded.
@@ -21,7 +21,7 @@
 	Larger results, especially those that are going to be used later for further calculations (e.g. Fst for every pair of population), could be saved in the database.
 	
 	
-5. Manually checking whether data in the database is ok
+5. Manually browsing database to check if data is ok
 	It would be useful to have a view where one can browse the data to check if it is ok. 
 	This could be done with any database management software - pgadmin, mysqladmin, etc... 
 	
@@ -30,6 +30,4 @@
 	It would be useful to known when a row in the database has been last changes.
 	For example, there it could be an error in a SNP's data, that we want to fix in the database.
 	Later, we should always to be able to know with which data we were working when we calculated any kind of results at a certain time.
-	
-	
-7. Calculate Fst pairwise for every population in HGDP  
+ 

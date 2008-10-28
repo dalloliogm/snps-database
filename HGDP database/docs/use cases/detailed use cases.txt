@@ -1,0 +1,3 @@
+	
+	
+7. Calculate Fst pairwise for every population in HGDP 
