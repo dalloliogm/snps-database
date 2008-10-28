@@ -13,7 +13,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 import config
 
-# this will create a temporary database in Ram memory, using an engine called sqlite. 
+# create database connection. 
 connection_line = "%s://%s:%s@%s:%s/%s" % (config.DBMS, config.db_user, config.db_password, config.db_host, config.db_port, config.db_name)
 engine = create_engine(connection_line, echo=False)
 engine.connect()
@@ -25,7 +25,7 @@ Base = declarative_base()
 
 class SNPs(Base):
     """
-    Table 'SNP'.
+    Table 'SNPs'.
     
     This class represents both the table SNP, and the structure of an instance of a SNP object
     
@@ -53,7 +53,7 @@ class SNPs(Base):
 
     
     """
-    __tablename__ = 'SNP'
+    __tablename__ = 'snps'
     
     snp_id                  = Column(String(10), primary_key=True)
     chromosome              = Column(String(10))        # should be a choice between 1-22-XY
@@ -65,7 +65,7 @@ class SNPs(Base):
     dbSNP_ref               = Column(String(10))
     gene_hugo_symbol        = Column(String(20))
     gene_refseq             = Column(String(20))
-    version                 = Column(Integer, ForeignKey('Version.id'))
+    version                 = Column(Integer, ForeignKey('versions.id'))
     
     def __init__(self,  SNP_Id):
         # this method will be launched when you create an instance of a SNP object. 
@@ -78,36 +78,36 @@ class SNPs(Base):
 
 class Genotypes(Base):
     """
-    Table 'Genotype'
+    Table 'Genotypes'
     """
-    __tablename__ = 'Genotype'
+    __tablename__ = 'genotypes'
     
     genotype_id             = Column(Integer, primary_key = True)
     snp_id                  = Column(String(10))
     individual_id           = Column(Integer)
     genotype_code           = Column(Integer)
-    version                 = Column(Integer, ForeignKey('Version.id'))
+    version                 = Column(Integer, ForeignKey('versions.id'))
     
 class Individuals(Base):
     """
-    Table 'Individual'
+    Table 'Individuals'
     """
-    __tablename__ = 'Individual'
+    __tablename__ = 'individuals'
     
     individual_id           = Column(Integer, primary_key = True)
     population_id           = Column(Integer)
-    version                 = Column(Integer, ForeignKey('Version.id'))
+    version                 = Column(Integer, ForeignKey('versions.id'))
     
 class Populations(Base):
     """
-    Table 'Population'
+    Table 'Populations'
     """
-    __tablename__ = 'Population'
+    __tablename__ = 'populations'
     
     population_id           = Column(Integer, primary_key = True)
     name                    = Column(String(50))
     geographycal_area       = Column(String(30))
-    version                 = Column(Integer, ForeignKey('Version.id'))
+    version                 = Column(Integer, ForeignKey('versions.id'))
     
 class Versions(Base):
     """
@@ -115,7 +115,7 @@ class Versions(Base):
     
     Every SNP/Individual/Population row has a 'version' field, which indicates when it has been last changed 
     """
-    __tablename__ = 'Version'
+    __tablename__ = 'versions'
     
     id                      = Column(Integer, primary_key = True) 
     description             = Column(String(100))       
@@ -129,4 +129,3 @@ if __name__ == '__main__':
 #    _test()
     Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
-    Base.metadata.drop_all(engine)
