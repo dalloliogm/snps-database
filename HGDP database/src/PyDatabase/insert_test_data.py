@@ -3,4 +3,14 @@
 
 from sqlalchemy import *
 from connection import engine
-from schema import SNPs, Individuals, Populations, Versions, Genotypes
+from schema import SNP, Individual, Population, Version, Genotype
+from session import session
+
+snp1 = SNP('rs1111')
+snp1
+
+session.add(snp1)
+session.commit()
+
+# close when finished
+session.close()
