@@ -11,6 +11,7 @@ Refer to sqlalchemy manual, and in particular to this passage:
 
 from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
 from connection import engine, Base
+from sqlalchemy.databases.mysql import MSEnum
 
 class SNP(Base):
     """
@@ -49,7 +50,7 @@ class SNP(Base):
     genetic_position        = Column(Integer)
     reference_allele_freq   = Column(Float)
     derived_allele_freq     = Column(Float)
-    original_strand         = Column(String(1))
+    original_strand         = Column(MSEnum('+', '-', ' '))
     dbSNP_ref               = Column(String(10))
     gene_hugo_symbol        = Column(String(20))
     gene_refseq             = Column(String(20))
@@ -73,7 +74,7 @@ class Genotype(Base):
     genotype_id             = Column(Integer, primary_key = True)
     snp_id                  = Column(String(10))
     individual_id           = Column(Integer)
-    genotype_code           = Column(Integer)
+    genotype_code           = Column(MSEnum('0', '1', '2'))
     version                 = Column(Integer, ForeignKey('versions.id'))
     
 class Individual(Base):
