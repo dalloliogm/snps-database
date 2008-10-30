@@ -13,4 +13,8 @@
 	
 	
 3.  Getting the full sequence of a gene containing a SNP
-	It would be good to have a quick link to the gene entry in "ncbi - gene"/ensembl/ucsc/other databases 
+	It would be good to have a quick link to the gene entry in "ncbi - gene"/ensembl/ucsc/other databases
+	
+	
+4.  Inserting data from HGDP files
+	data from HGDP will be in a tsv file (tab separated file, using spaces)	 

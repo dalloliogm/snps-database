@@ -108,6 +108,21 @@ class Version(Base):
     id                      = Column(Integer, primary_key = True) 
     description             = Column(String(100))       
     
+    
+    
+class RefSeqGene(Base):
+    """
+    Table 'RefSeq Genes'.
+    
+    Obtained from http://genome.ucsc.edu, table browser, human assembly march 2006, Genes and gene prediction tracks, known genes, refseq genes
+    
+    """
+    __tablename__ = 'refseqgenes'
+    
+    id                      = Column(Integer, primary_key = True)
+    name                    = Column(String(100))
+    
+    
 def _test():
     """tests the application"""
     import doctest
