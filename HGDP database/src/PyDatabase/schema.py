@@ -9,7 +9,7 @@ Refer to sqlalchemy manual, and in particular to this passage:
 
 """
 
-from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Date
 from connection import engine, Base
 from sqlalchemy.databases.mysql import MSEnum, MSLongBlob
 
@@ -107,7 +107,8 @@ class Version(Base):
     __tablename__ = 'versions'
     
     id                      = Column(Integer, primary_key = True) 
-    description             = Column(String(100))       
+    description             = Column(String(100))  
+    date                    = Column(Date)
     
     
     
