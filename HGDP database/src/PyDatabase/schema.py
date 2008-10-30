@@ -11,7 +11,7 @@ Refer to sqlalchemy manual, and in particular to this passage:
 
 from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey
 from connection import engine, Base
-from sqlalchemy.databases.mysql import MSEnum
+from sqlalchemy.databases.mysql import MSEnum, MSLongBlob
 
 class SNP(Base):
     """
@@ -120,8 +120,21 @@ class RefSeqGene(Base):
     """
     __tablename__ = 'refseqgenes'
     
-    id                      = Column(Integer, primary_key = True)
-    name                    = Column(String(100))
+    id                      = Column(Integer, primary_key = True)   # autoincrement is enabled by default
+    name                    = Column(String(255))
+    chrom                   = Column(String(255))
+    strand                  = Column(MSEnum('+', '-', ' '))
+    txStart                 = Column(Integer(10))
+    txEnd                   = Column(Integer(10))
+    cdsStart                = Column(Integer(10))
+    cdsEnd                  = Column(Integer(10))
+    exonCount               = Column(Integer)
+    exonStarts              = Column(MSLongBlob)
+    exonEnds                = Column(MSLongBlob)
+    alternateName           = Column(String(255))  # name2 in UCSC
+    cdsStartStat            = Column(MSEnum('none','unk','incmpl','cmpl'))
+    cdsEndStat              = Column(MSEnum('none','unk','incmpl','cmpl'))
+    exonFrames              = Column(MSLongBlob)
     
     
 def _test():
