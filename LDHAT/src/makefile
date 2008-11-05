@@ -1,30 +1,69 @@
-# Make file for Pairwise, Permute  and Convert
+# Make file for Pairwise, Interval, Lkgen, Convert, fin and rhomap
 
 CC = gcc
-CFLAGS =  -O2 -pedantic
+CPP = g++
+CFLAGS =  -O2 
+#CFLAGS = -g -O2 -pedantic
 LIB = -lm
 
-OBJ = tools.o seqtools.o pairlk.o
+OBJ = tools.o seqtools.o pairlk.o 
 
-all: pairwise convert permute
+all: convert pairwise interval lkgen complete stat fin rhomap
 
-pairwise: $(OBJ) pairwise.o header.h
-	$(CC) $(CFLAGS) -o pairwise $(OBJ) pairwise.o $(LIB)
+convert: $(OBJ) convert.o tools.h seqtools.h ldhat.h
+	$(CC) $(CFLAGS1) -o convert $(OBJ) convert.o $(LIB)
 
-convert: tools.o seqtools.o convert.c header.h
-	$(CC) $(CFLAGS) -o convert tools.o seqtools.o convert.c $(LIB)
+pairwise: $(OBJ) snp_sim.o pairwise.o tools.h seqtools.h ldhat.h
+	$(CC) $(CFLAGS1) -o pairwise $(OBJ) snp_sim.o pairwise.o $(LIB)
 
-permute: tools.o seqtools.o permute.c header.h
-	$(CC) $(CFLAGS) -o permute tools.o seqtools.o permute.c $(LIB)
+interval: $(OBJ) pair_int.o tools.h seqtools.h ldhat.h
+	$(CC) $(CFLAGS1) -o interval $(OBJ) pair_int.o $(LIB)
 
-pairwise.o: $(OBJ) pairwise.c header.h
-	$(CC) $(CFLAGS) -c -o pairwise.o pairwise.c
+lkgen: $(OBJ) lkgen.o tools.h seqtools.h ldhat.h
+	$(CC) $(CFLAGS) -o lkgen $(OBJ) lkgen.o $(LIB)
 
-tools.o: tools.c header.h
+complete: $(OBJ) complete.o tools.h ldhat.h
+	$(CC) $(CFLAGS) -o complete $(OBJ) complete.o $(LIB)
+
+stat: tools.o stat.o tools.h
+	$(CC) $(CFLAGS) -o stat tools.o stat.o $(LIB)
+	
+fin: fin.c gamma.c nrutil.c
+	$(CC) $(CFLAGS) fin.c gamma.c nrutil.c $(LIB) -o fin
+	
+rhomap: rhomap.cpp compLK.cpp rhomap_tools.o 
+	$(CPP) $(CFLAGS) rhomap.cpp compLK.cpp rhomap_tools.o $(LIB) -o rhomap
+
+convert.o: $(OBJ) convert.c tools.h seqtools.h ldhat.h
+	$(CC) $(CFLAGS) -c -o convert.o convert.c
+
+pairwise.o:  $(OBJ) pairdip.c tools.h seqtools.h ldhat.h
+	$(CC) $(CFLAGS) -c -o pairwise.o pairdip.c
+
+pair_int.o: $(OBJ) pair_int.c tools.h seqtools.h ldhat.h
+	$(CC) $(CFLAGS) -c -o pair_int.o pair_int.c
+
+lkgen.o: $(OBJ) lkgen.c tools.h seqtools.h ldhat.h
+	$(CC) $(CFLAGS) -c -o lkgen.o lkgen.c
+
+complete.o: $(OBJ) complete.c tools.h ldhat.h
+	$(CC) $(CFLAGS) -c -o complete.o complete.c
+
+tools.o: tools.c tools.h
 	$(CC) $(CFLAGS) -c -o tools.o tools.c
 
-seqtools.o: seqtools.c header.h
+seqtools.o: seqtools.c seqtools.h ldhat.h
 	$(CC) $(CFLAGS) -c -o seqtools.o seqtools.c 
 
 pairlk.o: pairlk.c 
 	$(CC) $(CFLAGS) -c -o pairlk.o pairlk.c
+
+stat.o: stat.c
+	$(CC) $(CFLAGS) -c -o stat.o stat.c
+
+rhomap_tools.o: rhomap_tools.cpp
+	$(CPP) $(CFLAGS) -c -o rhomap_tools.o rhomap_tools.cpp
+		
+clean:
+	rm -rf *.o
+	rm -rf *~

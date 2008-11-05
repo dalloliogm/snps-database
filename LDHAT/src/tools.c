@@ -1,13 +1,13 @@
-#include "./header.h"
+#include "tools.h"
 
 void nrerror(error_text)
 char error_text[];
 {
 	void exit();
 
-	fprintf(stderr,"Numerical Recipes run-time error...\n");
+	fprintf(stderr,"\n\nRun-time error\n\n");
 	fprintf(stderr,"%s\n",error_text);
-	fprintf(stderr,"...now exiting to system...\n");
+	fprintf(stderr,"\n..now exiting to system...\n");
 	exit(1);
 }
 
@@ -197,12 +197,38 @@ int i,j;
 }
 
 
-int minc(l1,l2,ls) 
-int l1,l2,ls;
+float minf(f1, f2)
+     float f1, f2;
+{
+  if (f1<f2) return f1;
+  else return f2;
+}
+
+float maxf(f1, f2)
+     float f1, f2;
+{
+  if (f1>f2) return f1;
+  else return f2;
+}
+
+float lnfac(i) 
+int i;
+{
+
+  int j;
+  float cp=0.0;
+
+  for (j=2;j<=i;j++) cp += log((float) j);
+  return cp;
+}
+
+
+float minc(l1,l2,ls) 
+float l1,l2,ls;
 {
         
-        int d;
-        if ((d=(l2-l1)) > (int) ((float) ls/2)) d = (int) ls-l2+l1;
+        float d;
+        if ((d=(l2-l1)) >  ls/2) d = (float) ls-l2+l1;
         return d; 
 }
 
@@ -217,4 +243,121 @@ int *pt,s1,s2;
         pt[s2]=pt[s1];
         pt[s1]=tmp; 
 }
+
+
+float lognC2(n,a)
+int n, a;
+{
+	int i;
+	float x=0;
+
+	if (a>n) nrerror("Error in lognC2 (1)");
+	if ((n<2)||(a==0)||(a==n)) return 0.0;
+
+	for (i=a+1;i<=n;i++) x += (float) log(i);
+	for (i=2;i<=n-a;i++) x -= (float) log(i);
+
+	if (x>0) return x;
+	else nrerror("Error in logCn2 (2)");
+}
+
+float lognC4(n,a,b,c,d)
+int n,a,b,c,d;
+{
+	int i;
+	float x=0;
+
+	if (a+b+c+d != n) nrerror("Error in logCn4 (1)");
+	if ((n<2)||(a==n)||(b==n)||(c==n)||(d==n)) return 0.0;
+
+	for (i=a+1;i<=n;i++) x += (float) log(i);
+	for (i=2;i<=b;i++) x -= (float) log(i);
+	for (i=2;i<=c;i++) x -= (float) log(i);	
+	for (i=2;i<=d;i++) x -= (float) log(i);
+
+	if (x>0) return x;
+	else nrerror("Error in lognC4 (2)");
+}
+
+
+void sort(array, ne)
+float *array;
+int ne;
+{
+	int pass, i;
+	float tmp;
+
+	for (pass=1;pass<=ne;pass++)
+		for (i=1;i<ne;i++) 
+			if (array[i+1]<array[i]) {
+				tmp = array[i];
+				array[i]=array[i+1];
+				array[i+1]=tmp;
+			}
+}
+
+
+/*Routine to set seed from clock*/
+
+long setseed(void) {
+	time_t lt;
+	lt=time(NULL);
+	return lt;
+}
+
+
+/*C routine random number generator from
+Numerical Recipes in C: Press et al*/
+
+#define IM1 2147483563
+#define IM2 2147483399
+#define AM (1.0/IM1)
+#define IMM1 (IM1-1)
+#define IA1 40014
+#define IA2 40692
+#define IQ1 53668
+#define IQ2 52774
+#define IR1 12211
+#define IR2 3791
+#define NTAB 32
+#define NDIV (1+IMM1/NTAB)
+#define EPS 1.2e-7
+#define RNMX (1.0-EPS)
+
+float ran2(void) {
+	int j;
+	long k;
+	extern long *idum;
+	static long idum2=123456789;
+	static long iy=0;
+	static long iv[NTAB];
+	float temp;
+
+	if (*idum <= 0) {
+		if (-(*idum) < 1) *idum=1;
+		else *idum = -(*idum);
+		idum2=(*idum);
+		for (j=NTAB+7; j>=0; j--) {
+			k=(*idum)/IQ1;
+			*idum=IA1*(*idum-k*IQ1)-k*IR1;
+			if (*idum < 0) *idum += IM1;
+			if (j < NTAB) iv[j] = *idum;
+			
+		}
+		iy=iv[0];
+	}
+	k=(*idum)/IQ1;
+	*idum=IA1*(*idum-k*IQ1)-k*IR1;
+	if (*idum < 0) *idum += IM1;
+	k=idum2/IQ2;
+	idum2=IA2*(idum2-k*IQ2)-k*IR2;
+	if (idum2 < 0) idum2 += IM2;
+	j=iy/NDIV;
+	iy=iv[j]-idum2;
+	iv[j]=*idum;
+	if (iy < 1) iy += IMM1;
+	if ((temp=AM*iy) > RNMX) return RNMX;
+	else return temp;
+}
+
 
