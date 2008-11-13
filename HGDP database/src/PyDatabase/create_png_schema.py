@@ -36,7 +36,7 @@ for cls in (getattr(schema, attr) for attr in dir(schema) if attr[0] != '_'):
 # pass them to the function and set some formatting options
 graph = create_uml_graph(mappers,
     show_operations=False, # not necessary in this case
-    show_multiplicity_one=False # some people like to see the ones, some don't
+    show_multiplicity_one=True # some people like to see the ones, some don't
 )
 graph.write_png('../../docs/UML/UMLschema.png') # write out the file
 
