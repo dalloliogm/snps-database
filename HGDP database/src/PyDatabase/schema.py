@@ -56,14 +56,14 @@ class SNP(Base):
     gene_refseq             = Column(String(20))
     version                 = Column(Integer, ForeignKey('versions.id'))
     
-    def __init__(self,  SNP_Id):
+    def __init__(self,  snp_id):
         # this method will be launched when you create an instance of a SNP object. 
         # e.g. when you call rs1334 = SNP(id='rs1334') 
-        self.SNP_Id = SNP_Id            # should check whether this already exists.
+        self.snp_id = snp_id            # should check whether this already exists.
         
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.
-        return 'SNP '  + self.SNP_Id
+        return 'SNP '  + self.snp_id
 
 class Genotype(Base):
     """
