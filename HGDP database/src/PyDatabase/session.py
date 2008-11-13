@@ -1,8 +1,5 @@
 from connection import engine
-from sqlalchemy.orm import sessionmaker
-
-# create a configured "Session" class
-Session = sessionmaker(bind=engine)
+from sqlalchemy.orm import create_session
 
 # create a Session
-session = Session()
+session = create_session(bind=engine, autocommit=True, autoflush=False)
