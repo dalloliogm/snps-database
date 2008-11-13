@@ -18,4 +18,4 @@ db_user = "gioby"
 db_password= "kl0043i"
 # ********************************************************** 
 
-connection_line = "%s://%s@%s:%s/%s" % (config.DBMS, config.db_user, config.db_host, config.db_port, config.db_name)
+connection_line = "%s://%s@%s:%s/%s" % (DBMS, db_user, db_host, db_port, db_name)
