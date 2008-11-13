@@ -65,6 +65,7 @@ class SNP(Base):
         # this method will be called when, in python code, you will do 'print SNP'.
         return 'SNP '  + self.snp_id
 
+
 class Genotype(Base):
     """
     Table 'Genotypes'
