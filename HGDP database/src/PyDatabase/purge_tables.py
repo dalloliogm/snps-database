@@ -9,3 +9,4 @@ BE careful!!!
 
 from schema import SNP, Individual, Population, Version, Genotype, RefSeqGene
 from session import session
+

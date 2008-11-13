@@ -17,3 +17,5 @@ db_user = "gioby"
 # Data_base password
 db_password= "kl0043i"
 # ********************************************************** 
+
+connection_line = "%s://%s@%s:%s/%s" % (config.DBMS, config.db_user, config.db_host, config.db_port, config.db_name)
