@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 """query the database"""
 
-from sqlalchemy import *
-from connection import engine
 from schema import SNP, Individual, Population, Version, Genotype, RefSeqGene
 from session import session
 
@@ -10,3 +8,8 @@ from session import session
 results = session.query(RefSeqGene).limit(5)
 for r in results:
     print r.id, r.name
+    
+# get the first 5 SNPs
+results  = session.query(SNP).limit(5)
+for r in results:
+    print r

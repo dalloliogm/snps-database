@@ -77,6 +77,9 @@ class Genotype(Base):
     genotype_code           = Column(MSEnum('0', '1', '2'))
     version                 = Column(Integer, ForeignKey('versions.id'))
     
+    def __init__(self):
+        pass
+    
 class Individual(Base):
     """
     Table 'Individuals'
@@ -86,6 +89,10 @@ class Individual(Base):
     individual_id           = Column(Integer, primary_key = True)
     population_id           = Column(Integer)
     version                 = Column(Integer, ForeignKey('versions.id'))
+
+    def __init__(self):
+        pass
+
     
 class Population(Base):
     """
@@ -98,6 +105,10 @@ class Population(Base):
     geographycal_area       = Column(String(30))
     version                 = Column(Integer, ForeignKey('versions.id'))
     
+    def __init__(self):
+        pass
+
+
 class Version(Base):
     """
     Table 'Version'
@@ -110,6 +121,8 @@ class Version(Base):
     description             = Column(String(100))  
     date                    = Column(Date)
     
+    def __init__(self):
+        pass
     
     
 class RefSeqGene(Base):
@@ -136,6 +149,9 @@ class RefSeqGene(Base):
     cdsStartStat            = Column(MSEnum('none','unk','incmpl','cmpl'))
     cdsEndStat              = Column(MSEnum('none','unk','incmpl','cmpl'))
     exonFrames              = Column(MSLongBlob)
+    
+    def __init__(self):
+        pass
     
     
 def _test():
