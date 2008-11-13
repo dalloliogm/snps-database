@@ -15,7 +15,7 @@ db_port = "3306" # mysql default port
 #db_user = "root"
 db_user = "gioby"
 # Data_base password
-db_password= "kl0043i"
+db_password= ""
 # ********************************************************** 
 
 connection_line = "%s://%s@%s:%s/%s" % (DBMS, db_user, db_host, db_port, db_name)
