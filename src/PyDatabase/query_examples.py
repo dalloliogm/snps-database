@@ -10,11 +10,11 @@ for r in results:
     print r.id, r.name
     
 # get the first 5 SNPs
-results  = session.query(SNP).limit(5)
+results = session.query(SNP).limit(5)
 for r in results:
     print r
     
 # get the first 5 Individuals
-results  = session.query(Individual).limit(5)
+results = Individual.select()
 for r in results:
     print r

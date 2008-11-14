@@ -50,7 +50,7 @@ class SNP(Base):
     genetic_position        = Column(Integer)
     reference_allele_freq   = Column(Float)
     derived_allele_freq     = Column(Float)
-    original_strand         = Column(MSEnum('+', '-', ' '))
+    original_strand         = Column(MSEnum('+', '-', ' ')) # could be standardized by usign a sqlalchemy recipe
     dbSNP_ref               = Column(String(10))
     gene_hugo_symbol        = Column(String(20))
     gene_refseq             = Column(String(20))
@@ -73,8 +73,8 @@ class Genotype(Base):
     __tablename__ = 'genotypes'
     
     genotype_id             = Column(Integer, primary_key = True)
-    snp_id                  = Column(String(10))
-    individual_id           = Column(Integer)
+    snp_id                  = Column(String(10), ForeignKey('snps.snp_id'))
+    individual_id           = Column(Integer, ForeignKey('individuals.individual_id'))
     genotype_code           = Column(MSEnum('0', '1', '2'))
     version                 = Column(Integer, ForeignKey('versions.id'))
     
