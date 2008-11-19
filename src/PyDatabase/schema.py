@@ -48,18 +48,23 @@ class SNP(Base):
     chromosome              = Column(String(10))        # should be a choice between 1-22-XY
     physical_position       = Column(Integer)
     genetic_position        = Column(Integer)
-    reference_allele_freq   = Column(Float)
-    derived_allele_freq     = Column(Float)
+    reference_allele        = Column(String(2))
+    derived_allele          = Column(String(2))
     original_strand         = Column(MSEnum('+', '-', ' ')) # could be standardized by usign a sqlalchemy recipe
     dbSNP_ref               = Column(String(10))
-    gene_hugo_symbol        = Column(String(20))
-    gene_refseq             = Column(String(20))
+    refseq_gene             = Column(Integer, ForeignKey('refseqgenes.id'))
+    
+    # duplicated snps:
+    aliases                 = Column(String(10), ForeignKey('snps.snp_id'))
 #    version                 = Column(Integer, ForeignKey('versions.id'))
     
     def __init__(self,  snp_id):
         # this method will be launched when you create an instance of a SNP object. 
         # e.g. when you call rs1334 = SNP(id='rs1334') 
         self.snp_id = snp_id            # should check whether this already exists.
+        self.chromosome = ''
+        self.aliases = ''
+        
         
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.
@@ -84,22 +89,31 @@ class Genotype(Base):
 class Individual(Base):
     """
     Table 'Individuals'
+    
+    >>> ind = Individual('HGDP_Einstein')
+    >>> print ind
+    Mr. HGDP_Einsten (population = 1)
+    
     """
     __tablename__ = 'individuals'
     
     individual_id           = Column(Integer, primary_key = True)
     population_id           = Column(Integer)
-    sex = '0'
+    sex                     = Column(Integer)
 #    version                 = Column(Integer, ForeignKey('versions.id'))
 
     def __init__(self, id):
+        """
+        """
         self.individual_id = id
+        self.population_id = 0      # corresponds to an Undefined Population
+        self.sex = 0
         
     def __repr__(self):
         if self.sex == '0' or self.sex == '1':
-            r = "Mr. %s (%s)" %(self.id, self.population_id)
+            r = "Mr. %s (%s)" %(self.individual_id, self.population_id)
         else:
-            r = "Mrs. %s (%s)" %(self.id, self.population_id)
+            r = "Mrs. %s (%s)" %(self.individual_id, self.population_id)
         return r
 
     
