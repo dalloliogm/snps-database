@@ -54,7 +54,7 @@ class SNP(Base):
     dbSNP_ref               = Column(String(10))
     gene_hugo_symbol        = Column(String(20))
     gene_refseq             = Column(String(20))
-    version                 = Column(Integer, ForeignKey('versions.id'))
+#    version                 = Column(Integer, ForeignKey('versions.id'))
     
     def __init__(self,  snp_id):
         # this method will be launched when you create an instance of a SNP object. 
@@ -76,7 +76,7 @@ class Genotype(Base):
     snp_id                  = Column(String(10), ForeignKey('snps.snp_id'))
     individual_id           = Column(Integer, ForeignKey('individuals.individual_id'))
     genotype_code           = Column(MSEnum('0', '1', '2'))
-    version                 = Column(Integer, ForeignKey('versions.id'))
+#    version                 = Column(Integer, ForeignKey('versions.id'))
     
     def __init__(self):
         pass
@@ -89,10 +89,18 @@ class Individual(Base):
     
     individual_id           = Column(Integer, primary_key = True)
     population_id           = Column(Integer)
-    version                 = Column(Integer, ForeignKey('versions.id'))
+    sex = '0'
+#    version                 = Column(Integer, ForeignKey('versions.id'))
 
-    def __init__(self):
-        pass
+    def __init__(self, id):
+        self.individual_id = id
+        
+    def __repr__(self):
+        if self.sex == '0' or self.sex == '1':
+            r = "Mr. %s (%s)" %(self.id, self.population_id)
+        else:
+            r = "Mrs. %s (%s)" %(self.id, self.population_id)
+        return r
 
     
 class Population(Base):
@@ -104,7 +112,7 @@ class Population(Base):
     population_id           = Column(Integer, primary_key = True)
     name                    = Column(String(50))
     geographycal_area       = Column(String(30))
-    version                 = Column(Integer, ForeignKey('versions.id'))
+#    version                 = Column(Integer, ForeignKey('versions.id'))
     
     def __init__(self):
         pass
