@@ -41,7 +41,6 @@ class SNP(Base):
     >>> session.query(SNP).filter_by(chromosome = 11).all()
     [SNP rs1334]
     """
-    
     __tablename__ = 'snps'
     
     snp_id                  = Column(String(10), primary_key=True)
@@ -93,12 +92,15 @@ class Individual(Base):
     >>> ind = Individual('HGDP_Einstein')
     >>> print ind
     Mr. HGDP_Einsten (population = 1)
-    
+    >>> print Einstein + ' Albert'            # Test __add__ method
+    Einstein Albert
+    >>> print Einstein in ('Einstein', )      # Test __eq__ method
+    True
     """
     __tablename__ = 'individuals'
     
     individual_id           = Column(Integer, primary_key = True)
-    population_id           = Column(Integer)
+    population_id           = Column(Integer, ForeignKey('populations.population_id'))
     sex                     = Column(Integer)
 #    version                 = Column(Integer, ForeignKey('versions.id'))
 
@@ -110,16 +112,30 @@ class Individual(Base):
         self.sex = 0
         
     def __repr__(self):
-        if self.sex == '0' or self.sex == '1':
+        if self.sex in (0, 1):
             r = "Mr. %s (%s)" %(self.individual_id, self.population_id)
         else:
             r = "Mrs. %s (%s)" %(self.individual_id, self.population_id)
         return r
 
+    def __str__(self):
+        """
+        """
+        return self.individual_id
+    
+    def __add__(self, other):
+        return str(self.individual_id) + other
+    
+    def __eq__(self, other):
+        return self.individual_id == other
+    
+    def __ne__(self, other):
+        return self.individual_id == other
     
 class Population(Base):
     """
     Table 'Populations'
+    Refers to the standard population table of ## populations
     """
     __tablename__ = 'populations'
     
