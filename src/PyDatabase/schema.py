@@ -130,7 +130,8 @@ class Individual(Base):
         return self.individual_id == other
     
     def __ne__(self, other):
-        return self.individual_id == other
+        return self.individual_id != other
+    
     
 class Population(Base):
     """
