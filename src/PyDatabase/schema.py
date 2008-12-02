@@ -57,7 +57,7 @@ class SNP(Base):        # I could derive this from PopGen classes, but it would 
     derived_allele          = Column(String(2))
     original_strand         = Column(MSEnum('+', '-', ' ')) # could be standardized by usign a sqlalchemy recipe
     dbSNP_ref               = Column(String(10))
-    refseq_gene             = relation('RefSeqGene', backref=backref('refseqgenes.id'))
+    refseq_gene             = relation('RefSeqGene', backref='RefSeqGene.id')
     
     # duplicated snps:
     aliases                 = relation('SNP', backref=backref('snps.snp_id'))
@@ -93,7 +93,8 @@ class Individual(Base):
     __tablename__ = 'individuals'
     
     individual_id           = Column(Integer, primary_key = True)
-    population_id           = Column(Integer, ForeignKey('populations.population_id'))
+    population              = relation('Population', backref=backref('individuals', 
+                                                                     order_by='Individual.id'))
     sex                     = Column(Integer)
 #    version                 = Column(Integer, ForeignKey('versions.id'))
     last_modified           = Column(DateTime, onupdate=datetime.datetime.now)
@@ -126,21 +127,21 @@ class Individual(Base):
     def __ne__(self, other):
         return self.individual_id != other
     
-class Genotype(Base):
-    """
-    Table 'Genotypes'
-    """
-    __tablename__ = 'genotypes'
-    
-    genotype_id             = Column(Integer, primary_key = True)
-    snp_id                  = relation(SNP, backref = backref('snps.snp_id'))
-    individual_id           = relation(Individual, backref = ('individuals.individual_id'))
-    genotype_code           = Column(MSEnum('0', '1', '2'))
-#    version                 = Column(Integer, ForeignKey('versions.id'))
-    last_modified           = Column(DateTime, onupdate=datetime.datetime.now)
-    
-    def __init__(self):
-        pass
+#class Genotype(Base):
+#    """
+#    Table 'Genotypes'
+#    """
+#    __tablename__ = 'genotypes'
+#    
+#    genotype_id             = Column(Integer, primary_key = True)
+#    snp_id                  = relation(SNP, backref = backref('snps.snp_id'))
+#    individual_id           = relation(Individual, backref = ('individuals.individual_id'))
+#    genotype_code           = Column(MSEnum('0', '1', '2'))
+##    version                 = Column(Integer, ForeignKey('versions.id'))
+#    last_modified           = Column(DateTime, onupdate=datetime.datetime.now)
+#    
+#    def __init__(self):
+#        pass
     
 
 class Population(Base):
@@ -150,7 +151,9 @@ class Population(Base):
     """
     __tablename__ = 'populations'
     
-    population_id           = Column(Integer, primary_key = True)
+    id                      = Column(Integer, primary_key = True)
+    individuals             = relation('Individual', order_by = 'Individual.individual_id', 
+                                       backref = 'population')
     name                    = Column(String(50))
     geographycal_area       = Column(String(30))
 #    version                 = Column(Integer, ForeignKey('versions.id'))
