@@ -92,7 +92,7 @@ class Individual(Base):
     """
     __tablename__ = 'individuals'
     
-    individual_id           = Column(Integer, primary_key = True)
+    id                      = Column(Integer, primary_key = True)
     population              = relation('Population', backref=backref('individuals', 
                                                                      order_by='Individual.id'))
     sex                     = Column(Integer)
@@ -152,7 +152,7 @@ class Population(Base):
     __tablename__ = 'populations'
     
     id                      = Column(Integer, primary_key = True)
-    individuals             = relation('Individual', order_by = 'Individual.individual_id', 
+    individuals             = relation('Individual', order_by = 'Individual.id', 
                                        backref = 'population')
     name                    = Column(String(50))
     geographycal_area       = Column(String(30))
@@ -219,4 +219,5 @@ def _test():
 if __name__ == '__main__':
 #    _test()
 #    Base.metadata.drop_all(engine)
-    Base.metadata.create_all(engine)
+    print Base.metadata
+    Base.metadata.create_all()
