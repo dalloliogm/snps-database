@@ -9,9 +9,10 @@ Refer to sqlalchemy manual, and in particular to this passage:
 
 """
 
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, Date
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, Date, DateTime
 from connection import engine, Base
 from sqlalchemy.databases.mysql import MSEnum, MSLongBlob
+import datetime
 
 class SNP(Base):
     """
@@ -56,6 +57,8 @@ class SNP(Base):
     # duplicated snps:
     aliases                 = Column(String(10), ForeignKey('snps.snp_id'))
 #    version                 = Column(Integer, ForeignKey('versions.id'))
+    last_modified           = Column(DateTime, onupdate=datetime.datetime.now)
+
     
     def __init__(self,  snp_id):
         # this method will be launched when you create an instance of a SNP object. 
@@ -81,6 +84,7 @@ class Genotype(Base):
     individual_id           = Column(Integer, ForeignKey('individuals.individual_id'))
     genotype_code           = Column(MSEnum('0', '1', '2'))
 #    version                 = Column(Integer, ForeignKey('versions.id'))
+    last_modified           = Column(DateTime, onupdate=datetime.datetime.now)
     
     def __init__(self):
         pass
@@ -103,7 +107,8 @@ class Individual(Base):
     population_id           = Column(Integer, ForeignKey('populations.population_id'))
     sex                     = Column(Integer)
 #    version                 = Column(Integer, ForeignKey('versions.id'))
-
+    last_modified           = Column(DateTime, onupdate=datetime.datetime.now)
+    
     def __init__(self, id):
         """
         """
@@ -144,6 +149,7 @@ class Population(Base):
     name                    = Column(String(50))
     geographycal_area       = Column(String(30))
 #    version                 = Column(Integer, ForeignKey('versions.id'))
+    last_modified           = Column(DateTime, onupdate=datetime.datetime.now)
     
     def __init__(self):
         pass
@@ -190,6 +196,7 @@ class RefSeqGene(Base):
     cdsEndStat              = Column(MSEnum('none','unk','incmpl','cmpl'))
     exonFrames              = Column(MSLongBlob)
     
+    last_modified           = Column(DateTime, onupdate=datetime.datetime.now)    
     def __init__(self):
         pass
     
