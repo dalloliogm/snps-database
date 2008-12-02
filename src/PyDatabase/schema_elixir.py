@@ -15,7 +15,7 @@ Uses Elixir syntax instead of sqlalchemy
 
 """
 
-from elixir import metadata, Entity, Field, Unicode, Integer, UnicodeText, CHAR, ManyToOne, OneToMany, DateTime
+from elixir import metadata, Entity, Field, Unicode, Integer, UnicodeText, String, ManyToOne, OneToMany, DateTime
 from config import connection_line
 import datetime
 
@@ -34,22 +34,79 @@ class SNP(Entity):
     >>> rs1333 = SNP('rs1333')
     """
     
-    id = Field(CHAR(10), primary_key=True)
-    chromosome = Field(CHAR(10))
+    id = Field(String(10), primary_key=True)
+    chromosome = Field(String(10))
     physical_position = Field(Integer)
     haplotypes_index = Field(Integer)
 
-    reference_allele = Field(CHAR(1))
-    derived_allele = Field(CHAR(1))
-    original_strand = Field(CHAR(1))
-    dbSNP_ref = Field(CHAR(10))
+    reference_allele = Field(String(1))
+    derived_allele = Field(String(1))
+    original_strand = Field(String(1))
+    dbSNP_ref = Field(String(10))
     
     refseqgene = ManyToOne('RefSeqGene')
     last_modified = Field(DateTime, onupdate=datetime.datetime.now)
     
     def __init__(self, snp_id):
         self.id = snp_id
-        self.chromosome = ''    
+        self.chromosome = ''
+            
+    def __repr__(self):
+        # this method will be called when, in python code, you will do 'print SNP'.
+        return 'SNP '  + self.id 
+
+class Individual(Entity):
+    """ Table 'Individuals'
+    
+    >>> ind = Individual('HGDP_Einstein')
+    >>> print ind
+    Mr. HGDP_Einsten (population = 1)
+    >>> print Einstein + ' Albert'            # Test __add__ method
+    Einstein Albert
+    >>> print Einstein in ('Einstein', )      # Test __eq__ method
+    True
+    """
+    id = Field(Integer, primary_key = True)    # not necessary
+    population = OneToMany('Population')
+    sex = Field(String(1))
+    
+    last_modified = Field(DateTime, onupdate=datetime.datetime.now)
+    
+    def __init__(self, id):
+        """
+        """
+        self.individual_id = id
+        self.population_id = 0      # corresponds to an Undefined Population
+        self.sex = 0  
+    def __repr__(self):
+        if self.sex in (0, 1):
+            r = "Mr. %s (%s)" %(self.individual_id, self.population_id)
+        else:
+            r = "Mrs. %s (%s)" %(self.individual_id, self.population_id)
+        return r
+    def __str__(self):
+        """
+        """
+        return self.individual_id
+    def __add__(self, other):
+        return str(self.individual_id) + other 
+    def __eq__(self, other):
+        return self.individual_id == other
+    def __ne__(self, other):
+        return self.individual_id != other
+    
+    
+class Population(Entity):
+    id = Field(Integer, primary_key = True)
+    individuals = ManyToOne('Individual')
+    name = Field(String(50))
+    geographycal_area = Field(String(30))
+#    version                 = Column(Integer, ForeignKey('versions.id'))
+    last_modified = Field(DateTime, onupdate=datetime.datetime.now)
+    
+    def __init__(self):
+        pass
+    pass
 
 class RefSeqGene(Entity):
     pass    
