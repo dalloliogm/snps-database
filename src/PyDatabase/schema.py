@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # Create a database for HGDP data
-
 """
 Creates a temporary database (in RAM, using sqlite) for HGDP data.
 
