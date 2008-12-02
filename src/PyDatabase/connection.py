@@ -12,4 +12,5 @@ engine.connect()
 # I will use declaration mapping in this code. This means that both the tables and the instances of every row will be defined at the same time.
 # see 'object mapping' on sqlalchemy manual.
 # see also http://www.sqlalchemy.org/docs/05/ormtutorial.html#datamapping_declarative
-Base = declarative_base()
+Base = declarative_base(engine)
+#print Base.metadata

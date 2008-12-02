@@ -14,6 +14,9 @@ from sqlalchemy.orm import relation, backref
 from connection import engine, Base
 from sqlalchemy.databases.mysql import MSEnum, MSLongBlob
 import datetime
+import logging
+
+logging.debug(Base.metadata)
 #from PopGen import Gio
 
 class SNP(Base):        # I could derive this from PopGen classes, but it would be a mess 
@@ -48,13 +51,13 @@ class SNP(Base):        # I could derive this from PopGen classes, but it would 
     
     snp_id                  = Column(String(10), primary_key=True)
     chromosome              = Column(String(10), index = True)  # should be a choice between 1-22-XY
-    physical_position       = Column(Integer, index = True)
+    physical_position       = Column(Integer)
     genetic_position        = Column(Integer)
     reference_allele        = Column(String(2))
     derived_allele          = Column(String(2))
     original_strand         = Column(MSEnum('+', '-', ' ')) # could be standardized by usign a sqlalchemy recipe
     dbSNP_ref               = Column(String(10))
-    refseq_gene             = Column(Integer, ForeignKey('refseqgenes.id'))
+    refseq_gene             = relation('RefSeqGene', backref=backref('refseqgenes.id'))
     
     # duplicated snps:
     aliases                 = relation('SNP', backref=backref('snps.snp_id'))
@@ -157,20 +160,20 @@ class Population(Base):
         pass
 
 
-class Version(Base):
-    """
-    Table 'Version'
-    
-    Every SNP/Individual/Population row has a 'version' field, which indicates when it has been last changed 
-    """
-    __tablename__ = 'versions'
-    
-    id                      = Column(Integer, primary_key = True) 
-    description             = Column(String(100))  
-    date                    = Column(Date)
-    
-    def __init__(self):
-        pass
+#class Version(Base):
+#    """
+#    Table 'Version'
+#    
+#    Every SNP/Individual/Population row has a 'version' field, which indicates when it has been last changed 
+#    """
+#    __tablename__ = 'versions'
+#    
+#    id                      = Column(Integer, primary_key = True) 
+#    description             = Column(String(100))  
+#    date                    = Column(Date)
+#    
+#    def __init__(self):
+#        pass
     
     
 class RefSeqGene(Base):
@@ -197,6 +200,8 @@ class RefSeqGene(Base):
     cdsStartStat            = Column(MSEnum('none','unk','incmpl','cmpl'))
     cdsEndStat              = Column(MSEnum('none','unk','incmpl','cmpl'))
     exonFrames              = Column(MSLongBlob)
+    
+    snps                    = relation('SNP', backref = backref('refseqgene', order_by = 'RefSeqGene.id'))
     
     last_modified           = Column(DateTime, onupdate=datetime.datetime.now)    
     def __init__(self):
