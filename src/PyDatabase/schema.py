@@ -20,8 +20,7 @@ logging.debug(Base.metadata)
 #from PopGen import Gio
 
 class SNP(Base):        # I could derive this from PopGen classes, but it would be a mess 
-    """
-    Table 'SNPs'.
+    """ Table 'SNPs'.
     
     This class represents both the table SNP, and the structure of an instance of a SNP object
     
@@ -34,6 +33,7 @@ class SNP(Base):        # I could derive this from PopGen classes, but it would 
     # Create a table called SNP in a temporary database:
     >>> from create_database import SNP
     >>> SNP.metadata.create_all(engine)    
+    >>> print dir(SNP) 
     
     # Create a SNP object with the id rs1334:
     >>> rs1334 = SNP('rs1334')
@@ -52,22 +52,26 @@ class SNP(Base):        # I could derive this from PopGen classes, but it would 
     snp_id                  = Column(String(10), primary_key=True)
     chromosome              = Column(String(10), index = True)  # should be a choice between 1-22-XY
     physical_position       = Column(Integer)
-    genetic_position        = Column(Integer)
+    haplotypes_index        = Column(Integer)
+    
     reference_allele        = Column(String(2))
     derived_allele          = Column(String(2))
     original_strand         = Column(MSEnum('+', '-', ' ')) # could be standardized by usign a sqlalchemy recipe
     dbSNP_ref               = Column(String(10))
-    refseq_gene             = relation('RefSeqGene', backref='RefSeqGene.id')
+    
+    refseqgene_id           = Column(Integer, ForeignKey('refseqgenes.id'))
+    refseqgene              = relation('RefSeqGene', backref='id')
     
     # duplicated snps:
-    aliases                 = relation('SNP', backref=backref('snps.snp_id'))
+#    aliases                 = relation('SNP', backref=backref('snps.snp_id'))
 #    version                 = Column(Integer, ForeignKey('versions.id'))
     last_modified           = Column(DateTime, onupdate=datetime.datetime.now)
 
     
     def __init__(self,  snp_id):
-        # this method will be launched when you create an instance of a SNP object. 
-        # e.g. when you call rs1334 = SNP(id='rs1334') 
+        """ this method will be launched when you create an instance of a SNP object. 
+         e.g. when you call rs1334 = SNP(id='rs1334')
+         """ 
         self.snp_id = snp_id            # should check whether this already exists.
         self.chromosome = ''
         self.aliases = ''
@@ -79,8 +83,7 @@ class SNP(Base):        # I could derive this from PopGen classes, but it would 
 
 
 class Individual(Base):
-    """
-    Table 'Individuals'
+    """ Table 'Individuals'
     
     >>> ind = Individual('HGDP_Einstein')
     >>> print ind
@@ -93,8 +96,9 @@ class Individual(Base):
     __tablename__ = 'individuals'
     
     id                      = Column(Integer, primary_key = True)
+    population_id           = Column(Integer, ForeignKey('populations.id'))
     population              = relation('Population', backref=backref('individuals', 
-                                                                     order_by='Individual.id'))
+                                                                     order_by='id'))
     sex                     = Column(Integer)
 #    version                 = Column(Integer, ForeignKey('versions.id'))
     last_modified           = Column(DateTime, onupdate=datetime.datetime.now)
@@ -145,8 +149,8 @@ class Individual(Base):
     
 
 class Population(Base):
-    """
-    Table 'Populations'
+    """ Table 'Populations'
+    
     Refers to the standard population table of ## populations
     """
     __tablename__ = 'populations'
@@ -180,8 +184,7 @@ class Population(Base):
     
     
 class RefSeqGene(Base):
-    """
-    Table 'RefSeq Genes'.
+    """ Table 'RefSeq Genes'.
     
     Obtained from http://genome.ucsc.edu, table browser, human assembly march 2006, Genes and gene prediction tracks, known genes, refseq genes
     
@@ -217,7 +220,7 @@ def _test():
     doctest.testmod()
     
 if __name__ == '__main__':
-#    _test()
+    _test()
 #    Base.metadata.drop_all(engine)
     print Base.metadata
     Base.metadata.create_all()
