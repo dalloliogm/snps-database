@@ -10,9 +10,22 @@ Uses Elixir syntax instead of sqlalchemy
 >>> metadata.bind = 'sqlite:///:memory:'
 >>> metadata.bind.echo = True
 
+# Create SQLAlchemy Tables along with their mapper objects
 >>> setup_all()
+
+# Issue the SQL command to create the Tables
 >>> create_all()
 
+>>> pop1 = Population('martians')
+>>> ind1 = Individual('Einstein')
+>>> ind2 = Individual('Marx')
+>>> pop1.individuals.append(ind1)
+>>> pop1.individuals.append(ind2)
+
+>>> pop1.individuals
+[Mr. Einstein (martians), Mr. Marx (martians)]
+
+>>> session.commit()
 """
 
 from elixir import metadata, Entity, Field, Unicode, Integer, UnicodeText, String, ManyToOne, OneToMany, DateTime
@@ -58,16 +71,16 @@ class SNP(Entity):
 class Individual(Entity):
     """ Table 'Individuals'
     
-    >>> ind = Individual('HGDP_Einstein')
-    >>> print ind
-    Mr. HGDP_Einsten (population = 1)
-    >>> print Einstein + ' Albert'            # Test __add__ method
+    >>> ind = Individual('Einstein')
+    >>> ind                              # Test __repr__ method
+    Mr. Einstein (None)
+    >>> print ind + ' Albert'            # Test __add__ method
     Einstein Albert
-    >>> print Einstein in ('Einstein', )      # Test __eq__ method
+    >>> print ind in ('Einstein', )      # Test __eq__ method
     True
     """
     id = Field(Integer, primary_key = True)    # not necessary
-    population = OneToMany('Population')
+    population = ManyToOne('Population')
     sex = Field(String(1))
     
     last_modified = Field(DateTime, onupdate=datetime.datetime.now)
@@ -76,17 +89,15 @@ class Individual(Entity):
         """
         """
         self.individual_id = id
-        self.population_id = 0      # corresponds to an Undefined Population
+#        self.population = 0      # corresponds to an Undefined Population
         self.sex = 0  
     def __repr__(self):
         if self.sex in (0, 1):
-            r = "Mr. %s (%s)" %(self.individual_id, self.population_id)
+            r = "Mr. %s (%s)" %(self.individual_id, self.population)
         else:
-            r = "Mrs. %s (%s)" %(self.individual_id, self.population_id)
+            r = "Mrs. %s (%s)" %(self.individual_id, self.population)
         return r
     def __str__(self):
-        """
-        """
         return self.individual_id
     def __add__(self, other):
         return str(self.individual_id) + other 
@@ -98,15 +109,17 @@ class Individual(Entity):
     
 class Population(Entity):
     id = Field(Integer, primary_key = True)
-    individuals = ManyToOne('Individual')
+    individuals = OneToMany('Individual')
     name = Field(String(50))
     geographycal_area = Field(String(30))
 #    version                 = Column(Integer, ForeignKey('versions.id'))
     last_modified = Field(DateTime, onupdate=datetime.datetime.now)
     
-    def __init__(self):
-        pass
-    pass
+    def __init__(self, name=None):
+        self.name = name
+        
+    def __repr__(self):
+        return str(self.name)
 
 class RefSeqGene(Entity):
     pass    
