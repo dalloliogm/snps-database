@@ -9,7 +9,14 @@
 	
 	
 2. Calculate EHH test for every SNP (in every population?)
-	Is it possible to calculate EHH with only SNP data?
+	EHH is a test to detect recent positive selection from a set of Haplotypes 
+	(http://www.nature.com/nature/journal/v419/n6909/full/nature01140.html#abs)
+	Step required to calculate EHH for a SNP:
+	- select a SNP and its chromosome 
+	- select all the SNPs in the same chromosome (or in a long range of distance from it)
+	- select the haplotypes relative of these SNPs in the individuals of interest
+	the rest of the calculation will be made by a script external to the database.
+	It could be useful to have the haplotypes expressed as '01' blocks, as many exiting programs require that kind of input.
 	
 	
 3.  Getting the full sequence of a gene containing a SNP
