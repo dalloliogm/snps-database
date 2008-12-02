@@ -13,8 +13,9 @@ from sqlalchemy import Column, Integer, String, Float, ForeignKey, Date, DateTim
 from connection import engine, Base
 from sqlalchemy.databases.mysql import MSEnum, MSLongBlob
 import datetime
+#from PopGen import Gio
 
-class SNP(Base):
+class SNP(Base):        # I could derive this from PopGen classes, but it would be a mess 
     """
     Table 'SNPs'.
     
@@ -45,8 +46,8 @@ class SNP(Base):
     __tablename__ = 'snps'
     
     snp_id                  = Column(String(10), primary_key=True)
-    chromosome              = Column(String(10))        # should be a choice between 1-22-XY
-    physical_position       = Column(Integer)
+    chromosome              = Column(String(10), index = True)  # should be a choice between 1-22-XY
+    physical_position       = Column(Integer, index = True)
     genetic_position        = Column(Integer)
     reference_allele        = Column(String(2))
     derived_allele          = Column(String(2))
