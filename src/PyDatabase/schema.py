@@ -125,7 +125,6 @@ class Population(Entity):
     original_name       = Field(String(50))
     working_unit        = Field(String(50))
     continent_macroarea = Field(String(30))
-    haplotypes          = Field(String(650000))
     genotypes_index     = Field(Integer)
 #    version                 = Column(Integer, ForeignKey('versions.id'))
     last_modified       = Field(DateTime, onupdate=datetime.datetime.now,
