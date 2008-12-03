@@ -47,22 +47,24 @@ class SNP(Entity):
     >>> rs1333 = SNP('rs1333')
     """
     
-    id = Field(String(10), primary_key=True)
-    chromosome = Field(String(10))
-    physical_position = Field(Integer)
-    haplotypes_index = Field(Integer)
+    id                  = Field(String(10), primary_key=True)
+    chromosome          = Field(String(10))
+    physical_position   = Field(Integer)
+    haplotypes_index    = Field(Integer)
 
-    reference_allele = Field(String(1))
-    derived_allele = Field(String(1))
-    original_strand = Field(String(1))
-    dbSNP_ref = Field(String(10))
+    reference_allele    = Field(String(1))
+    derived_allele      = Field(String(1))
+    original_strand     = Field(String(1))
+    dbSNP_ref           = Field(String(10))
     
-    refseqgene = ManyToOne('RefSeqGene')
-    last_modified = Field(DateTime, onupdate=datetime.datetime.now)
+    refseqgene          = ManyToOne('RefSeqGene')
+    last_modified       = Field(DateTime, onupdate=datetime.datetime.now,
+                                default = datetime.datetime.now)
     
     def __init__(self, snp_id):
         self.id = snp_id
         self.chromosome = ''
+        self.last_modified = datetime.datetime.now()
             
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.
@@ -79,41 +81,44 @@ class Individual(Entity):
     >>> print ind in ('Einstein', )      # Test __eq__ method
     True
     """
-    id = Field(Integer, primary_key = True)    # not necessary
-    population = ManyToOne('Population')
-    sex = Field(String(1))
+    identificator       = Field(String(10))
+    population          = ManyToOne('Population')
+    sex                 = Field(String(1))
     
-    last_modified = Field(DateTime, onupdate=datetime.datetime.now)
+    last_modified       = Field(DateTime, onupdate=datetime.datetime.now, 
+                          default = datetime.datetime.now)
     
     def __init__(self, id):
         """
         """
-        self.individual_id = id
+        self.identificator = str(id)
 #        self.population = 0      # corresponds to an Undefined Population
-        self.sex = 0  
+        self.sex = 0
+#        self.last_modified = datetime.datetime.now()
     def __repr__(self):
         if self.sex in (0, 1):
-            r = "Mr. %s (%s)" %(self.individual_id, self.population)
+            r = "Mr. %s (%s)" %(self.identificator, self.population)
         else:
-            r = "Mrs. %s (%s)" %(self.individual_id, self.population)
+            r = "Mrs. %s (%s)" %(self.identificator, self.population)
         return r
     def __str__(self):
-        return self.individual_id
+        return self.identificator
     def __add__(self, other):
-        return str(self.individual_id) + other 
+        return str(self.identificator) + other 
     def __eq__(self, other):
-        return self.individual_id == other
+        return self.identificator == other
     def __ne__(self, other):
-        return self.individual_id != other
+        return self.identificator != other
     
     
 class Population(Entity):
-    id = Field(Integer, primary_key = True)
-    individuals = OneToMany('Individual')
-    name = Field(String(50))
-    geographycal_area = Field(String(30))
+#    id = Field(Integer, primary_key = True)    # created automatically
+    individuals         = OneToMany('Individual')
+    name                = Field(String(50))
+    geographycal_area   = Field(String(30))
 #    version                 = Column(Integer, ForeignKey('versions.id'))
-    last_modified = Field(DateTime, onupdate=datetime.datetime.now)
+    last_modified       = Field(DateTime, onupdate=datetime.datetime.now,
+                                default = datetime.datetime.now)
     
     def __init__(self, name=None):
         self.name = name
