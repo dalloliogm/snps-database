@@ -59,6 +59,9 @@ class SNP(Entity):
     original_strand     = Field(String(1))
     dbSNP_ref           = Field(String(10))
     
+    genotypes           = Field(String(2000))
+    haplotypes_index    = Field(Integer)
+    
     refseqgene          = ManyToOne('RefSeqGene')
     last_modified       = Field(DateTime, onupdate=datetime.datetime.now,
                                 default = datetime.datetime.now)
@@ -87,6 +90,9 @@ class Individual(Entity):
     identificator       = Field(String(10))
     population          = ManyToOne('Population')
     sex                 = Field(String(1))
+    
+    haplotypes          = Field(String(650000))
+    genotypes_index     = Field(Integer)
     
     last_modified       = Field(DateTime, onupdate=datetime.datetime.now, 
                           default = datetime.datetime.now)
@@ -125,7 +131,7 @@ class Population(Entity):
     original_name       = Field(String(50))
     working_unit        = Field(String(50))
     continent_macroarea = Field(String(30))
-    genotypes_index     = Field(Integer)
+    
 #    version                 = Column(Integer, ForeignKey('versions.id'))
     last_modified       = Field(DateTime, onupdate=datetime.datetime.now,
                                 default = datetime.datetime.now)
