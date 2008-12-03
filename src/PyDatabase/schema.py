@@ -18,8 +18,9 @@ Uses Elixir syntax instead of sqlalchemy
 
 >>> pop1 = Population('martians')
 >>> ind1 = Individual('Einstein')
+>>> ind1.population = pop1
+
 >>> ind2 = Individual('Marx')
->>> pop1.individuals.append(ind1)
 >>> pop1.individuals.append(ind2)
 
 >>> pop1.individuals
@@ -28,7 +29,7 @@ Uses Elixir syntax instead of sqlalchemy
 >>> session.commit()
 """
 
-from elixir import metadata, Entity, Field, Unicode, Integer, UnicodeText, String, ManyToOne, OneToMany, DateTime
+from elixir import metadata, Entity, Field, Unicode, Integer, UnicodeText, String, ManyToOne, OneToMany, DateTime, using_options
 from config import connection_line
 import datetime
 
@@ -46,6 +47,7 @@ class SNP(Entity):
     
     >>> rs1333 = SNP('rs1333')
     """
+    using_options(tablename = 'snps')
     
     id                  = Field(String(10), primary_key=True)
     chromosome          = Field(String(10))
@@ -81,6 +83,7 @@ class Individual(Entity):
     >>> print ind in ('Einstein', )      # Test __eq__ method
     True
     """
+    using_options(tablename = 'individuals')
     identificator       = Field(String(10))
     population          = ManyToOne('Population')
     sex                 = Field(String(1))
@@ -112,10 +115,18 @@ class Individual(Entity):
     
     
 class Population(Entity):
+    """ Table 'Population'
+    
+    """
+    using_options(tablename = 'populations')
+    
 #    id = Field(Integer, primary_key = True)    # created automatically
     individuals         = OneToMany('Individual')
-    name                = Field(String(50))
-    geographycal_area   = Field(String(30))
+    original_name       = Field(String(50))
+    working_unit        = Field(String(50))
+    continent_macroarea = Field(String(30))
+    haplotypes          = Field(String(650000))
+    genotypes_index     = Field(Integer)
 #    version                 = Column(Integer, ForeignKey('versions.id'))
     last_modified       = Field(DateTime, onupdate=datetime.datetime.now,
                                 default = datetime.datetime.now)
