@@ -37,6 +37,7 @@ $: sudo easy_install sqlalchemy Elixir
 
 >>> session.commit()
 >>> Individual.query().all()
+[Mr. Einstein (martians), Mr. Marx (martians)]
 """
 
 from elixir import Entity, Field, Unicode, Integer, UnicodeText, String, Text
@@ -100,8 +101,8 @@ class Individual(Entity):
     using_options(tablename = 'individuals')
     
     identificator       = Field(String(10), unique=True)
-    population          = ManyToOne('Population')
-    sex                 = Field(String(1))
+    population          = ManyToOne('Population', )
+    sex                 = Field(String(1), default='0')
     
     haplotypes          = Field(Text(650000))
     genotypes_index     = Field(Integer, unique=True)
@@ -109,13 +110,13 @@ class Individual(Entity):
     last_modified       = Field(DateTime, onupdate=datetime.now, 
                           default = datetime.now)
     
-    def __init__(self, identificator):
+    def __init__(self, identificator=None, sex=0):
         self.identificator = str(identificator)
 #        self.population = 0      # corresponds to an Undefined Population
-        self.sex = 0
+        self.sex = str(sex)
 #        self.last_modified = datetime.datetime.now()
     def __repr__(self):
-        if self.sex in (0, 1):
+        if self.sex in ('0', '1'):
             rep = "Mr. %s (%s)" % (self.identificator, self.population)
         else:
             rep = "Mrs. %s (%s)" % (self.identificator, self.population)
@@ -146,11 +147,13 @@ class Population(Entity):
     last_modified       = Field(DateTime, onupdate=datetime.now,
                                 default = datetime.now)
     
-    def __init__(self, name=None):
-        self.name = name
+    def __init__(self, original_name=None, working_unit=None, continent_macroarea=None):
+        self.original_name = original_name
+        self.working_unit = working_unit
+        self.continent_macroarea = continent_macroarea
         
     def __repr__(self):
-        return str(self.name)
+        return str(self.original_name)
 
 class RefSeqGene(Entity):
     """ Table 'RefSeqGene'
