@@ -97,19 +97,17 @@ class Individual(Entity):
     last_modified       = Field(DateTime, onupdate=datetime.datetime.now, 
                           default = datetime.datetime.now)
     
-    def __init__(self, id):
-        """
-        """
-        self.identificator = str(id)
+    def __init__(self, identificator):
+        self.identificator = str(identificator)
 #        self.population = 0      # corresponds to an Undefined Population
         self.sex = 0
 #        self.last_modified = datetime.datetime.now()
     def __repr__(self):
         if self.sex in (0, 1):
-            r = "Mr. %s (%s)" %(self.identificator, self.population)
+            rep = "Mr. %s (%s)" % (self.identificator, self.population)
         else:
-            r = "Mrs. %s (%s)" %(self.identificator, self.population)
-        return r
+            rep = "Mrs. %s (%s)" % (self.identificator, self.population)
+        return rep
     def __str__(self):
         return self.identificator
     def __add__(self, other):
@@ -143,6 +141,8 @@ class Population(Entity):
         return str(self.name)
 
 class RefSeqGene(Entity):
+    """ Table 'RefSeqGene'
+    """
     pass    
     
     
