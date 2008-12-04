@@ -38,7 +38,7 @@ $: sudo easy_install sqlalchemy Elixir
 >>> session.commit()
 """
 
-from elixir import Entity, Field, Unicode, Integer, UnicodeText, String 
+from elixir import Entity, Field, Unicode, Integer, UnicodeText, String, Text
 from elixir import ManyToOne, OneToMany, DateTime
 from elixir import metadata, using_options
 from elixir.ext.versioned import acts_as_versioned
@@ -49,8 +49,7 @@ from datetime import datetime
 #from PopGen.Gio.SNP import SNP
 #from PopGen.Gio.Individual import Individual
 
-metadata.bind = connection_line
-metadata.bind.echo = True
+
 
 class SNP(Entity):
     """ Table 'SNPs'.
@@ -71,7 +70,7 @@ class SNP(Entity):
     original_strand     = Field(String(1))
     dbSNP_ref           = Field(String(10))
     
-    genotypes           = Field(String(2000))
+    genotypes           = Field(Text(2000))
     haplotypes_index    = Field(Integer)
     
     refseqgene          = ManyToOne('RefSeqGene')
@@ -98,11 +97,12 @@ class Individual(Entity):
     True
     """
     using_options(tablename = 'individuals')
+    
     identificator       = Field(String(10))
     population          = ManyToOne('Population')
     sex                 = Field(String(1))
     
-    haplotypes          = Field(String(650000))
+    haplotypes          = Field(Text(650000))
     genotypes_index     = Field(Integer)
     
     last_modified       = Field(DateTime, onupdate=datetime.now, 
