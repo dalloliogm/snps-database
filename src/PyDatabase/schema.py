@@ -6,6 +6,15 @@ Creates a temporary database (in RAM, using sqlite) for HGDP data.
 Uses Elixir syntax instead of sqlalchemy
 - http://elixir.ematia.de/
 
+To make this example working on your system, you will need:
+- sqllite
+- sqllite bindings for python
+- sqlalchemy (best if installed with easy_install. version 0.5)
+- elixir plugin for sqlalchemy
+On an Ubuntu installation, you will do:
+$: sudo apt-get install python-setuptools sqlite python-sqlite2
+$: sudo easy_install sqlalchemy Elixir
+
 >>> from elixir import *
 >>> metadata.bind = 'sqlite:///:memory:'
 >>> metadata.bind.echo = True
