@@ -38,9 +38,12 @@ $: sudo easy_install sqlalchemy Elixir
 >>> session.commit()
 """
 
-from elixir import metadata, Entity, Field, Unicode, Integer, UnicodeText, String, ManyToOne, OneToMany, DateTime, using_options
+from elixir import Entity, Field, Unicode, Integer, UnicodeText, String 
+from elixir import ManyToOne, OneToMany, DateTime
+from elixir import metadata, using_options
+from elixir.ext.versioned import acts_as_versioned
 from config import connection_line
-import datetime
+from datetime import datetime
 
 #from PopGen.Gio.Individual import Individual
 #from PopGen.Gio.SNP import SNP
@@ -72,13 +75,12 @@ class SNP(Entity):
     haplotypes_index    = Field(Integer)
     
     refseqgene          = ManyToOne('RefSeqGene')
-    last_modified       = Field(DateTime, onupdate=datetime.datetime.now,
-                                default = datetime.datetime.now)
+    last_modified       = Field(DateTime, onupdate=datetime.now,
+                                default = datetime.now)
     
     def __init__(self, snp_id):
         self.id = snp_id
         self.chromosome = ''
-        self.last_modified = datetime.datetime.now()
             
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.
@@ -103,8 +105,8 @@ class Individual(Entity):
     haplotypes          = Field(String(650000))
     genotypes_index     = Field(Integer)
     
-    last_modified       = Field(DateTime, onupdate=datetime.datetime.now, 
-                          default = datetime.datetime.now)
+    last_modified       = Field(DateTime, onupdate=datetime.now, 
+                          default = datetime.now)
     
     def __init__(self, identificator):
         self.identificator = str(identificator)
@@ -140,8 +142,8 @@ class Population(Entity):
     continent_macroarea = Field(String(30))
     
 #    version                 = Column(Integer, ForeignKey('versions.id'))
-    last_modified       = Field(DateTime, onupdate=datetime.datetime.now,
-                                default = datetime.datetime.now)
+    last_modified       = Field(DateTime, onupdate=datetime.now,
+                                default = datetime.now)
     
     def __init__(self, name=None):
         self.name = name
@@ -163,6 +165,7 @@ def _test():
     
 if __name__ == '__main__':
     _test()
+    from elixir import setup_all, create_all, session
         
         
         
