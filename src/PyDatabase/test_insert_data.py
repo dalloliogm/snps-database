@@ -1,30 +1,40 @@
 #!/usr/bin/env python
-"""
->>> from connection import session 
->>> from elixir import metadata, setup_all, create_all
->>> from schema import Individual, Population, SNP, RefSeqGene
->>> metadata.bind = 'sqlite:///:memory:'
->>> setup_all()
->>> create_all()
+from connection import session 
+from elixir import metadata, setup_all, create_all
+from schema import Individual, Population, SNP, RefSeqGene
 
->>> me = Individual('Giovanni')
->>> hannibal = Individual('Annibal')
+def setup():
+    """create a test database in RAM memory"""
+    metadata.bind = 'sqlite:///:memory:'
+    setup_all()
+    create_all()
 
-# create populations
->>> italians = Population('Italians')
->>> cartaginians = Population('Cartaginians')    # would be better to use more hgdp-related examples
+def test_insert():
+    """test the insertion of a few individuals and populations"""
+    me = Individual('Giovanni')
+    hannibal = Individual('Annibal')
+    
+    # create populations
+    italians = Population('Italians')
+    cartaginians = Population('Cartaginians')    # would be better to use more hgdp-related examples
+    
+    me.population = italians
+    hannibal.population = cartaginians   
+    
+    session.commit()
+    session.clear()
 
->>> me.population = italians
->>> hannibal.population = cartaginians 
 
- 
+def test_alotof_insert():
+    individuals = [Individual('Ind' + str(i)) for i in range(1000)]
+    session.commit()
+    session.query(Individual).limit(100)
 
->>> session.commit()
->>> session.clear()
-
-"""
-
-
+def test_query():
+    print Individual.query().all()
+    
 if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
+    setup()
+    test_insert()
+    test_alotof_insert()
+    print session.query(Individual).all()
