@@ -36,6 +36,7 @@ $: sudo easy_install sqlalchemy Elixir
 [Mr. Einstein (martians), Mr. Marx (martians)]
 
 >>> session.commit()
+>>> Individual.query().all()
 """
 
 from elixir import Entity, Field, Unicode, Integer, UnicodeText, String, Text
@@ -60,7 +61,7 @@ class SNP(Entity):
     """
     using_options(tablename = 'snps')
     
-    id                  = Field(String(10), primary_key=True)
+    id                  = Field(String(10), primary_key=True, unique=True)
     chromosome          = Field(String(10))
     physical_position   = Field(Integer)
     haplotypes_index    = Field(Integer)
@@ -98,12 +99,12 @@ class Individual(Entity):
     """
     using_options(tablename = 'individuals')
     
-    identificator       = Field(String(10))
+    identificator       = Field(String(10), unique=True)
     population          = ManyToOne('Population')
     sex                 = Field(String(1))
     
     haplotypes          = Field(Text(650000))
-    genotypes_index     = Field(Integer)
+    genotypes_index     = Field(Integer, unique=True)
     
     last_modified       = Field(DateTime, onupdate=datetime.now, 
                           default = datetime.now)
@@ -137,7 +138,7 @@ class Population(Entity):
     
 #    id = Field(Integer, primary_key = True)    # created automatically
     individuals         = OneToMany('Individual')
-    original_name       = Field(String(50))
+    original_name       = Field(String(50), unique=True)
     working_unit        = Field(String(50))
     continent_macroarea = Field(String(30))
     
