@@ -17,7 +17,8 @@ $: sudo easy_install sqlalchemy Elixir
 
 >>> from elixir import *
 >>> metadata.bind = 'sqlite:///:memory:'
->>> metadata.bind.echo = True
+
+#>>> metadata.bind.echo = True
 
 # Create SQLAlchemy Tables along with their mapper objects
 >>> setup_all()

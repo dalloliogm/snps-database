@@ -6,6 +6,7 @@ import unittest
 
 from connection import session 
 from elixir import metadata, setup_all, create_all
+from sqlalchemy.exceptions import IntegrityError
 from schema import Individual, Population, SNP, RefSeqGene
 
 class TestHGDPDatabase(unittest.TestCase):
@@ -20,7 +21,7 @@ class TestHGDPDatabase(unittest.TestCase):
         setup_all()
         create_all()
     
-    def test_insert(self):
+    def test_insertIndividual(self):
         """test the insertion of a few individuals and populations"""
         me = Individual('Giovanni')
         hannibal = Individual('Annibal')
@@ -35,10 +36,16 @@ class TestHGDPDatabase(unittest.TestCase):
         session.commit()
         session.clear()
         
-    def test_duplicated_individual(self):
-        self.assertRaises(Individual('Giovanni'), 'IntegrityError')
+    def test_duplicatedIndividual(self):
+        """adding a duplicated individual should fail
+        """
+        
+        Individual('clone')
+        session.clear()
+        self.assertRaises(IntegrityError, Individual, 'clone')
+        
     
-    def test_alotof_insert(self):
+    def test_alotofInsertIndividual(self):
         individuals = [Individual('Ind' + str(i+1)) for i in range(1000)]
         session.commit()
         session.query(Individual).limit(100)
@@ -49,3 +56,8 @@ class TestHGDPDatabase(unittest.TestCase):
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestHGDPDatabase)
     unittest.TextTestRunner(verbosity=2).run(suite)
+#    suite = unittest.TestSuite()
+#    suite.addTest(TestHGDPDatabase())
+#    suite.run()
+#    unittest.main()
+

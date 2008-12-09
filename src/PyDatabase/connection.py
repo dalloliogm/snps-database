@@ -9,6 +9,6 @@ from config import connection_line
 from schema import *
 
 metadata.bind = connection_line
-metadata.bind.echo = True
+#metadata.bind.echo = True
 setup_all()
 
