@@ -5,7 +5,7 @@ Unittest for HGDP database
 import unittest
 
 from connection import session 
-from elixir import metadata, setup_all, create_all
+from elixir import metadata, setup_all, create_all, cleanup_all
 from sqlalchemy.exceptions import IntegrityError
 from schema import Individual, Population, SNP, RefSeqGene
 
@@ -20,6 +20,9 @@ class TestHGDPDatabase(unittest.TestCase):
 #        metadata.bind.echo = True
         setup_all()
         create_all()
+        
+    def tearDown(self):
+        cleanup_all()
     
     def test_insertIndividual(self):
         """test the insertion of a few individuals and populations"""
