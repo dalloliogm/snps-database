@@ -23,9 +23,24 @@ class TestHGDPDatabase(unittest.TestCase):
         
     def tearDown(self):
         cleanup_all()
+        
+    def insertIndividual(self, identif):
+        """
+        Instantiate a new individual object
+        If it already exists, get it from the database
+        """
+        ind = Individual.get_by(identif)
+        
+        if ind is None:    
+            ind = Individual(identif)
+            session.commit()
+             
+        return ind
+            
     
     def test_insertIndividual(self):
         """test the insertion of a few individuals and populations"""
+        session.flush()
         me = Individual('Giovanni')
         hannibal = Individual('Annibal')
         
@@ -35,30 +50,28 @@ class TestHGDPDatabase(unittest.TestCase):
         
         me.population = italians
         hannibal.population = cartaginians   
-        
-        session.commit()
-        session.clear()
-        
-    def test_duplicatedIndividual(self):
-        """adding a duplicated individual should fail
-        """
-        
-        Individual('clone')
-        session.clear()
-        self.assertRaises(IntegrityError, Individual, 'clone')
-        
+
     
-    def test_alotofInsertIndividual(self):
-        individuals = [Individual('Ind' + str(i+1)) for i in range(1000)]
+    def test_insertALotOfIndividual(self):
+        individuals = [Individual('Ind' + str(i+1)) for i in range(100)]
         session.commit()
         session.query(Individual).limit(100)
-    
+        
+    def test_duplicatedIndividual(self):
+        """adding a duplicated individual should return an IntegrityError
+        """
+        session.flush()
+        einstein = Individual('einstein')
+        einstein_again = Individual('einstein')
+        self.assertRaises(IntegrityError, session.commit)
+        
+
     def test_query(self):
         print Individual.query().all()
     
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestHGDPDatabase)
-    unittest.TextTestRunner(verbosity=2).run(suite)
+    unittest.TextTestRunner(verbosity=4).run(suite)
 #    suite = unittest.TestSuite()
 #    suite.addTest(TestHGDPDatabase())
 #    suite.run()

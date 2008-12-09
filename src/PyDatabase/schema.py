@@ -79,13 +79,9 @@ class SNP(Entity):
     refseqgene          = ManyToOne('RefSeqGene')
     last_modified       = Field(DateTime, onupdate=datetime.now,
                                 default = datetime.now)
-    
-    def __init__(self, **kwargs):
-        self.set(**kwargs)
-
-    def set(self, **kwargs):
-        for key, value in kwargs.iteritems():
-            setattr(self, key, value)
+    def __init__(self, snp_id):
+        self.id = snp_id
+        self.chromosome = ''
             
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.
@@ -114,12 +110,11 @@ class Individual(Entity):
     last_modified       = Field(DateTime, onupdate=datetime.now, 
                           default = datetime.now)
     
-    def __init__(self, **kwargs):
-        self.set(**kwargs)
+    def __init__(self, identificator=None, sex=0):
+        self.identificator = str(identificator)
 
-    def set(self, **kwargs):
-        for key, value in kwargs.iteritems():
-            setattr(self, key, value)
+        self.sex = str(sex)
+
 
     def __repr__(self):
         if self.sex in ('0', '1'):
@@ -153,12 +148,10 @@ class Population(Entity):
     last_modified       = Field(DateTime, onupdate=datetime.now,
                                 default = datetime.now)
     
-    def __init__(self, **kwargs):
-        self.set(**kwargs)
-
-    def set(self, **kwargs):
-        for key, value in kwargs.iteritems():
-            setattr(self, key, value)
+    def __init__(self, original_name=None, working_unit=None, continent_macroarea=None):
+        self.original_name = original_name
+        self.working_unit = working_unit
+        self.continent_macroarea = continent_macroarea
         
     def __repr__(self):
         return str(self.original_name)
