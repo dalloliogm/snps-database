@@ -35,8 +35,7 @@ class TestHGDPDatabase(unittest.TestCase):
             ind = Individual(identif)
             session.commit()
              
-        return ind
-            
+        return ind     
     
     def test_insertIndividual(self):
         """test the insertion of a few individuals and populations"""
@@ -50,7 +49,6 @@ class TestHGDPDatabase(unittest.TestCase):
         
         me.population = italians
         hannibal.population = cartaginians   
-
     
     def test_insertALotOfIndividual(self):
         individuals = [Individual('Ind' + str(i+1)) for i in range(100)]

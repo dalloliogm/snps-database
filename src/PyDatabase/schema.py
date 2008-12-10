@@ -52,6 +52,20 @@ from datetime import datetime
 #from PopGen.Gio.SNP import SNP
 #from PopGen.Gio.Individual import Individual
 
+# add the get_by_or_init method to entity, see recipe
+# http://elixir.ematia.de/trac/wiki/Recipes/GetByOrAddPattern#GetByorAddPattern
+def get_by_or_init(cls, if_new_set={}, **params):
+    """Call get_by; if no object is returned, initialize an
+    object with the same parameters.  If a new object was
+    created, set any initial values."""
+    
+    result = cls.get_by(**params)
+    if not result:
+        result = cls(**params)
+        result.set(**if_new_set)
+    return result
+
+Entity.get_by_or_init = classmethod(get_by_or_init)
 
 
 class SNP(Entity):
@@ -159,6 +173,7 @@ class Population(Entity):
 class RefSeqGene(Entity):
     """ Table 'RefSeqGene'
     """
+    using_options(tablename = 'refseqgenes')
     pass    
     
     
