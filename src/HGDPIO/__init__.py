@@ -7,6 +7,8 @@ Most of the code here has been copied from PopGen.Gio. In the future,
 it will be good to unify the two copies into a single function.
 """
 
+from PyDatabase import connection
+
 def samplesParser(handle, ):
     """
     parse a file with descriptions of Individuals (samples) in hgdp
