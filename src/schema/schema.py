@@ -28,19 +28,34 @@ $: sudo easy_install sqlalchemy Elixir
 # Issue the SQL command to create the Tables
 >>> create_all()
 
+
+Here they are some examples on how to create some individuals 
+objects and define their populations.
+# Let's create a population:
 >>> pop1 = Population('martians')
+
+# You can define an individual' population by 
+# defining its population field
 >>> ind1 = Individual('Einstein')
 >>> ind1.population = pop1
 
+# You can also do it by appending an individual to pop.individuals
 >>> ind2 = Individual('Marx')
 >>> pop1.individuals.append(ind2)
 
+# You can also define the population when 
+>>> ind3 = Individual('Democritus', population = 'martians')
+
+>>> ind4 = Individual('Spartacus', population = 'spartans')
+
 >>> pop1.individuals
-[Mr. Einstein (martians), Mr. Marx (martians)]
+[Mr. Einstein (martians), Mr. Marx (martians), Mr. Democritus (martians)]
 
 >>> session.commit()
->>> Individual.query().all()
-[Mr. Einstein (martians), Mr. Marx (martians)]
+>>> Population.query().all()
+[martians, spartans]
+
+
 """
 
 from elixir import Entity, Field, Unicode, Integer, UnicodeText, String, Text
@@ -130,7 +145,8 @@ class Individual(Entity):
         self.identificator = identificator
         if population is not None:
             population = str(population).lower()
-            self.population = Population.get_by_or_init(population)
+            self.population = Population.get_by_or_init(original_name = population)
+            
         if sex is not None:
             sex = str(sex).lower()
             if sex in (1, '1', 'm', 'male',):
@@ -166,12 +182,7 @@ class Population(Entity):
     to create an object in case it doesn't exists already.
     >>> martians = Population('martians')
     >>> martians.continent_macroarea = 'Mars'
-    >>> print martians.continent_macroarea
-    Mars
-    
-    >>> martians_again = Population.get_by_or_init('martians')
-    >>> print martians_again.continent_macroarea
-    Mars
+
     """
     using_options(tablename = 'populations')
     
@@ -191,7 +202,7 @@ class Population(Entity):
         self.continent_macroarea = str(continent_macroarea).lower()
         
     def __repr__(self):
-        return str(self.original_name)
+        return self.original_name
 
 class RefSeqGene(Entity):
     """ Table 'RefSeqGene'
