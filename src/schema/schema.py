@@ -118,7 +118,7 @@ class Individual(Entity):
     
     identificator       = Field(String(10), unique=True)
     population          = ManyToOne('Population', )
-    sex                 = Field(String(1), default='0')
+    sex                 = Field(String(1), default='u')
     
     haplotypes          = Field(Text(650000))
     genotypes_index     = Field(Integer, unique=True)
@@ -126,14 +126,25 @@ class Individual(Entity):
     last_modified       = Field(DateTime, onupdate=datetime.now, 
                           default = datetime.now)
     
-    def __init__(self, identificator=None, sex=0):
-        self.identificator = str(identificator)
-
-        self.sex = str(sex)
-
-
+    def __init__(self, identificator = None, population = None, sex = None):
+        self.identificator = identificator
+        if population is not None:
+            population = str(population).lower()
+            self.population = Population.get_by_or_init(population)
+        if sex is not None:
+            sex = str(sex).lower()
+            if sex in (1, '1', 'm', 'male',):
+                self.sex = 'm'
+            elif sex in (2, '2', 'f', 'female'):
+                self.sex = 'f'
+            else:
+                self.sex = 'u'
+        else:
+            self.sex = 'u'
+        
+        
     def __repr__(self):
-        if self.sex in ('0', '1'):
+        if self.sex in ('m', 'u'):
             rep = "Mr. %s (%s)" % (self.identificator, self.population)
         else:
             rep = "Mrs. %s (%s)" % (self.identificator, self.population)
@@ -151,6 +162,16 @@ class Individual(Entity):
 class Population(Entity):
     """ Table 'Population'
     
+    Population support a methods called 'get_by_or_init', which enable you 
+    to create an object in case it doesn't exists already.
+    >>> martians = Population('martians')
+    >>> martians.continent_macroarea = 'Mars'
+    >>> print martians.continent_macroarea
+    Mars
+    
+    >>> martians_again = Population.get_by_or_init('martians')
+    >>> print martians_again.continent_macroarea
+    Mars
     """
     using_options(tablename = 'populations')
     
@@ -165,9 +186,9 @@ class Population(Entity):
                                 default = datetime.now)
     
     def __init__(self, original_name=None, working_unit=None, continent_macroarea=None):
-        self.original_name = original_name
-        self.working_unit = working_unit
-        self.continent_macroarea = continent_macroarea
+        self.original_name = str(original_name).lower()
+        self.working_unit = str(working_unit).lower()
+        self.continent_macroarea = str(continent_macroarea).lower()
         
     def __repr__(self):
         return str(self.original_name)
@@ -187,7 +208,7 @@ def _test():
     
 if __name__ == '__main__':
     _test()
-    from elixir import setup_all, create_all, session
+#    from elixir import setup_all, create_all, session
         
         
         

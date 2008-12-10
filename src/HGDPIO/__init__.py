@@ -7,7 +7,8 @@ Most of the code here has been copied from PopGen.Gio. In the future,
 it will be good to unify the two copies into a single function.
 """
 
-from PyDatabase import connection
+from schema.connection import *
+import re
 
 def samplesParser(handle, ):
     """
@@ -22,7 +23,7 @@ def samplesParser(handle, ):
     ... "HGDP01362"    "M"    "French Basque"    "France"    "Europe"    "Basque"
     ... "HGDP00151"    "F"    "Makrani"    "Pakistan"    "Asia"    "Makrani"''')
     >>> samples = samplesParser(samples_file)
-    >>> print [sample for sample in samples if sample.region == "Pakistan"]
+    >>> print [individual for individual in samples if sample.region == "Pakistan"]
     [Mr. HGDP00001 (Brahui Test), Mr. HGDP00003 (Brahui), Mr. HGDP00151 (Makrani)]
     """
     splitter = re.compile('"\s+"')
@@ -49,8 +50,16 @@ def samplesParser(handle, ):
         unit = row[5].replace('"', '')
         
         # create an Individual object
-        Ind = Individual(ind_id, pop, region=region, continent=continent, 
-                        working_unit=unit, sex=sex)
+        Ind = Individual(ind_id, pop, sex=sex)
         individuals.append(Ind)
 
     return individuals
+
+
+def _test():
+    """test the current module"""
+    import doctest
+    doctest.testmod()
+
+if __name__ == '__main__':
+    _test()
