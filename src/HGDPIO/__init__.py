@@ -23,7 +23,7 @@ def samplesParser(handle, ):
     ... "HGDP01362"    "M"    "French Basque"    "France"    "Europe"    "Basque"
     ... "HGDP00151"    "F"    "Makrani"    "Pakistan"    "Asia"    "Makrani"''')
     >>> samples = samplesParser(samples_file)
-    >>> print [individual for individual in samples if sample.region == "Pakistan"]
+    >>> print [individual for individual in samples if individual.region == "Pakistan"]
     [Mr. HGDP00001 (Brahui Test), Mr. HGDP00003 (Brahui), Mr. HGDP00151 (Makrani)]
     """
     splitter = re.compile('"\s+"')

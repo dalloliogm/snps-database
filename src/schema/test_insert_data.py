@@ -53,7 +53,7 @@ class TestHGDPDatabase(unittest.TestCase):
     def test_insertALotOfIndividual(self):
         individuals = [Individual('Ind' + str(i+1)) for i in range(100)]
         session.commit()
-        session.query(Individual).limit(100)
+        Individual.query().all()
         
     def test_duplicatedIndividual(self):
         """adding a duplicated individual should return an IntegrityError
@@ -62,10 +62,7 @@ class TestHGDPDatabase(unittest.TestCase):
         einstein = Individual('einstein')
         einstein_again = Individual('einstein')
         self.assertRaises(IntegrityError, session.commit)
-        
 
-    def test_query(self):
-        print Individual.query().all()
     
 if __name__ == '__main__':
     suite = unittest.TestLoader().loadTestsFromTestCase(TestHGDPDatabase)

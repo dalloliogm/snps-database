@@ -54,8 +54,8 @@ objects and define their populations.
 >>> session.commit()
 >>> Population.query().all()
 [martians, spartans]
-
-
+>>> print Population.get_by(original_name = 'spartans').individuals
+[Mr. Spartacus (spartans)]
 """
 
 from elixir import Entity, Field, Unicode, Integer, UnicodeText, String, Text
