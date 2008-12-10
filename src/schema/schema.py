@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # Create a database for HGDP data
 """
-Creates a temporary database (in RAM, using sqlite) for HGDP data.
+This is the schema for a database designed to handle HGDP SNPs data.
+To use it, you should better use 'from connection import *' (see connection.py
+script) to use the existing MySql database on my computer.
 
 Uses Elixir syntax instead of sqlalchemy
 - http://elixir.ematia.de/
