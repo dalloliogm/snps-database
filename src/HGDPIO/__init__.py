@@ -7,7 +7,7 @@ Most of the code here has been copied from PopGen.Gio. In the future,
 it will be good to unify the two copies into a single function.
 """
 
-from schema.connection import *
+from schema.debug_connection import *
 import re
 
 def samplesParser(handle, ):
