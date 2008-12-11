@@ -203,6 +203,14 @@ class Population(Entity):
         
     def __repr__(self):
         return self.original_name
+    
+    def __str__(self):
+        return str(self.original_name)
+    
+    def __eq__(self, other):
+        return str(self.original_name) == str(other).lower()
+    def __ne__(self, other):
+        return str(self.original_name) == str(other).lower()
 
 class RefSeqGene(Entity):
     """ Table 'RefSeqGene'

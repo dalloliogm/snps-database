@@ -23,18 +23,23 @@ def samplesParser(handle, ):
     ... "HGDP01362"    "M"    "French Basque"    "France"    "Europe"    "Basque"
     ... "HGDP00151"    "F"    "Makrani"    "Pakistan"    "Asia"    "Makrani"''')
     >>> samples = samplesParser(samples_file)
-    >>> print [individual for individual in samples if individual.population == "Pakistan"]
+    >>> print [individual for individual in samples if individual.population == "makrani"]
     [Mr. HGDP00001 (Brahui Test), Mr. HGDP00003 (Brahui), Mr. HGDP00151 (Makrani)]
+    >>> for individual in samples:
+    ...    print individual.population, individual.population == 'makrani'
+    >>> print type(individual.population)
     """
-    splitter = re.compile('"\s+"')
+
     handle.readline()   # skip headers
     header = handle.readline()
     if header is None:
         raise ValueError('Empty file!!')
     
     individuals = []                # not necessary with the database
-    
-    for line in handle.readlines(): 
+
+    splitter = re.compile('"\s+"')    
+    for line in handle.readlines():
+        # split the line according to spaces and "
         row = splitter.split(line)
         
         if row is None: break   # FIXME: optimize
