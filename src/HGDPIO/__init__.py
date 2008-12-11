@@ -7,7 +7,7 @@ Most of the code here has been copied from PopGen.Gio. In the future,
 it will be good to unify the two copies into a single function.
 """
 
-from schema.debug_connection import *
+from schema.debug_database import *
 import re
 
 def samplesParser(handle, ):
@@ -23,7 +23,7 @@ def samplesParser(handle, ):
     ... "HGDP01362"    "M"    "French Basque"    "France"    "Europe"    "Basque"
     ... "HGDP00151"    "F"    "Makrani"    "Pakistan"    "Asia"    "Makrani"''')
     >>> samples = samplesParser(samples_file)
-    >>> print [individual for individual in samples if individual.region == "Pakistan"]
+    >>> print [individual for individual in samples if individual.population == "Pakistan"]
     [Mr. HGDP00001 (Brahui Test), Mr. HGDP00003 (Brahui), Mr. HGDP00151 (Makrani)]
     """
     splitter = re.compile('"\s+"')
