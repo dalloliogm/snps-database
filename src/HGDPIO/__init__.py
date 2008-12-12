@@ -21,13 +21,22 @@ def samplesParser(handle, ):
     ... "HGDP00001"    "M"    "Brahui Test"    "Pakistan"      "Asia"  "Brahui"
     ... "HGDP00003"    "M"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
     ... "HGDP01362"    "M"    "French Basque"    "France"    "Europe"    "Basque"
+    ... "HGDP00004"    "F"    "Brahui"    "Pakistan"      "Asia"  "Brahui"
     ... "HGDP00151"    "F"    "Makrani"    "Pakistan"    "Asia"    "Makrani"''')
     >>> samples = samplesParser(samples_file)
+    >>> print samples[:3]
+    [Mr. HGDP00001 (brahui test), Mr. HGDP00003 (brahui), Mr. HGDP01362 (french basque)]
+    
+    # filter all individuals belonging to 'makrani'
     >>> print [individual for individual in samples if individual.population == "makrani"]
-    [Mr. HGDP00001 (Brahui Test), Mr. HGDP00003 (Brahui), Mr. HGDP00151 (Makrani)]
-    >>> for individual in samples:
-    ...    print individual.population, individual.population == 'makrani'
-    >>> print type(individual.population)
+    [Mrs. HGDP00151 (makrani)]
+    
+    # the same as before but using the filter function:
+    >>> filter(lambda ind: ind.population == 'Makrani', samples)
+    [Mrs. HGDP00151 (makrani)]
+    
+    >>> filter(lambda ind: ind.population.continent_macroarea == 'Asia', samples)
+    [Mrs. HGDP00151 (makrani), ...]
     """
 
     handle.readline()   # skip headers
@@ -49,13 +58,25 @@ def samplesParser(handle, ):
         ind_id = row[0].replace('"', '')
 #        logging.debug(row)
         sex = row[1]    # TODO: translate this to 1/2 
-        pop = row[2]    # TODO: use Population object
+        popname = row[2].lower()    # TODO: use Population object
         region = row[3]
-        continent = row[4]
+        macroarea = row[4]
         unit = row[5].replace('"', '')
         
+        # Check whether the current population already exists. If not, create it
+        # FIXME: this is duplicated code (see Individual.__init__)
+#        pop = Population.get_by(original_name = popname)
+#        if pop is None:
+#            pop = Population(original_name = popname,
+#                             region = region, 
+#                             continent_macroarea = continent,
+#                             working_unit = unit) 
+
+        
         # create an Individual object
-        Ind = Individual(ind_id, pop, sex=sex)
+        # If the population given doesn't exists, a new record is created automatically
+        Ind = Individual(ind_id, population=popname, sex=sex, region=region, 
+                         macroarea=macroarea, working_unit=unit)
         individuals.append(Ind)
 
     return individuals

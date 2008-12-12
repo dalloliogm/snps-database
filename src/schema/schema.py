@@ -141,11 +141,21 @@ class Individual(Entity):
     last_modified       = Field(DateTime, onupdate=datetime.now, 
                           default = datetime.now)
     
-    def __init__(self, identificator = None, population = None, sex = None):
+    def __init__(self, identificator = None, population = None, sex = None,
+                 region = None, macroarea = None, working_unit = None  
+                 ):
         self.identificator = identificator
+        
+        # checks whether a population with the same name already exists.
+        # If not, create it. 
         if population is not None:
-            population = str(population).lower()
-            self.population = Population.get_by_or_init(original_name = population)
+            popname = str(population).lower()
+            poprecord = Population.get_by(original_name = popname)
+            if poprecord is None:
+                poprecord = Population(original_name = popname, region=region, 
+                                                continent_macroarea=macroarea, 
+                                                working_unit = working_unit) 
+            self.population = poprecord
             
         if sex is not None:
             sex = str(sex).lower()
@@ -189,6 +199,7 @@ class Population(Entity):
 #    id = Field(Integer, primary_key = True)    # created automatically
     individuals         = OneToMany('Individual')
     original_name       = Field(String(50), unique=True)
+    region              = Field(String(50))
     working_unit        = Field(String(50))
     continent_macroarea = Field(String(30))
     
@@ -196,7 +207,9 @@ class Population(Entity):
     last_modified       = Field(DateTime, onupdate=datetime.now,
                                 default = datetime.now)
     
-    def __init__(self, original_name=None, working_unit=None, continent_macroarea=None):
+    def __init__(self, original_name=None, working_unit=None, 
+                 region = None, continent_macroarea=None):
+        #FIXME: add a set method
         self.original_name = str(original_name).lower()
         self.working_unit = str(working_unit).lower()
         self.continent_macroarea = str(continent_macroarea).lower()
