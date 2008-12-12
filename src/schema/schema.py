@@ -43,9 +43,8 @@ objects and define their populations.
 >>> ind2 = Individual('Marx')
 >>> pop1.individuals.append(ind2)
 
-# You can also define the population when 
+# You can also define population and individuals at the same time  
 >>> ind3 = Individual('Democritus', population = 'martians')
-
 >>> ind4 = Individual('Spartacus', population = 'spartans')
 
 >>> pop1.individuals

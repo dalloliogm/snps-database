@@ -32,11 +32,12 @@ def samplesParser(handle, ):
     [Mrs. HGDP00151 (makrani)]
     
     # the same as before but using the filter function:
-    >>> filter(lambda ind: ind.population == 'Makrani', samples)
+    >>> filter(lambda ind: ind.population == 'MAKRANI', samples)
     [Mrs. HGDP00151 (makrani)]
     
-    >>> filter(lambda ind: ind.population.continent_macroarea == 'Asia', samples)
-    [Mrs. HGDP00151 (makrani), ...]
+    # Beware that the attributes in population are case sensitive!!!
+    >>> filter(lambda ind: ind.population.continent_macroarea == 'asia', samples)
+    [Mr. HGDP00001 (brahui test), Mr. HGDP00003 (brahui), Mrs. HGDP00004 (brahui), Mrs. HGDP00151 (makrani)]
     """
 
     handle.readline()   # skip headers
@@ -62,16 +63,6 @@ def samplesParser(handle, ):
         region = row[3]
         macroarea = row[4]
         unit = row[5].replace('"', '')
-        
-        # Check whether the current population already exists. If not, create it
-        # FIXME: this is duplicated code (see Individual.__init__)
-#        pop = Population.get_by(original_name = popname)
-#        if pop is None:
-#            pop = Population(original_name = popname,
-#                             region = region, 
-#                             continent_macroarea = continent,
-#                             working_unit = unit) 
-
         
         # create an Individual object
         # If the population given doesn't exists, a new record is created automatically
