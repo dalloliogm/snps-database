@@ -36,6 +36,12 @@ def samples_parser(handle, ):
     >>> print [individual for individual in samples if individual.population == "makrani"]
     [Mrs. HGDP00151 (makrani)]
     
+    >>> print samples[0].population.region
+    pakistan
+    
+    >>> print samples[0].population.continent_macroarea
+    asia
+    
     # the same as before but using the filter function:
     >>> filter(lambda ind: ind.population == 'MAKRANI', samples)
     [Mrs. HGDP00151 (makrani)]

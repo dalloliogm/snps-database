@@ -4,7 +4,7 @@ Reads the data from HGDP (samples) and load it in the database
 
 """
 
-from HGDPIO import samples_parser
+import HGDPIO
 from schema.debug_database import *
 
 def parameters():
@@ -39,9 +39,7 @@ def load_into_database():
     print "now we are connected to the database ", metadata
     
     samples_file = file('../../data/Annotations/samples_subset.csv', 'r')
-    print samples_file.readline()
-    print samples_file.readline()
-    
+
     ind = Individual.get_by_or_init(identificator = 'Giovanni')
     
     print Individual.query().all()
@@ -49,7 +47,7 @@ def load_into_database():
     ind.delete()
     
     session.flush()
-    samples_parser(samples_file)
+    HGDPIO.samples_parser(samples_file)
 
 def _test():
     """test the current module"""

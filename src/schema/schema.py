@@ -206,12 +206,14 @@ class Population(Entity):
     last_modified       = Field(DateTime, onupdate=datetime.now,
                                 default = datetime.now)
     
-    def __init__(self, original_name=None, working_unit=None, 
-                 region = None, continent_macroarea=None):
+    def __init__(self, original_name, working_unit='undef', 
+                 region = 'undef', continent_macroarea='undef'):
         #FIXME: add a set method
         self.original_name = str(original_name).lower()
         self.working_unit = str(working_unit).lower()
+        self.region = str(region.lower())
         self.continent_macroarea = str(continent_macroarea).lower()
+        
         
     def __repr__(self):
         return self.original_name
