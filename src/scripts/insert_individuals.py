@@ -40,11 +40,11 @@ def load_into_database():
     
     samples_file = file('../../data/Annotations/samples_subset.csv', 'r')
 
-    ind = Individual.get_by_or_init(identificator = 'Giovanni')
-    
-    print Individual.query().all()
-    print ind
-    ind.delete()
+#    ind = Individual.get_by_or_init(name = 'Giovanni')
+#    
+#    print Individual.query().all()
+#    print ind
+#    ind.delete()
     
     session.flush()
     HGDPIO.samples_parser(samples_file)

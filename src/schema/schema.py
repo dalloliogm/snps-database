@@ -108,7 +108,7 @@ class SNP(Entity):
     
     refseqgene          = ManyToOne('RefSeqGene')
     last_modified       = Field(DateTime, onupdate=datetime.now,
-                                default = datetime.now)
+                                default=datetime.now)
     def __init__(self, snp_id):
         self.id = snp_id
         self.chromosome = ''
@@ -137,7 +137,7 @@ class Individual(Entity):
     """
     using_options(tablename = 'individuals')
     
-    identificator       = Field(String(10), unique=True)    # name?
+    name                = Field(String(10), unique=True)    # name?
     population          = ManyToOne('Population', )
     sex                 = Field(String(1), default='u')
     
@@ -145,12 +145,12 @@ class Individual(Entity):
     genotypes_index     = Field(Integer, unique=True)
     
     last_modified       = Field(DateTime, onupdate=datetime.now, 
-                          default = datetime.now)
+                          default=datetime.now)
     
-    def __init__(self, identificator, population = None, sex = None,
+    def __init__(self, name, population = None, sex = None,
                  region = 'undef', macroarea = 'undef', working_unit = 'undef'):
         
-        self.identificator = str(identificator).upper() # the individual's name
+        self.name = str(name).upper() # the individual's name
         
         # checks whether a population with the same name already exists.
         # If not, create it. 
@@ -158,7 +158,7 @@ class Individual(Entity):
             popname = str(population).lower()
             poprecord = Population.get_by(original_name = popname)
             if poprecord is None:
-                poprecord = Population(original_name = popname, region=region, 
+                poprecord = Population(original_name=popname, region=region, 
                                                 continent_macroarea=macroarea, 
                                                 working_unit = working_unit) 
             self.population = poprecord
@@ -176,18 +176,18 @@ class Individual(Entity):
         
     def __repr__(self):
         if self.sex in ('m', 'u'):
-            rep = "Mr. %s (%s)" % (self.identificator, self.population)
+            rep = "Mr. %s (%s)" % (self.name, self.population)
         else:
-            rep = "Mrs. %s (%s)" % (self.identificator, self.population)
+            rep = "Mrs. %s (%s)" % (self.name, self.population)
         return rep
     def __str__(self):
-        return self.identificator
+        return self.name
     def __add__(self, other):
-        return str(self.identificator) + other 
+        return str(self.name) + other 
     def __eq__(self, other):
-        return self.identificator == str(other).upper()
+        return self.name == str(other).upper()
     def __ne__(self, other):
-        return self.identificator != str(other).upper()
+        return self.name != str(other).upper()
     
     
 class Population(Entity):
