@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+"""
+Reads the data from HGDP (samples) and load it in the database 
+
+"""
+
+from HGDPIO import samples_parser
+from schema.debug_database import *
+
+def parameters():
+    """Read arguments and parameters"""
+    
+    basedir = '/home/gioby/Data/HGDP/'
+    
+    # parse parameters
+    parser = OptionParser()
+    parser.set_defaults(genotypes_by_chr_dir = basedir + 'Genotypes_by_chr/',
+                        samplesfilepath = basedir + 'Annotations/samples_subset.csv',
+                        selected_chr = [22, ],  #FIXME: only the first chromosome is used 
+                        continent = 'Europe')
+    parser.add_option('-s', '--samplefile', action='store', type='string', 
+                      dest = 'samplesfilepath')
+    parser.add_option('-g', '--genotypes_by_chr_dir', action='store', 
+                      type='string', dest = 'genotypes_by_chr_dir')
+    parser.add_option('-c', '--continent', action='store', type='string', 
+                      dest = 'continent')
+    parser.add_option('-y', '--chromosomes', action='store', type='list', 
+                      dest = 'chromosomes')
+    parser.add_option('-t', '--test', action='callback', dest = _test)
+    parser.add_option('-h', '--help', action='help')
+
+
+def load_into_database():
+    """launch the various scripts to insert data into the HGDP database."""
+    
+    from schema.connection import session, metadata
+    from schema.connection import Individual, Population, SNP, RefSeqGene
+#    session.flush()
+    print "now we are connected to the database ", metadata
+    
+    samples_file = file('../../data/Annotations/samples_subset.csv', 'r')
+    print samples_file.readline()
+    print samples_file.readline()
+    
+    ind = Individual.get_by_or_init(identificator = 'Giovanni')
+    
+    print Individual.query().all()
+    print ind
+    ind.delete()
+    
+    session.flush()
+    samples_parser(samples_file)
+
+def _test():
+    """test the current module"""
+    import doctest 
+    doctest.testmod()
+
+if __name__ == '__main__':
+    _test()
+    load_into_database()
+    
