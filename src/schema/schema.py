@@ -31,30 +31,30 @@ $: sudo easy_install sqlalchemy Elixir
 
 Here they are some examples on how to create some individuals 
 objects and define their populations.
-# Let's create a population:
->>> pop1 = Population('martians')
+# Let's create a population:        # TODO: use best examples
+>>> pop1 = Population('greeks')
 
 # You can define an individual' population by 
 # defining its population field
->>> ind1 = Individual('Einstein')
+>>> ind1 = Individual('Archimede')
 >>> ind1.population = pop1
 
 # You can also do it by appending an individual to pop.individuals
->>> ind2 = Individual('Marx')
+>>> ind2 = Individual('Spartacus')
 >>> pop1.individuals.append(ind2)
 
 # You can also define population and individuals at the same time  
->>> ind3 = Individual('Democritus', population = 'martians')
->>> ind4 = Individual('Spartacus', population = 'spartans')
+>>> ind3 = Individual('Democritus', population = 'greeks')
+>>> ind4 = Individual('ET', population = 'aliens')
 
 >>> pop1.individuals
-[Mr. Einstein (martians), Mr. Marx (martians), Mr. Democritus (martians)]
+[Mr. ARCHIMEDE (greeks), Mr. SPARTACUS (greeks), Mr. DEMOCRITUS (greeks)]
 
 >>> session.commit()
 >>> Population.query().all()
-[martians, spartans]
->>> print Population.get_by(original_name = 'spartans').individuals
-[Mr. Spartacus (spartans)]
+[greeks, aliens]
+>>> print Population.get_by(original_name = 'aliens').individuals
+[Mr. ET (aliens)]
 """
 
 from elixir import Entity, Field, Unicode, Integer, UnicodeText, String, Text
@@ -81,7 +81,7 @@ def get_by_or_init(cls, if_new_set={}, **params):
         result.set(**if_new_set)
     return result
 
-Entity.get_by_or_init = classmethod(get_by_or_init)
+Entity.get_by_or_init = classmethod(get_by_or_init) # in the end, I am not using this
 
 
 class SNP(Entity):
@@ -122,11 +122,18 @@ class Individual(Entity):
     
     >>> ind = Individual('Einstein')
     >>> ind                              # Test __repr__ method
-    Mr. Einstein (None)
+    Mr. EINSTEIN (None)
     >>> print ind + ' Albert'            # Test __add__ method
-    Einstein Albert
+    EINSTEIN Albert
     >>> print ind in ('Einstein', )      # Test __eq__ method
     True
+    
+    # You can define an individual and a population in the same statement.
+    # If the given population doesn't exists, a new record is initiated
+    >>> ind2 = Individual('Spock', 'Vesuvians')
+    >>> print ind2.population
+    vesuvians
+    
     """
     using_options(tablename = 'individuals')
     
@@ -140,10 +147,10 @@ class Individual(Entity):
     last_modified       = Field(DateTime, onupdate=datetime.now, 
                           default = datetime.now)
     
-    def __init__(self, identificator = None, population = None, sex = None,
-                 region = None, macroarea = None, working_unit = None  
-                 ):
-        self.identificator = identificator
+    def __init__(self, identificator, population = None, sex = None,
+                 region = 'undef', macroarea = 'undef', working_unit = 'undef'):
+        
+        self.identificator = str(identificator).upper() # the individual's name
         
         # checks whether a population with the same name already exists.
         # If not, create it. 
@@ -167,7 +174,6 @@ class Individual(Entity):
         else:
             self.sex = 'u'
         
-        
     def __repr__(self):
         if self.sex in ('m', 'u'):
             rep = "Mr. %s (%s)" % (self.identificator, self.population)
@@ -179,18 +185,21 @@ class Individual(Entity):
     def __add__(self, other):
         return str(self.identificator) + other 
     def __eq__(self, other):
-        return self.identificator == other
+        return self.identificator == str(other).upper()
     def __ne__(self, other):
-        return self.identificator != other
+        return self.identificator != str(other).upper()
     
     
 class Population(Entity):
     """ Table 'Population'
     
-    Population support a methods called 'get_by_or_init', which enable you 
+    Population supports a methods called 'get_by_or_init', which enable you 
     to create an object in case it doesn't exists already.
     >>> martians = Population('martians')
-    >>> martians.continent_macroarea = 'Mars'
+    
+    # populations' attributes should always be lowercase, if you define them
+    # outside of __init__.
+    >>> martians.continent_macroarea = 'mars'
 
     """
     using_options(tablename = 'populations')
@@ -208,7 +217,7 @@ class Population(Entity):
     
     def __init__(self, original_name, working_unit='undef', 
                  region = 'undef', continent_macroarea='undef'):
-        #FIXME: add a set method
+        #TODO: add a set method
         self.original_name = str(original_name).lower()
         self.working_unit = str(working_unit).lower()
         self.region = str(region.lower())
@@ -241,6 +250,7 @@ def _test():
     
 if __name__ == '__main__':
     _test()
+    # could launch test_insert_data here?
 #    from elixir import setup_all, create_all, session
         
         
