@@ -1,6 +1,17 @@
 #!/usr/bin/env python
 """
 Unittest for HGDP database
+
+TestInsertDelete
+    tests the insertion of a lot of records in the database
+TestRecordsProperties
+    tests all the properties of the various records (population.region, etc..)
+TestRelationships
+    tests all relationships?
+TestHGDPIO
+    tests the HGDPIO libraries, to parse HGDP files and insert them in the database
+TestGenotypesExtract
+    tests extraction of genotypes from the corresponding row
 """
 import unittest
 
@@ -9,11 +20,7 @@ from elixir import metadata, setup_all, create_all, cleanup_all
 from sqlalchemy.exceptions import IntegrityError
 from schema import Individual, Population, SNP, RefSeqGene
 
-class TestHGDPDatabase(unittest.TestCase):
-    """
-    Test the HGDP database APIs (sqlalchemy + elixir)
-    """
-    
+class HGDPDatabase(unittest.TestCase):
     def setUp(self):
         """create a test database in RAM memory"""
         metadata.bind = 'sqlite:///:memory:'
@@ -23,20 +30,13 @@ class TestHGDPDatabase(unittest.TestCase):
         
     def tearDown(self):
         cleanup_all()
+
+class TestInsertDelete(unittest.HGDPDatabase):
+    """
+    Test the insertion and deletion of records into the 
+    HGDP database.  
+    """
         
-    def insertIndividual(self, identif):
-        """
-        Instantiate a new individual object
-        If it already exists, get it from the database
-        """
-        ind = Individual.get_by(identif)
-        
-        if ind is None:    
-            ind = Individual(identif)
-            session.commit()
-             
-        return ind     
-    
     def test_insertIndividual(self):
         """test the insertion of a few individuals and populations"""
         session.flush()

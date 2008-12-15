@@ -30,24 +30,22 @@ def parameters():
     parser.add_option('-h', '--help', action='help')
 
 
-def load_into_database():
+def load_individuals_into_database():
     """launch the various scripts to insert data into the HGDP database."""
     
     from schema.connection import session, metadata
     from schema.connection import Individual, Population, SNP, RefSeqGene
 #    session.flush()
-    print "now we are connected to the database ", metadata
+    print "now we are connected to the database:", metadata
+    metadata.bind.echo = True
     
     samples_file = file('../../data/Annotations/samples_subset.csv', 'r')
-
-#    ind = Individual.get_by_or_init(name = 'Giovanni')
-#    
-#    print Individual.query().all()
-#    print ind
-#    ind.delete()
     
     session.flush()
+    
     HGDPIO.samples_parser(samples_file)
+    session.commit()
+    print 'upload of tables finished'
 
 def _test():
     """test the current module"""
@@ -56,5 +54,5 @@ def _test():
 
 if __name__ == '__main__':
     _test()
-    load_into_database()
+    load_individuals_into_database()
     
