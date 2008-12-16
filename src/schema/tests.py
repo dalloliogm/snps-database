@@ -20,7 +20,10 @@ from elixir import metadata, setup_all, create_all, cleanup_all
 from sqlalchemy.exceptions import IntegrityError
 from schema import Individual, Population, SNP, RefSeqGene
 
-class HGDPDatabase(unittest.TestCase):
+class TestHGDPDatabase(unittest.TestCase):
+    """
+    Metaclass for all the unittests
+    """
     def setUp(self):
         """create a test database in RAM memory"""
         metadata.bind = 'sqlite:///:memory:'
@@ -28,17 +31,18 @@ class HGDPDatabase(unittest.TestCase):
         setup_all()
         create_all()
         
-    def tearDown(self):
-        cleanup_all()
+#    def tearDown(self):
+#        cleanup_all()
 
-class TestInsertDelete(unittest.HGDPDatabase):
+class TestInsertDelete(TestHGDPDatabase):
     """
     Test the insertion and deletion of records into the 
     HGDP database.  
     """
         
     def test_insertIndividual(self):
-        """test the insertion of a few individuals and populations"""
+        """test the insertion of a few individuals and populations
+        """
         session.flush()
         me = Individual('Giovanni')
         hannibal = Individual('Annibal')
@@ -48,24 +52,36 @@ class TestInsertDelete(unittest.HGDPDatabase):
         cartaginians = Population('Cartaginians')    # would be better to use more hgdp-related examples
         
         me.population = italians
-        hannibal.population = cartaginians   
+        hannibal.population = cartaginians
+
+        session.commit()
+        session.clear()   
     
     def test_insertALotOfIndividual(self):
-        individuals = [Individual('Ind' + str(i+1)) for i in range(100)]
+        """Tests the insertion of a lot of individuals
+        """
         session.commit()
-        Individual.query().all()
+        setup_all()
+#        metadata.bind.echo = True
+        individuals = [Individual('Ind' + str(i+1)) for i in range(100)]
+   
+        session.commit()
+        session.clear()
         
     def test_duplicatedIndividual(self):
         """adding a duplicated individual should return an IntegrityError
         """
         session.flush()
-        einstein = Individual('einstein')
-        einstein_again = Individual('einstein')
+        clone = Individual('clone')
+        clone_again = Individual('clone')
         self.assertRaises(IntegrityError, session.commit)
+        session.rollback()    
+        session.clear()
+
 
     
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestHGDPDatabase)
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestInsertDelete)
     unittest.TextTestRunner(verbosity=4).run(suite)
 #    suite = unittest.TestSuite()
 #    suite.addTest(TestHGDPDatabase())
