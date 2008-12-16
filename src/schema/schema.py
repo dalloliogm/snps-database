@@ -182,10 +182,17 @@ class Population(Entity):
     to create an object in case it doesn't exists already.
     >>> martians = Population('martians')
     
-    # populations' attributes should always be lowercase, if you define them
-    # outside of __init__.
-    >>> martians.continent_macroarea = 'mars'
-
+    # It is recommended to use the 'set' method to modify a population's 
+    # attribute after it has already been created.
+    >>> martians.set('continent_macroarea', 'mars')
+    >>> martians.continent_macroarea
+    'mars'
+    
+    # You can also modify a pop's attributes manually, but remenber to use 
+    # lower case strings 
+    >>> martians.continent_macroarea = 'Mars'    # will give you trouble
+    ...                                          # because is not lowercase.
+    
     """
     using_options(tablename = 'populations')
     
@@ -208,9 +215,8 @@ class Population(Entity):
         self.region = str(region.lower())
         self.continent_macroarea = str(continent_macroarea).lower()
         
-    def set(self, ):
-        pass
-        
+    def set(self, name, value):
+        setattr(self, name, str(value).lower())        
         
     def __repr__(self):
         return self.original_name
