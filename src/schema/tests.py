@@ -31,8 +31,9 @@ class TestHGDPDatabase(unittest.TestCase):
         setup_all()
         create_all()
         
-#    def tearDown(self):
-#        cleanup_all()
+    def tearDown(self):
+        session.commit()
+        session.clear()
 
 class TestInsertDelete(TestHGDPDatabase):
     """
@@ -53,20 +54,19 @@ class TestInsertDelete(TestHGDPDatabase):
         
         me.population = italians
         hannibal.population = cartaginians
+#        print Individual.query().all()
 
-        session.commit()
-        session.clear()   
-    
     def test_insertALotOfIndividual(self):
         """Tests the insertion of a lot of individuals
         """
         session.commit()
         setup_all()
-#        metadata.bind.echo = True
-        individuals = [Individual('Ind' + str(i+1)) for i in range(100)]
-   
+        individuals = [Individual('Ind' + str(i+1)) for i in range(100)]    #TODO: use an higher value
+        
         session.commit()
-        session.clear()
+        for ind in individuals: 
+            ind.delete()
+#        print Individual.query().all()
         
     def test_duplicatedIndividual(self):
         """adding a duplicated individual should return an IntegrityError
@@ -75,16 +75,59 @@ class TestInsertDelete(TestHGDPDatabase):
         clone = Individual('clone')
         clone_again = Individual('clone')
         self.assertRaises(IntegrityError, session.commit)
-        session.rollback()    
-        session.clear()
+        session.rollback()
 
 
+class TestRecordsProperties(TestHGDPDatabase):
+    """tests all the properties of the various records (population.region, etc..)
+    """
+    
+    def test_IndividualMethods(self):
+        """Tests all properties in Individual
+        """
+        me = Individual('giovanni', sex = 'm', population='Italians', region='abruzzo',
+                        macroarea = 'Europe', working_unit = 'Italians')
+        
+        # individual.name must be uppercase.
+        # This is not beatiful, but I don't know how to change it.
+        self.assertTrue(me.name == 'GIOVANNI')
+        self.assertFalse(me.name == 'giovanni')
+        self.assertFalse(me.name == 'Giovanni')
+        self.assertFalse(me.name == 'GioVanNi')
+        
+        # Tests the __eq__ and __ne__ methods
+        self.assertTrue(me == 'Giovanni')
+        self.assertTrue(me == 'GIOVANNI')
+        self.assertTrue(me == 'GiovANNi')
+        self.assertTrue(me == 'Giovanni')
+        
+        # This is also not very beatiful
+        self.assertTrue(me.sex == 'm')
+        self.assertFalse(me.sex == 'M')
+        self.assertFalse(me.sex == '1')
+        
+        self.assert_(me.population == 'italians')
+        
+        # Test Individuals with a space in their names:
+        you = Individual('napoleon bonaparte')
+        self.assert_(you == 'napoleon bonaparte')
+        
+    def test_PopulationMethods(self):
+        """Tests all properties in Population
+        """
+        unni = Population('Unni')
+        
+        
     
 if __name__ == '__main__':
-    suite = unittest.TestLoader().loadTestsFromTestCase(TestInsertDelete)
-    unittest.TextTestRunner(verbosity=4).run(suite)
-#    suite = unittest.TestSuite()
-#    suite.addTest(TestHGDPDatabase())
-#    suite.run()
-#    unittest.main()
+#    suite = unittest.TestLoader().loadTestsFromTestCase(TestInsertDelete)
+#    TestRecordsProperties
+#    unittest.TextTestRunner(verbosity=4).run(suite)
+
+    suite = unittest.TestSuite()
+    
+    suite.addTest(TestInsertDelete())
+    suite.addTest(TestRecordsProperties())
+    suite.run()
+    unittest.main()
 
