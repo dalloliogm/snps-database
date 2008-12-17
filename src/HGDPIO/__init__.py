@@ -12,7 +12,7 @@ from schema.schema import *
 import re
 import logging
 
-def samples_parser(handle, ):
+def samples_parser(handle, ):   
     """
     parse a file with descriptions of Individuals (samples) in hgdp
     
@@ -86,7 +86,86 @@ def samples_parser(handle, ):
 
     return individuals
    
+
+def hgdpgenotypesParser(handle, individuals_filter = None, markers_filter = None):
+    """
+    Parse a genotypes file handler.
     
+    It returns a Marker object for every line of the file
+    
+    >>> from StringIO import StringIO
+    >>> genotypes_file = StringIO(
+    ... '''  HGDP00001    HGDP00002    HGDP00003    HGDP00004    HGDP00005    HGDP00006    HGDP00007    HGDP00008    HGDP00009    HGDP000010
+    ... rs1112390    AA    GG    AG    AA    AA    AA    AA    AA    AA    AA   
+    ... rs1112391    TT    TC    CC    CC    CC    CC    CC    CC    CC    CC
+    ... MitoA11252G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
+    ... rs11124185    TC    TT    TT    TT    TT    TT    TT    TT    TT    TT
+    ... MitoA13265G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
+    ... MitoA13264G    GG    AA    AA    AA    GG    AG    AA    AA    AA    AA
+    ... MitoA13781G    AA    AA    AA    AA    AA    AA    --    AA    AA    AA
+    ... MitoA14234G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
+    ... MitoA14583G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
+    ... MitoA14906G    GG    GG    GG    GG    GG    GG    GG    GG    GG    GG
+    ... MitoA15219G    AA    AA    AA    GG    AA    AA    AA    AA    AA    AA''')
+    
+    >>> individuals_filter = ['HGDP00001', 'HGDP00004', ]  
+    >>> markers = hgdpgenotypesParser(genotypes_file, individuals_filter)
+    >>> print '\t' + '\t'.join(markers[0].individuals)
+     HGDP00001   HGDP00004
+    >>> for marker in markers:
+    ...    print marker.to_geno_format()    #doctest: +NORMALIZE_WHITESPACE
+    rs1112390    AA    AA    
+    rs1112391    TT    CC    
+    MitoA11252G    AA    AA    
+    rs11124185    TC    TT    
+    MitoA13265G    AA    AA    
+    MitoA13264G    GG    AA    
+    MitoA13781G    AA    AA    
+    MitoA14234G    AA    AA    
+    MitoA14583G    AA    AA    
+    MitoA14906G    GG    GG    
+    MitoA15219G    AA    GG    
+
+    """
+    # initialize output var
+    markers = []
+    
+    # read the header, containing the Individuals names
+#    handle.readline()       # first line is empty??
+    header = handle.readline()
+    if header is None:
+        raise ValueError('Empty file!!')
+    individuals = [Individual(ind_id) for ind_id in header.split()]
+    if individuals_filter is None:      # TODO: ugly 
+        individuals_filter = [ind.individual_id for ind in individuals]
+    
+    columns_to_filter = []
+    for ind in header.split():
+        if ind in individuals_filter:
+            columns_to_filter.append(1)
+        else:
+            columns_to_filter.append(0)
+    
+    # Read the remaining lines of genotypes file, containin genotypes info.
+    for line in handle.readlines():
+        fields = line.split()   # TODO: add more rigorous conditions
+        if fields is None:
+            break
+        # Initialize a Genotype object 
+        marker = Marker(name = fields[0], individuals = individuals_filter)
+        markers.append(marker)
+        
+        for n in range(1, len(fields)):
+            current_individual = individuals[n-1]
+            if current_individual in individuals_filter:    #TODO: this consumes CPU time
+#            if columns_to_filter[0] == 1:
+                current_genotype = fields[n]
+                marker.add_genotype(current_genotype)
+#                print current_individual
+            else:
+                pass
+            
+    return markers
      
 
 def _test():
