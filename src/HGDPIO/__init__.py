@@ -130,7 +130,7 @@ def genotypes_parser(handle, ):
 
     """
     # initialize output var
-    markers = []
+#    snps = []
     
     # read the header, containing the Individuals names
 #    handle.readline()       # first line is empty??
@@ -138,28 +138,23 @@ def genotypes_parser(handle, ):
     if header is None:
         raise ValueError('Empty file!!')
     individuals = [Individual(ind_id) for ind_id in header.split()]
-    if individuals_filter is None:      # TODO: ugly 
-        individuals_filter = [ind.individual_id for ind in individuals]
     
     # Read the remaining lines of genotypes file, containin genotypes info.
     for line in handle.readlines():
         fields = line.split()   # TODO: add more rigorous conditions
         if fields is None:
             break
-        # Initialize a Genotype object 
-        marker = SNP(name = fields[0])
-        markers.append(marker)
         
+        # Initialize a SNP object 
+        snp = SNP(id = fields[0])
+#        snps.append(marker)
+        
+        # 
         for n in range(1, len(fields)):
             current_individual = individuals[n-1]
-            if current_individual in individuals_filter:    #TODO: this consumes CPU time
-#            if columns_to_filter[0] == 1:
-                current_genotype = fields[n]
-                marker.add_genotype(current_genotype)
-#                print current_individual
-            else:
-                pass
-            
+            current_genotype = fields[n]
+            snp.add_genotype(current_genotype)
+
     return markers
      
 
