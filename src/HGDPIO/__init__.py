@@ -12,7 +12,7 @@ from schema.schema import *
 import re
 import logging
 
-def samples_parser(handle, ):   
+def samples_parser(handle, ):
     """
     parse a file with descriptions of Individuals (samples) in hgdp
     
@@ -87,12 +87,16 @@ def samples_parser(handle, ):
     return individuals
    
 
-def hgdpgenotypesParser(handle, individuals_filter = None, markers_filter = None):
+def genotypes_parser(handle, ):
     """
     Parse a genotypes file handler.
     
     It returns a Marker object for every line of the file
-    
+
+    >>> from schema.debug_database import *
+    >>> print metadata
+    MetaData(Engine(sqlite:///:memory:))
+    >>> print Individual.metadata
     >>> from StringIO import StringIO
     >>> genotypes_file = StringIO(
     ... '''  HGDP00001    HGDP00002    HGDP00003    HGDP00004    HGDP00005    HGDP00006    HGDP00007    HGDP00008    HGDP00009    HGDP000010
@@ -108,12 +112,10 @@ def hgdpgenotypesParser(handle, individuals_filter = None, markers_filter = None
     ... MitoA14906G    GG    GG    GG    GG    GG    GG    GG    GG    GG    GG
     ... MitoA15219G    AA    AA    AA    GG    AA    AA    AA    AA    AA    AA''')
     
-    >>> individuals_filter = ['HGDP00001', 'HGDP00004', ]  
-    >>> markers = hgdpgenotypesParser(genotypes_file, individuals_filter)
-    >>> print '\t' + '\t'.join(markers[0].individuals)
-     HGDP00001   HGDP00004
-    >>> for marker in markers:
-    ...    print marker.to_geno_format()    #doctest: +NORMALIZE_WHITESPACE
+    >>> snps = hgdpgenotypesParser(genotypes_file)
+    
+    >>> for snp in snps:
+    ...    print snp    #doctest: +NORMALIZE_WHITESPACE
     rs1112390    AA    AA    
     rs1112391    TT    CC    
     MitoA11252G    AA    AA    
@@ -139,20 +141,13 @@ def hgdpgenotypesParser(handle, individuals_filter = None, markers_filter = None
     if individuals_filter is None:      # TODO: ugly 
         individuals_filter = [ind.individual_id for ind in individuals]
     
-    columns_to_filter = []
-    for ind in header.split():
-        if ind in individuals_filter:
-            columns_to_filter.append(1)
-        else:
-            columns_to_filter.append(0)
-    
     # Read the remaining lines of genotypes file, containin genotypes info.
     for line in handle.readlines():
         fields = line.split()   # TODO: add more rigorous conditions
         if fields is None:
             break
         # Initialize a Genotype object 
-        marker = Marker(name = fields[0], individuals = individuals_filter)
+        marker = SNP(name = fields[0])
         markers.append(marker)
         
         for n in range(1, len(fields)):
