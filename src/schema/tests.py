@@ -16,7 +16,7 @@ TestGenotypesExtract
 import unittest
 
 from connection import session 
-from elixir import metadata, setup_all, create_all, cleanup_all
+from elixir import metadata, setup_all, create_all, drop_all
 from sqlalchemy.exceptions import IntegrityError
 from schema import Individual, Population, SNP, RefSeqGene
 
@@ -32,8 +32,11 @@ class TestHGDPDatabase(unittest.TestCase):
         create_all()
         
     def tearDown(self):
-        session.commit()
-        session.clear()
+        # clear the session and rollback any open transaction
+        session.close()
+        # drop all tables, so that we don't leak any data from one test to the
+        # other
+        drop_all()
 
 class TestInsertDelete(TestHGDPDatabase):
     """
