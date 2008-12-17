@@ -50,7 +50,7 @@ class TestInsertDelete(TestHGDPDatabase):
         
         # create populations
         italians = Population('Italians')
-        cartaginians = Population('Cartaginians')    # would be better to use more hgdp-related examples
+        cartaginians = Population('Cartaginians')    
         
         me.population = italians
         hannibal.population = cartaginians
@@ -91,9 +91,9 @@ class TestRecordsProperties(TestHGDPDatabase):
         # individual.name must be uppercase.
         # This is not beatiful, but I don't know how to change it.
         self.assertTrue(me.name == 'GIOVANNI')
-        self.assertFalse(me.name == 'giovanni')
-        self.assertFalse(me.name == 'Giovanni')
-        self.assertFalse(me.name == 'GioVanNi')
+        self.assertFalse(me.name == 'giovanni') # :(
+        self.assertFalse(me.name == 'Giovanni') # :(
+        self.assertFalse(me.name == 'GioVanNi') # :(
         
         # Tests the __eq__ and __ne__ methods
         self.assertTrue(me == 'Giovanni')
@@ -103,31 +103,49 @@ class TestRecordsProperties(TestHGDPDatabase):
         
         # This is also not very beatiful
         self.assertTrue(me.sex == 'm')
-        self.assertFalse(me.sex == 'M')
-        self.assertFalse(me.sex == '1')
+        self.assertFalse(me.sex == 'M') # :(
+        self.assertFalse(me.sex == '1') # :(
         
         self.assert_(me.population == 'italians')
         
         # Test Individuals with a space in their names:
         you = Individual('napoleon bonaparte')
         self.assert_(you == 'napoleon bonaparte')
+               
         
     def test_PopulationMethods(self):
         """Tests all properties in Population
         """
         unni = Population('Unni')
         
+class TestGetFilter(TestHGDPDatabase):
+    """tests get_by, filter_by, etc..
+    """
+    def test_getandfilter(self):
+        me = Individual('giovanni', population='italians')
         
-    
+        me_getby = Individual.get_by(name = 'GIOVANNI')
+        assert me_getby == me
+        
+        me_filterby = session.query(Individual).filter_by(name = 'GIOVANNI')
+        assert me_filterby[0] == me
+        
+        # The only way to do a case-indipendent search is by using .filter:
+        me_filter = session.query(Individual).filter(Individual.name.like('giovanni'))
+        assert me_filter[0] == me
+#        
+#        me_filterby = Individual.filter(name = 'GIOVAnnI')
+#        print me_filterby         
+#    
 if __name__ == '__main__':
 #    suite = unittest.TestLoader().loadTestsFromTestCase(TestInsertDelete)
 #    TestRecordsProperties
 #    unittest.TextTestRunner(verbosity=4).run(suite)
 
-    suite = unittest.TestSuite()
-    
-    suite.addTest(TestInsertDelete())
-    suite.addTest(TestRecordsProperties())
-    suite.run()
+#    suite = unittest.TestSuite()
+#    
+#    suite.addTest(TestInsertDelete())
+#    suite.addTest(TestRecordsProperties())
+#    suite.run()
     unittest.main()
 

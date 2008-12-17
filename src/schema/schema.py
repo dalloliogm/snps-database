@@ -122,7 +122,7 @@ class Individual(Entity):
     """
     using_options(tablename = 'individuals')
     
-    name                = Field(String(10), unique=True)    # name?
+    name                = Field(String(10), unique=True,)    # name?
     population          = ManyToOne('Population', )
     sex                 = Field(String(1), default='u')
     
