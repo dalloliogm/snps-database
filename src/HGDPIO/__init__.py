@@ -19,7 +19,7 @@ def samples_parser(handle, ):
     >>> from schema.debug_database import *
     >>> print metadata
     MetaData(Engine(sqlite:///:memory:))
-    >>> setup_all()
+    
     >>> from StringIO import StringIO
     >>> samples_file = StringIO(
     ... '''"sample"

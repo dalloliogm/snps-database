@@ -103,7 +103,17 @@ class SNP(Entity):
             
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.
-        return 'SNP '  + self.id 
+        return 'SNP '  + self.id
+    
+    def get_haplotype(self, individual_name):
+        """get the haplotype in the corresponding individual
+        """
+        pass
+    
+    def get_haplotype_by_population(self, popname):
+        """get the haplotypes for a whole population
+        """
+        pass
 
 class Individual(Entity):
     """ Table 'Individuals'
@@ -176,6 +186,11 @@ class Individual(Entity):
         return self.name == str(other).upper()
     def __ne__(self, other):
         return self.name != str(other).upper()
+    
+    def get_genotype(self, snp):
+        """Given a snp id, get the genotype
+        """
+        pass
     
     
 class Population(Entity):
