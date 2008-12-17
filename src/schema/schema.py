@@ -88,15 +88,18 @@ class SNP(Entity):
     original_strand     = Field(String(1))
     dbSNP_ref           = Field(String(10))
     
-    genotypes           = Field(Text(2000))
+    genotypes1          = Field(Text(2000))
+    genotypes2          = Field(Text(2000))
     haplotypes_index    = Field(Integer)
     
     refseqgene          = ManyToOne('RefSeqGene')
     last_modified       = Field(DateTime, onupdate=datetime.now,
                                 default=datetime.now)
-    def __init__(self, snp_id):
-        self.id = snp_id
+    def __init__(self, id):
+        self.id = id
         self.chromosome = ''
+        self.genotypes1 = ''
+        self.genotypes2 = ''
             
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.

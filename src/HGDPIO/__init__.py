@@ -19,6 +19,7 @@ def samples_parser(handle, ):
     >>> from schema.debug_database import *
     >>> print metadata
     MetaData(Engine(sqlite:///:memory:))
+    >>> setup_all()
     >>> from StringIO import StringIO
     >>> samples_file = StringIO(
     ... '''"sample"
@@ -96,7 +97,6 @@ def genotypes_parser(handle, ):
     >>> from schema.debug_database import *
     >>> print metadata
     MetaData(Engine(sqlite:///:memory:))
-    >>> print Individual.metadata
     >>> from StringIO import StringIO
     >>> genotypes_file = StringIO(
     ... '''  HGDP00001    HGDP00002    HGDP00003    HGDP00004    HGDP00005    HGDP00006    HGDP00007    HGDP00008    HGDP00009    HGDP000010
@@ -112,34 +112,33 @@ def genotypes_parser(handle, ):
     ... MitoA14906G    GG    GG    GG    GG    GG    GG    GG    GG    GG    GG
     ... MitoA15219G    AA    AA    AA    GG    AA    AA    AA    AA    AA    AA''')
     
-    >>> snps = hgdpgenotypesParser(genotypes_file)
+    >>> snps = genotypes_parser(genotypes_file)
     
     >>> for snp in snps:
-    ...    print snp    #doctest: +NORMALIZE_WHITESPACE
-    rs1112390    AA    AA    
-    rs1112391    TT    CC    
-    MitoA11252G    AA    AA    
-    rs11124185    TC    TT    
-    MitoA13265G    AA    AA    
-    MitoA13264G    GG    AA    
-    MitoA13781G    AA    AA    
-    MitoA14234G    AA    AA    
-    MitoA14583G    AA    AA    
-    MitoA14906G    GG    GG    
-    MitoA15219G    AA    GG    
-
+    ...     print snp.id, snp.genotypes1, snp.genotypes2
+    rs1112390 AGAAAAAAAA AGGAAAAAAA
+    rs1112391 TTCCCCCCCC TCCCCCCCCC
+    MitoA11252G AAAAAAAAAA AAAAAAAAAA
+    rs11124185 TTTTTTTTTT CTTTTTTTTT
+    MitoA13265G AAAAAAAAAA AAAAAAAAAA
+    MitoA13264G GAAAGAAAAA GAAAGGAAAA
+    MitoA13781G AAAAAA-AAA AAAAAA-AAA
+    MitoA14234G AAAAAAAAAA AAAAAAAAAA
+    MitoA14583G AAAAAAAAAA AAAAAAAAAA
+    MitoA14906G GGGGGGGGGG GGGGGGGGGG
+    MitoA15219G AAAGAAAAAA AAAGAAAAAA
     """
     # initialize output var
-#    snps = []
+    snps = []
     
     # read the header, containing the Individuals names
 #    handle.readline()       # first line is empty??
     header = handle.readline()
     if header is None:
         raise ValueError('Empty file!!')
-    individuals = [Individual(ind_id) for ind_id in header.split()]
+#    individuals = [Individual(ind_id) for ind_id in header.split()]
     
-    # Read the remaining lines of genotypes file, containin genotypes info.
+    # Read snp file line by line.
     for line in handle.readlines():
         fields = line.split()   # TODO: add more rigorous conditions
         if fields is None:
@@ -147,15 +146,17 @@ def genotypes_parser(handle, ):
         
         # Initialize a SNP object 
         snp = SNP(id = fields[0])
-#        snps.append(marker)
+        snps.append(snp)
         
-        # 
+        # read 
         for n in range(1, len(fields)):
-            current_individual = individuals[n-1]
+#            current_individual = individuals[n-1]
             current_genotype = fields[n]
-            snp.add_genotype(current_genotype)
+            
+            snp.genotypes1 += current_genotype[0]
+            snp.genotypes2 += current_genotype[1]
 
-    return markers
+    return snps
      
 
 def _test():
@@ -164,5 +165,6 @@ def _test():
     doctest.testmod()
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     _test()
 
