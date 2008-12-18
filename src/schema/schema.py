@@ -74,7 +74,9 @@ class SNP(Entity):
     
     This class represents both the table SNP, and the structure of an instance of a SNP object
     
-    >>> rs1333 = SNP('rs1333')
+    >>> rs1333 = SNP('rs1333')    # tests SNP.__init__
+    >>> print rs1333              # tests SNP.__repr__
+    SNP rs1333
     """
     using_options(tablename = 'snps')
     
@@ -116,6 +118,16 @@ class SNP(Entity):
         """get the haplotypes for a whole population
         """
         pass
+    
+    def get_next_snp(self):
+        """get the next SNP on the chromosome
+        """
+        return SNP.get_by(id = self.next_snp)
+    
+    def get_previous_snp(self):
+        """get the previous SNP on the chromosome
+        """
+        return SNP.get_by(id = self.previous_snp)
 
 class Individual(Entity):
     """ Table 'Individuals'
