@@ -58,7 +58,7 @@ objects and define their populations.
 """
 
 from elixir import Entity, Field, Unicode, Integer, UnicodeText, String, Text
-from elixir import ManyToOne, OneToMany, DateTime
+from elixir import ManyToOne, OneToMany, OneToOne, DateTime
 from elixir import metadata, using_options
 from elixir.ext.versioned import acts_as_versioned
 from config import connection_line
@@ -83,6 +83,8 @@ class SNP(Entity):
     physical_position   = Field(Integer)
     haplotypes_index    = Field(Integer)
 
+#    next_snp            = OneToOne('SNP', default=None)   # next SNP on the chromosome
+#    previous_snp        = OneToOne('SNP', default=None)
     reference_allele    = Field(String(1))
     derived_allele      = Field(String(1))
     original_strand     = Field(String(1))
