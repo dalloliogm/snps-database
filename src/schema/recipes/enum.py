@@ -41,7 +41,7 @@ class Enum(types.TypeDecorator):
         """
 
         if values is None or len(values) is 0:
-            raise exceptions.AssertionError('Enum requires a list of values')
+            raise AssertionError('Enum requires a list of values')
         self.empty_to_none = empty_to_none
         self.strict = strict
         self.values = values[:]
@@ -56,13 +56,13 @@ class Enum(types.TypeDecorator):
         if self.empty_to_none and value is '':
             value = None
         if value not in self.values:
-            raise exceptions.AssertionError('"%s" not in Enum.values' % value)
+            raise AssertionError('"%s" not in Enum.values' % value)
         return value
         
         
     def process_result_value(self, value, dialect):
         if self.strict and value not in self.values:
-            raise exceptions.AssertionError('"%s" not in Enum.values' % value)
+            raise AssertionError('"%s" not in Enum.values' % value)
         return value
 
 if __name__ == '__main__':
@@ -80,7 +80,8 @@ if __name__ == '__main__':
     try:
         t.insert().execute(e=u'lala')
         assert False
-    except exceptions.AssertionError:
+    except AssertionError:
+        print 'ok'
         pass    
     
     print list(t.select().execute())

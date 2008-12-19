@@ -58,6 +58,7 @@ objects and define their populations.
 """
 
 from elixir import Entity, Field, Unicode, Integer, UnicodeText, String, Text
+from recipes.enum import Enum
 from elixir import ManyToOne, OneToMany, OneToOne, DateTime
 from elixir import metadata, using_options
 from elixir.ext.versioned import acts_as_versioned
@@ -151,7 +152,7 @@ class Individual(Entity):
     
     name                = Field(String(10), unique=True,)    # name?
     population          = ManyToOne('Population', )
-    sex                 = Field(String(1), default='u')
+    sex                 = Field(Enum([u'm', u'u', u'f']), default=u'u')
     
     haplotypes          = Field(Text(650000))
     genotypes_index     = Field(Integer, unique=True)
@@ -178,13 +179,13 @@ class Individual(Entity):
         if sex is not None:
             sex = str(sex).lower()
             if sex in (1, '1', 'm', 'male',):
-                self.sex = 'm'
+                self.sex = u'm'
             elif sex in (2, '2', 'f', 'female'):
-                self.sex = 'f'
+                self.sex = u'f'
             else:
-                self.sex = 'u'
+                self.sex = u'u'
         else:
-            self.sex = 'u'
+            self.sex = u'u'
         
     def __repr__(self):
         if self.sex in ('m', 'u'):
