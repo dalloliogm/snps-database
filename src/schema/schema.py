@@ -85,8 +85,8 @@ class SNP(Entity):
     physical_position   = Field(Integer)
     haplotypes_index    = Field(Integer)
 
-#    next_snp            = OneToOne('SNP', default=None)   # next SNP on the chromosome
-#    previous_snp        = OneToOne('SNP', default=None)
+    next_snp            = ManyToOne('SNP')   # next SNP on the chromosome
+    previous_snp        = OneToOne('SNP')
     reference_allele    = Field(String(1))
     derived_allele      = Field(String(1))
     original_strand     = Field(String(1))

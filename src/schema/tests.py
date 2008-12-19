@@ -80,7 +80,12 @@ class TestInsertDelete(TestHGDPDatabase):
         self.assertRaises(IntegrityError, session.commit)
         session.rollback()
 
-
+class TestSNPs(TestHGDPDatabase):
+    """Test all properties in SNP table
+    """
+    def test_insertSNP(self):
+        pass
+    
 class TestRecordsProperties(TestHGDPDatabase):
     """tests all the properties of the various records (population.region, etc..)
     """
