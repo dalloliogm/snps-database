@@ -78,6 +78,7 @@ class SNP(Entity):
     >>> rs1333 = SNP('rs1333')    # tests SNP.__init__
     >>> print rs1333              # tests SNP.__repr__
     SNP rs1333
+    >>> rs1333.refseqgene = 'cox2' 
     """
     using_options(tablename = 'snps')
     
