@@ -4,7 +4,7 @@ Reads the data from HGDP (samples) and load it in the database
 
 """
 
-import HGDPIO
+from HGDPIO import parsers
 from schema.debug_database import *
 
 def parameters():
@@ -43,7 +43,7 @@ def load_individuals_into_database():
     
     session.flush()
     
-    HGDPIO.samples_parser(samples_file)
+    parsers.samples_parser(samples_file)
     session.commit()
     print 'upload of tables finished'
 
