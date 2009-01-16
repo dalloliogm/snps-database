@@ -99,8 +99,8 @@ class SNP(Entity):
     haplotypes_index    = Field(Integer)
     
     refseqgene          = ManyToOne('RefSeqGene')
-    last_modified       = Field(DateTime, onupdate=datetime.now,
-                                default=datetime.now)
+#    last_modified       = Field(DateTime, onupdate=datetime.now,
+#                                default=datetime.now)
     def __init__(self, id):
         self.id = id
         self.chromosome = ''
@@ -158,8 +158,8 @@ class Individual(Entity):
     haplotypes          = Field(Text(650000))
     genotypes_index     = Field(Integer, unique=True)
     
-    last_modified       = Field(DateTime, onupdate=datetime.now, 
-                          default=datetime.now)
+#    last_modified       = Field(DateTime, onupdate=datetime.now, 
+#                          default=datetime.now)
     
     def __init__(self, name, population = None, sex = None,
                  region = 'undef', macroarea = 'undef', working_unit = 'undef'):
@@ -238,8 +238,8 @@ class Population(Entity):
     continent_macroarea = Field(String(30))
     
 #    version                 = Column(Integer, ForeignKey('versions.id'))
-    last_modified       = Field(DateTime, onupdate=datetime.now,
-                                default = datetime.now)
+#    last_modified       = Field(DateTime, onupdate=datetime.now,
+#                                default = datetime.now)
     
     def __init__(self, original_name, working_unit='undef', 
                  region = 'undef', continent_macroarea='undef'):
