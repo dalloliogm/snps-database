@@ -149,16 +149,6 @@ class SNP(Entity):
 #        - n -> numerical (0, 1, 2)
 #        """
 #        pass
-     
-    def get_haplotype(self, individual_name):
-        """get the haplotype in the corresponding individual
-        """
-        pass
-    
-    def get_haplotype_by_population(self, popname):
-        """get the haplotypes for a whole population
-        """
-        pass
     
     def get_next_snp(self):
         """get the next SNP on the chromosome
