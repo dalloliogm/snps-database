@@ -101,6 +101,10 @@ class SNP(Entity):
     refseqgene          = ManyToOne('RefSeqGene')
 #    last_modified       = Field(DateTime, onupdate=datetime.now,
 #                                default=datetime.now)
+    # versioning
+    snp_build           = Field(String(10))
+    genomic_build       = Field(String(10)) # build on ucsc
+
     def __init__(self, id):
         self.id = id
         self.chromosome = ''
@@ -160,6 +164,9 @@ class Individual(Entity):
     
 #    last_modified       = Field(DateTime, onupdate=datetime.now, 
 #                          default=datetime.now)
+
+    # versioning
+    source_file         = Field(Text(20))
     
     def __init__(self, name, population = None, sex = None,
                  region = 'undef', macroarea = 'undef', working_unit = 'undef'):
@@ -240,6 +247,7 @@ class Population(Entity):
 #    version                 = Column(Integer, ForeignKey('versions.id'))
 #    last_modified       = Field(DateTime, onupdate=datetime.now,
 #                                default = datetime.now)
+    source_file         = Field(String(20))
     
     def __init__(self, original_name, working_unit='undef', 
                  region = 'undef', continent_macroarea='undef'):
@@ -267,6 +275,8 @@ class RefSeqGene(Entity):
     """ Table 'RefSeqGene'
     """
     using_options(tablename = 'refseqgenes')
+
+    genomic_build = Field(String(20))
     pass    
     
     
