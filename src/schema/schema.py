@@ -79,6 +79,9 @@ class SNP(Entity):
     >>> print rs1333              # tests SNP.__repr__
     SNP rs1333
     >>> rs1333.refseqgene = 'cox2' 
+
+    Let's add six genotypes. The first individual is homozygote for 'other_allele', etc.
+    >>> rs1333.add_genotype('200100')
     """
     using_options(tablename = 'snps')
     
@@ -92,10 +95,10 @@ class SNP(Entity):
     other_allele        = Field(String(1))
     derived_allele      = Field(String(1))
     original_strand     = Field(String(1))
-    dbSNP_ref           = Field(String(10))
+#    dbSNP_ref           = Field(String(10)) # TODO: check if necessary ()
     
-    genotypes1          = Field(Text(2000))
-    genotypes2          = Field(Text(2000))
+    genotypes          = Field(Text(2000))
+#    genotypes2          = Field(Text(2000))
     haplotypes_index    = Field(Integer)
     
     refseqgene          = ManyToOne('RefSeqGene')
@@ -114,7 +117,39 @@ class SNP(Entity):
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.
         return 'SNP '  + self.id
-    
+
+    def add_genotype(self, genotype):
+        """add genotypes"""
+        # check that 'genotype' only contains 0, 1, 2
+        # update table
+        pass
+
+    def get_genes(self, upstream, downstream):
+        """Get genes in an interval of [upstream, downstream] from the snp position
+        
+        >>> rs1333.get_genes(100, 100)
+        -> all genes 100 upstream or downstream the position
+        """
+        pass
+
+    def get_genotype_by_individuals(self, individuals, format='c'):
+        """Given a list of individuals, get its genotype
+
+        format can be:
+        - c -> character 
+        - n -> numerical (0, 1, 2)
+        """
+        pass
+
+#    def get_genotype_by_region(self, region, format='c'): # TODO: needed?
+#        """Given a chromosomal region, get its genotype
+#
+#        format can be:
+#        - c -> character 
+#        - n -> numerical (0, 1, 2)
+#        """
+#        pass
+     
     def get_haplotype(self, individual_name):
         """get the haplotype in the corresponding individual
         """
