@@ -80,8 +80,9 @@ class SNP(Entity):
     SNP rs1333
     >>> rs1333.refseqgene = 'cox2' 
 
-    Let's add six genotypes. The first individual is homozygote for 'other_allele', etc.
-    >>> rs1333.add_genotype('200100')
+    Let's add six genotypes. The first individual is homozygote for 'allele2', 
+
+    >>> rs1333.add_genotype('200109')
     """
     using_options(tablename = 'snps')
     
@@ -91,13 +92,13 @@ class SNP(Entity):
 
     next_snp            = ManyToOne('SNP')   # next SNP on the chromosome
     previous_snp        = OneToOne('SNP')
-    reference_allele    = Field(String(1))
-    other_allele        = Field(String(1))
+    allele1             = Field(Enum('A', 'T', '-'))    #TODO: treath missing alleles differently
+    allele2             = Field(Enum('C', 'G', '-'))
     derived_allele      = Field(String(1))
     original_strand     = Field(String(1))
 #    dbSNP_ref           = Field(String(10)) # TODO: check if necessary ()
     
-    genotypes          = Field(Text(2000))
+    genotypes          = Field(Text(2000))  
 #    genotypes2          = Field(Text(2000))
     haplotypes_index    = Field(Integer)
     
@@ -117,6 +118,14 @@ class SNP(Entity):
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.
         return 'SNP '  + self.id
+
+    def get_dbSNP_url(self):
+        """get the url to dbSNP"""
+        pass
+
+    def get_ensembl_ref(self):
+        """get the url to ensembl (put this in RefSeqGene?)"""
+        pass
 
     def add_genotype(self, genotype):
         """add genotypes"""
@@ -180,7 +189,7 @@ class Individual(Entity):
     """
     using_options(tablename = 'individuals')
     
-    name                = Field(String(10), unique=True,)    # name?
+    id                  = Field(String(10), unique=True, primary_key=True)    # name?
     population          = ManyToOne('Population', )
     sex                 = Field(Enum([u'm', u'u', u'f']), default=u'u')
     
@@ -268,6 +277,8 @@ class Population(Entity):
     region              = Field(String(50))
     working_unit        = Field(String(50))
     continent_macroarea = Field(String(30))
+    # TODO: use continent abbreviations
+    # TODO: sort the input file by continent, working_unit, populations
     
 #    version                 = Column(Integer, ForeignKey('versions.id'))
 #    last_modified       = Field(DateTime, onupdate=datetime.now,
