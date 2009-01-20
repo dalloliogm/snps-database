@@ -145,7 +145,7 @@ def genotypes_parser(handle, ):
             current_genotype = fields[n]
             
             snp.genotypes1 += current_genotype[0]
-            snp.genotypes2 += current_genotype[1]
+            snp.genotypes2 += current_genotype[1] # TODO: change!!
 
     return snps
      
