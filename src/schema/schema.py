@@ -90,6 +90,7 @@ class SNP(Entity):
     next_snp            = ManyToOne('SNP')   # next SNP on the chromosome
     previous_snp        = OneToOne('SNP')
     reference_allele    = Field(String(1))
+    other_allele        = Field(String(1))
     derived_allele      = Field(String(1))
     original_strand     = Field(String(1))
     dbSNP_ref           = Field(String(10))
