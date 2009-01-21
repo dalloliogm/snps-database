@@ -7,7 +7,7 @@ DBMS= "mysql"
 # Data base name
 db_name = "test"
 # Badabase Host
-db_host = "localhost"
+db_host = "172.22.1.247"
 # Data base connection port
 #db_port = "5432" # postgres default port
 db_port = "3306" # mysql default port

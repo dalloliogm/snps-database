@@ -92,7 +92,7 @@ class SNP(Entity):
 
     next_snp            = ManyToOne('SNP')   # next SNP on the chromosome
     previous_snp        = OneToOne('SNP')
-    allele1             = Field(Enum('A', 'T', '-'))    #TODO: treath missing alleles differently
+    allele1             = Field(Enum('A', 'T', '-'))    #TODO: deal with missing alleles differently
     allele2             = Field(Enum('C', 'G', '-'))
     derived_allele      = Field(String(1))
     original_strand     = Field(String(1))

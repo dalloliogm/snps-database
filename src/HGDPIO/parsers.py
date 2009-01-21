@@ -103,21 +103,11 @@ def genotypes_parser(handle, ):
     ... MitoA14906G    GG    GG    GG    GG    GG    GG    GG    GG    GG    GG
     ... MitoA15219G    AA    AA    AA    GG    AA    AA    AA    AA    AA    AA''')
     
-    >>> snps = genotypes_parser(genotypes_file)
+    running this script will add all the genotypes to the snp database:
+    >>> genotypes_parser(genotypes_file)
+
+    >>> SNP.query().limit(3)
     
-    >>> for snp in snps:
-    ...     print snp.id, snp.genotypes1, snp.genotypes2
-    rs1112390 AGAAAAAAAA AGGAAAAAAA
-    rs1112391 TTCCCCCCCC TCCCCCCCCC
-    MitoA11252G AAAAAAAAAA AAAAAAAAAA
-    rs11124185 TTTTTTTTTT CTTTTTTTTT
-    MitoA13265G AAAAAAAAAA AAAAAAAAAA
-    MitoA13264G GAAAGAAAAA GAAAGGAAAA
-    MitoA13781G AAAAAA-AAA AAAAAA-AAA
-    MitoA14234G AAAAAAAAAA AAAAAAAAAA
-    MitoA14583G AAAAAAAAAA AAAAAAAAAA
-    MitoA14906G GGGGGGGGGG GGGGGGGGGG
-    MitoA15219G AAAGAAAAAA AAAGAAAAAA
     """
     # initialize output var
     snps = []
