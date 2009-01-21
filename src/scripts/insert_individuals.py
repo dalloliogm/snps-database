@@ -39,7 +39,7 @@ def load_individuals_into_database():
     print "now we are connected to the database:", metadata
     metadata.bind.echo = True
     
-    samples_file = file('../../data/Annotations/samples_subset.csv', 'r')
+    samples_file = open('../data/Annotations/samples_subset.csv', 'r')
     
     session.flush()
     

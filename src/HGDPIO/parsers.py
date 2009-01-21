@@ -73,7 +73,8 @@ def samples_parser(handle, ):
         # create an Individual object
         # If the population given doesn't exists, a new record is created
         ind = Individual(ind_id, population=popname, sex=sex, region=region, 
-                         macroarea=macroarea, working_unit=unit)
+                         macroarea=macroarea, working_unit=unit, 
+                         source_file = handle.name)
         individuals.append(ind)
 
     return individuals

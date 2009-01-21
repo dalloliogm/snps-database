@@ -189,7 +189,7 @@ class Individual(Entity):
     """
     using_options(tablename = 'individuals')
     
-    id                  = Field(String(10), unique=True, primary_key=True)    # name?
+    name                = Field(String(10), unique=True)    # TODO: rename with 'id'?
     population          = ManyToOne('Population', )
     sex                 = Field(Enum([u'm', u'u', u'f']), default=u'u')
     
@@ -202,7 +202,7 @@ class Individual(Entity):
     # versioning
     source_file         = Field(Text(20))
     
-    def __init__(self, name, population = None, sex = None,
+    def __init__(self, name, population = None, sex = None, source_file = '',
                  region = 'undef', macroarea = 'undef', working_unit = 'undef'):
         
         self.name = str(name).upper() # the individual's name
