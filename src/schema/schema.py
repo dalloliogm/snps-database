@@ -89,17 +89,18 @@ class SNP(Entity):
     id                  = Field(String(10), primary_key=True, unique=True)
     chromosome          = Field(String(10))
     physical_position   = Field(Integer)
+    original_strand     = Field(String(1))
 
     next_snp            = ManyToOne('SNP')   # next SNP on the chromosome
     previous_snp        = OneToOne('SNP')
-    allele1             = Field(Enum('A', 'T', '-'))    #TODO: deal with missing alleles differently
+
+    # allele1 can be only A or T. allele2 only C or G
+    allele1             = Field(Enum('A', 'T', '-'))
     allele2             = Field(Enum('C', 'G', '-'))
     derived_allele      = Field(String(1))
-    original_strand     = Field(String(1))
 #    dbSNP_ref           = Field(String(10)) # TODO: check if necessary ()
     
-    genotypes          = Field(Text(2000))  
-#    genotypes2          = Field(Text(2000))
+    genotypes           = Field(Text(2000), default='')  
     haplotypes_index    = Field(Integer)
     
     refseqgene          = ManyToOne('RefSeqGene')
@@ -112,8 +113,6 @@ class SNP(Entity):
     def __init__(self, id):
         self.id = id
         self.chromosome = ''
-        self.genotypes1 = ''
-        self.genotypes2 = ''
             
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.
@@ -200,7 +199,7 @@ class Individual(Entity):
 #                          default=datetime.now)
 
     # versioning
-    source_file         = Field(Text(20))
+    source_file         = Field(Text(50))
     
     def __init__(self, name, population = None, sex = None, source_file = '',
                  region = 'undef', macroarea = 'undef', working_unit = 'undef'):
@@ -228,6 +227,8 @@ class Individual(Entity):
                 self.sex = u'u'
         else:
             self.sex = u'u'
+
+        self.source_file = source_file
         
     def __repr__(self):
         if self.sex in ('m', 'u'):
