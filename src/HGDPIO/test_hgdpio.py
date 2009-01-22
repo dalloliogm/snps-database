@@ -24,7 +24,7 @@ class test_rosenberg(unittest.TestCase):
         """
         SetUpAll method
         """
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.DEBUG, format="%(funcName)s - %(lineno)d - %(message)s")
         self._db_is_set = True
         
         # create a debug database in memory (could have used debug_database)
@@ -39,6 +39,7 @@ class test_rosenberg(unittest.TestCase):
 
     def setUp(self):
 #        self._setupdb()
+        logging.basicConfig(level=logging.DEBUG, format="%(funcName)s - %(lineno)d - %(message)s")
         metadata.bind = 'sqlite:///:memory:'
         create_all()
         from parsers import rosenberg_parser

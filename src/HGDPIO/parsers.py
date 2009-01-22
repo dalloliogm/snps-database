@@ -26,11 +26,14 @@ def rosenberg_parser(handle):
         included_in_dataset952 = fields[15]
         has_not_duplicated = fields[9]
 
-        logging.debug(ind_id, included_in_dataset952, has_not_duplicated)
+        logging.debug(str([ind_id, included_in_dataset952, has_not_duplicated]))
 
         if (included_in_dataset952 == "1") and (has_not_duplicated == "1"):
 #            print ind_id
-            Individual(ind_id)
+            ind = Individual(ind_id)
+            working_unit = fields[26]
+            logging.debug(working_unit)
+
         
 #        raw_input()
 
