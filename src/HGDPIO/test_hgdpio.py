@@ -33,8 +33,7 @@ class test_rosenberg(unittest.TestCase):
 
     def test_individuals(self):
         """test how many individuals"""
-        Individual.query().all()
-        logging.debug('dsadas')
+        print Individual.query().all()
         print 'dsad'
 
     def test_SameNumberOfFields(self):

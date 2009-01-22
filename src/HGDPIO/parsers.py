@@ -24,7 +24,10 @@ def rosenberg_parser(handle):
         fields = line.split()
         ind_id = fields[24].replace('"', '')
         individual_included = fields[15]
+        print individual_included
         print Individual(ind_id)
+        if individual_included == 1:
+            Individual(ind_id)
         
 #        raw_input()
 
