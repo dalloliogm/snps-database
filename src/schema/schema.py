@@ -189,11 +189,11 @@ class Individual(Entity):
     using_options(tablename = 'individuals')
     
     name                = Field(String(10), unique=True)    # TODO: rename with 'id'?
-    population          = ManyToOne('Population', )
+    population          = ManyToOne('Population')
     sex                 = Field(Enum([u'm', u'u', u'f']), default=u'u')
     
     haplotypes          = Field(Text(650000))
-    genotypes_index     = Field(Integer, unique=True)
+    genotypes_index     = Field(Integer)
     
 #    last_modified       = Field(DateTime, onupdate=datetime.now, 
 #                          default=datetime.now)
