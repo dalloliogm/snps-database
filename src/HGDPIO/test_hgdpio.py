@@ -61,6 +61,14 @@ class test_rosenberg(unittest.TestCase):
         """
         pass
 
+    def test_NotIncluded(self):
+        """
+        Checks that the individuals that should not be included, are not in the database
+        """
+        for ind in self.not_included:
+            db_ind = Individual.query.filter_by(name=ind).all()
+            self.assertEqual(db_ind, [])
+
     def test_KnownIndividuals(self):
         """
         """
