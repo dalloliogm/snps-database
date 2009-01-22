@@ -2,6 +2,33 @@ from schema.schema import *
 #from connection import *
 import re
 import logging
+import csv
+
+def rosenberg_parser(handle):
+    """
+    Parse the annotations on individuals and populations provided in the Rosenberg 2006.
+    
+    >>> from schema.debug_database import *
+    >>> from StringIO import StringIO
+    >>> rosenberg_file = StringIO(
+    ... '''
+    ... "HGDPIndividualNumber"	"PopulationCode"	"PopulationName"	"SamplingLocation"	"GeographicRegionOfPopulation"	"Sex"	"InHGDP.CEPHpanel.CannEtAl2002.."	"AnalyzedInRosenbergEtAl2002."	"PopulationLabelBelievedToBeCorrect."	"HasNoDuplicatesInPanel."	"AnalyzedInRosenbergEtAl2005.datasetH1048.."	"HasNoKnown1stDegreeRelativesInPanel."	"HasNoKnown1stOr2ndDegreeRelativesInPanel."	"HasAParentOrOffspringInPanel."	"IncludedInDataset971.No1stDegreeRelatives.."	"IncludedInDataset952.No1stOr2ndDegreeRelatives.."	"DuplicationConjugate.OnlyDiffersFromSampleNumberIfSampleIsDuplicated."	"AlternatePopulationCode.OnlyDiffersFromPrimaryPopulationCodeForBantuSouthAfrica."	"AlternatePopulationName.OnlyDiffersFromPrimaryPopulationNameForBantuSouthAfrica."	"OrangeQInRosenbergEtAl2002Fig1K.5"	"BlueQInRosenbergEtAl2002Fig1K.5"	"PinkQInRosenbergEtAl2002Fig1K.5"	"GreenQInRosenbergEtAl2002Fig1K.5"	"PurpleQInRosenbergEtAl2002Fig1K.5"	"hgdp.id"	"population/working unit"	"studySetLiNorel"	"continent"	"Li"
+    ... 705	81	"Colombian"	"Colombia"	"AMERICA"	"m"	1	1	1	1	1	0	0	1	0	0	705	81	"Colombian"	1	3	108	5	883	"HGDP00705"	"Colombian"	"FALSE"	"AME"	"TRUE"
+    ... 793	81	"Colombian"	"Colombia"	"AMERICA"	"f"	1	1	1	1	1	0	0	1	0	0	793	81	"Colombian"	2	139	131	1	727	"HGDP00793"	"Colombian"	"FALSE"	"AME"	"TRUE"
+    ... 709	81	"Colombian"	"Colombia"	"AMERICA"	"m"	1	1	1	1	1	0	0	1	0	0	709	81	"Colombian"	1	1	104	7	887	"HGDP00709"	"Colombian"	"FALSE"	"AME"	"TRUE"
+    ... '''
+    """
+    # I won't use the csv module because it has problems with the field 21
+    headers = handle.readline().split()
+    for line in handle:
+        fields = line.split()
+        ind_id = fields[24].replace('"', '')
+        individual_included = fields[15]
+        print Individual(ind_id)
+        
+#        raw_input()
+
+
 
 def samples_parser(handle, ):
     """
