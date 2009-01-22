@@ -176,8 +176,13 @@ class Articles(Entity):
     This table allows to quickly know if a SNP or an Individual has been studied 
     in a certain article.
     """
+    using_options(tablename = 'articles')
+
     individuals = ManyToMany('Individual')
     snps = ManyToMany('SNP')
+    authors = Field(String(100))
+    title = Field(String(100))
+    doi = Field(String(30))
 
 
 class Individual(Entity):
