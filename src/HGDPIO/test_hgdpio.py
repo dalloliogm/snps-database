@@ -3,22 +3,23 @@ import commands
 import logging
 
 from schema.debug_database import *
-from elixir import drop_all, setup_all, create_all
+from elixir import drop_all, setup_all, create_all, cleanup_all
+setup_all()
 
 class test_rosenberg(unittest.TestCase):
     """
     Test the rosenberg parser
     """
 
-    testfile = 'rosenberg_sample.txt'
-    _db_is_set = 0
+    testfile = 'test/rosenberg_sample_short.txt'
+    _db_is_set = False
 
-    def setupdb(self):
+    def _setupdb(self):
         """
         SetUpAll method
         """
         logging.basicConfig(level=logging.DEBUG)
-        self._db_is_set = 1
+        self._db_is_set = True
         
         # create a debug database in memory (could have used debug_database)
         print metadata.bind
@@ -30,12 +31,13 @@ class test_rosenberg(unittest.TestCase):
 #        logging.debug(individuals)
 
     def setUp(self):
-        print self._db_is_set
-        if self._db_is_set == 0:
-            self.setupdb()
-#
-#    def tearDown(self):
-#        drop_all()
+#        self._setupdb()
+        metadata.bind = 'sqlite:///:memory:'
+        create_all()
+
+    def tearDown(self):
+        session.close()
+        drop_all()
 
     def test_individuals(self):
         """test how many individuals"""
@@ -47,8 +49,10 @@ class test_rosenberg(unittest.TestCase):
         """
         test if every line in the parser is splitted in the same number of fields
         """
+        assert 1 == 1
         pass
-
-    def somethingelse(self):
+#
+    def test_somethingelse(self):
+        assert 1 == 1
         pass
 
