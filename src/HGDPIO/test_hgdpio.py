@@ -3,7 +3,7 @@ import commands
 import logging
 
 from schema.debug_database import *
-from elixir import drop_all
+from elixir import drop_all, setup_all, create_all
 
 class test_rosenberg(unittest.TestCase):
     """
@@ -19,22 +19,29 @@ class test_rosenberg(unittest.TestCase):
         """
         logging.basicConfig(level=logging.DEBUG)
         self._db_is_set = 1
+        
+        # create a debug database in memory (could have used debug_database)
+        print metadata.bind
+        metadata.bind.echo = True
+
         from parsers import rosenberg_parser
         rosenberg_parser(open(self.testfile, 'r'))
+#        individuals = Individual.query().all()
+#        logging.debug(individuals)
 
     def setUp(self):
         print self._db_is_set
-        create_all()
         if self._db_is_set == 0:
             self.setupdb()
 #
-    def tearDown(self):
-        drop_all()
+#    def tearDown(self):
+#        drop_all()
 
     def test_individuals(self):
         """test how many individuals"""
-        print Individual.query().all()
-        print 'dsad'
+        individuals = Individual.query().all()
+        logging.debug('dsad')
+        logging.debug(individuals)
 
     def test_SameNumberOfFields(self):
         """
@@ -42,4 +49,6 @@ class test_rosenberg(unittest.TestCase):
         """
         pass
 
+    def somethingelse(self):
+        pass
 
