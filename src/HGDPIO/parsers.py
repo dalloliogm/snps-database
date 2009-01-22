@@ -26,13 +26,27 @@ def rosenberg_parser(handle):
         included_in_dataset952 = fields[15]
         has_not_duplicated = fields[9]
 
-        logging.debug(str([ind_id, included_in_dataset952, has_not_duplicated]))
+#        logging.debug(str([ind_id, included_in_dataset952, has_not_duplicated]))
 
         if (included_in_dataset952 == "1") and (has_not_duplicated == "1"):
 #            print ind_id
             ind = Individual(ind_id)
-            working_unit = fields[26]
-            logging.debug(working_unit)
+            popname = fields[2]
+            popcode = fields[1]
+            working_unit = fields[25]
+            region = fields[3]
+            continent_code = fields[27]
+            continent = fields[4]
+            logging.debug(str((popname, popcode, working_unit, region, continent, continent_code)))
+            try:
+                population = Population.query.filter_by(popname = popname)
+            except NoResultFound:
+                population = Population(popname = popname) 
+                population.popcode = popcode.replace('"', '')
+                population.working_unit = working_unit
+                population.region = region
+                population.continent = continent
+                population.continent_code = continent_code
 
         
 #        raw_input()
