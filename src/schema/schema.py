@@ -272,13 +272,15 @@ class Population(Entity):
     """
     using_options(tablename = 'populations')
     
-#    id = Field(Integer, primary_key = True)    # created automatically
     individuals         = OneToMany('Individual')
-    original_name       = Field(String(50), unique=True)
-    region              = Field(String(50))
+
+    popname             = Field(String(50), unique=True)
+    popcode             = Field(Integer)
+#    alternate_popname   = Field(String(50)
     working_unit        = Field(String(50))
+    region              = Field(String(50))
     continent_macroarea = Field(String(30))
-    # TODO: use continent abbreviations
+    continent_code      = Field(String(8))
     # TODO: sort the input file by continent, working_unit, populations
     
 #    version                 = Column(Integer, ForeignKey('versions.id'))
@@ -286,13 +288,16 @@ class Population(Entity):
 #                                default = datetime.now)
     source_file         = Field(String(20))
     
-    def __init__(self, original_name, working_unit='undef', 
-                 region = 'undef', continent_macroarea='undef'):
+    def __init__(self, popname, popcode, working_unit='undef', 
+                 region = 'undef', continent_macroarea='undef', 
+                 continent_code = 'undef'):
         #TODO: add a set method
-        self.original_name = str(original_name).lower()
+        self.popname = str(popname).lower()
+        self.popcode = str(popcode).upper()
         self.working_unit = str(working_unit).lower()
         self.region = str(region.lower())
         self.continent_macroarea = str(continent_macroarea).lower()
+        self.continent_code = str(continent_code).upper()
         
     def set(self, name, value):
         setattr(self, name, str(value).lower())        
