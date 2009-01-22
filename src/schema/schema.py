@@ -59,7 +59,7 @@ objects and define their populations.
 
 from elixir import Entity, Field, Unicode, Integer, UnicodeText, String, Text
 from recipes.enum import Enum
-from elixir import ManyToOne, OneToMany, OneToOne, DateTime
+from elixir import ManyToOne, OneToMany, OneToOne, ManyToMany, DateTime
 from elixir import metadata, using_options
 from elixir.ext.versioned import acts_as_versioned
 from config import connection_line
@@ -168,6 +168,18 @@ class SNP(Entity):
         """
         return SNP.get_by(id = self.previous_snp)
 
+class Articles(Entity):
+    """ Table 'Articles'
+
+
+    Many SNPs and Individuals are referenced in other articles.
+    This table allows to quickly know if a SNP or an Individual has been studied 
+    in a certain article.
+    """
+    individuals = ManyToMany('Individual')
+    snps = ManyToMany('SNP')
+
+
 class Individual(Entity):
     """ Table 'Individuals'
     
@@ -189,11 +201,14 @@ class Individual(Entity):
     using_options(tablename = 'individuals')
     
     name                = Field(String(10), unique=True)    # TODO: rename with 'id'?
+    hgdp_individual_number = Field(String(10), unique = True)
     population          = ManyToOne('Population')
     sex                 = Field(Enum([u'm', u'u', u'f']), default=u'u')
     
     haplotypes          = Field(Text(650000))
-    genotypes_index     = Field(Integer)
+    genotypes_index     = Field(Integer, unique=True)
+
+    articles            = ManyToMany('Articles')
     
 #    last_modified       = Field(DateTime, onupdate=datetime.now, 
 #                          default=datetime.now)
