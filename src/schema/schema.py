@@ -214,6 +214,8 @@ class Individual(Entity):
     genotypes_index     = Field(Integer, unique=True)
 
     articles            = ManyToMany('Articles')
+#    population_label_believed_correct = Field(Boolean)
+#    studyset_Li_noRel   = Field(Boolean)
     
 #    last_modified       = Field(DateTime, onupdate=datetime.now, 
 #                          default=datetime.now)
