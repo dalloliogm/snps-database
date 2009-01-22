@@ -23,11 +23,14 @@ def rosenberg_parser(handle):
     for line in handle:
         fields = line.split()
         ind_id = fields[24].replace('"', '')
-        individual_included = fields[15]
-        Individual(ind_id)
-#        print individual_included
-#        if individual_included == 1:
-#            Individual(ind_id)
+        included_in_dataset952 = fields[15]
+        has_not_duplicated = fields[9]
+
+        logging.debug(ind_id, included_in_dataset952, has_not_duplicated)
+
+        if (included_in_dataset952 == "1") and (has_not_duplicated == "1"):
+#            print ind_id
+            Individual(ind_id)
         
 #        raw_input()
 
