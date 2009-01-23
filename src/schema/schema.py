@@ -299,7 +299,7 @@ class Population(Entity):
     popname             = Field(String(50), unique=True)
     popcode             = Field(Integer)
 #    alternate_popname   = Field(String(50)
-    working_unit        = Field(String(50)) # TODO: use working_unit as popname, and ignore info from populations
+    working_unit        = Field(String(50))
     region              = Field(String(50))
     continent_macroarea = Field(String(30))
     continent_code      = Field(String(8))

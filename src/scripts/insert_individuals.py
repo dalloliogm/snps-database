@@ -33,6 +33,12 @@ def upload_rosenberg_individuals():
     """
     upload individuals from the rosenberg files.
     """
+    from schema.connection import session, metadata
+    print metadata
+    metadata.bind.echo = True
+    rosenberg_path = '../data/Annotations/hgdpSampleinfoRosenberg-extended.csv'
+    rosenberg_file = open(rosenberg_path, 'r')
+    parsers.rosenberg_parser(rosenberg_file)
 
 def load_individuals_into_database():
     """launch the various scripts to insert data into the HGDP database."""
@@ -58,5 +64,5 @@ def _test():
 
 if __name__ == '__main__':
     _test()
-    load_individuals_into_database()
+    upload_rosenberg_individuals()
     
