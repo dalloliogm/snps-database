@@ -11,6 +11,7 @@ class test_genotypes(unittest.TestCase):
     Test the genotypes parser
     """
 
+    individualsfile = 'test/rosenberg_sample_short.txt'
     testfile = 'test/genotypes_sample.txt'
 #    _db_is_set = False
     known_snps = {'HGDP00448':(),
@@ -33,7 +34,9 @@ class test_genotypes(unittest.TestCase):
         logging.basicConfig(level=logging.DEBUG, format="%(funcName)s - %(lineno)d - %(message)s")
         metadata.bind = 'sqlite:///:memory:'
         create_all()
-        from parsers import genotypes_parser
+        from parsers import genotypes_parser, rosenberg_parser
+        # populate with some individuals
+        rosenberg_parser(open(self.individualsfile, 'r'))
         genotypes_parser(open(self.testfile, 'r'))
 
     def tearDown(self):

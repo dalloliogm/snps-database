@@ -164,15 +164,21 @@ def genotypes_parser(handle, ):
     >>> SNP.query().limit(3)
     
     """
-    # initialize output var
-    snps = []
-    
     # read the header, containing the Individuals names
 #    handle.readline()       # first line is empty??
     header = handle.readline()
     if header is None:
         raise ValueError('Empty file!!')
-#    individuals = [Individual(ind_id) for ind_id in header.split()]
+
+    fields = header.split()
+    logging.debug(fields)
+    individuals = []
+    for column_id in range(len(fields)):
+        ind_id = fields[column_id]
+        individual = Individual.query.filter_by(name = ind_id)
+        individual.genotype_index = column_id
+        individuals.append(individual)
+    logging.debug(individuals)
     
     # Read snp file line by line.
     for line in handle.readlines():
@@ -182,17 +188,13 @@ def genotypes_parser(handle, ):
         
         # Initialize a SNP object 
         snp = SNP(id = fields[0])
-        snps.append(snp)
         
         # read 
         for n in range(1, len(fields)):
 #            current_individual = individuals[n-1]
             current_genotype = fields[n]
             
-            snp.genotypes1 += current_genotype[0]
-            snp.genotypes2 += current_genotype[1] # TODO: change!!
-
-    return snps
+            snp.genotypes = current_genotype
      
 
 def _test():
