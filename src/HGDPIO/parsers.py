@@ -31,8 +31,7 @@ def rosenberg_parser(handle):
 
         if (included_in_dataset952 == "1") and (has_not_duplicated == "1"):
 #            print ind_id
-            ind = Individual(ind_id)
-            ind.source_file = handle.name
+            ind = Individual(ind_id, source_file = handle.name, sex = fields[5][1])
             ind.hgdp_individual_number = fields[0]
 
             popname = fields[2].replace('"', '').lower()
