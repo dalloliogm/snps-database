@@ -81,7 +81,7 @@ class test_rosenberg(unittest.TestCase):
 #        assert 1 == 2
 
     def test_FirstIndividual(self):
-        """The first individual must be""" 
+        """Get the first individual and check it"""
         ind1 = Individual.query().all()[0]
 
 

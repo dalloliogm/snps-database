@@ -3,6 +3,7 @@ from schema.schema import *
 import re
 import logging
 import csv
+from sqlalchemy.orm.exc import NoResultFound
 
 def rosenberg_parser(handle):
     """
@@ -31,22 +32,22 @@ def rosenberg_parser(handle):
         if (included_in_dataset952 == "1") and (has_not_duplicated == "1"):
 #            print ind_id
             ind = Individual(ind_id)
-            popname = fields[2]
-            popcode = fields[1]
-            working_unit = fields[25]
-            region = fields[3]
-            continent_code = fields[27]
-            continent = fields[4]
+            popname = fields[2].replace('"', '')
+            popcode = fields[1].replace('"', '')
+            working_unit = fields[25].replace('"', '')
+            region = fields[3].replace('"', '')
+            continent_code = fields[27].replace('"', '')
+            continent = fields[4].replace('"', '')
             logging.debug(str((popname, popcode, working_unit, region, continent, continent_code)))
             try:
-                population = Population.query.filter_by(popname = popname)
+                population = Population.query.filter_by(popname = popname).one()
             except NoResultFound:
-                population = Population(popname = popname) 
-                population.popcode = popcode.replace('"', '')
-                population.working_unit = working_unit
-                population.region = region
-                population.continent = continent
-                population.continent_code = continent_code
+                population = Population(popname = popname, popcode = popcode,
+                                working_unit = working_unit, region = region,
+                                continent_macroarea = continent, 
+                                continent_code = continent_code) 
+
+            ind.population = population
 
         
 #        raw_input()
