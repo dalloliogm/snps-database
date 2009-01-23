@@ -53,7 +53,7 @@ objects and define their populations.
 >>> session.commit()
 >>> Population.query().all()
 [greeks, aliens]
->>> print Population.get_by(original_name = 'aliens').individuals
+>>> print Population.get_by(popname = 'aliens').individuals
 [Mr. ET (aliens)]
 """
 
@@ -232,9 +232,9 @@ class Individual(Entity):
         # If not, create it. 
         if population is not None:
             popname = str(population).lower()
-            poprecord = Population.get_by(original_name = popname)
+            poprecord = Population.get_by(popname = popname)
             if poprecord is None:
-                poprecord = Population(original_name=popname, region=region, 
+                poprecord = Population(popname=popname, region=region, 
                                                 continent_macroarea=macroarea, 
                                                 working_unit = working_unit) 
             self.population = poprecord
@@ -325,15 +325,15 @@ class Population(Entity):
         setattr(self, name, str(value).lower())        
         
     def __repr__(self):
-        return self.original_name
+        return self.popname
     
     def __str__(self):
-        return str(self.original_name)
+        return str(self.popname)
     
     def __eq__(self, other):
-        return str(self.original_name) == str(other).lower()
+        return str(self.popname) == str(other).lower()
     def __ne__(self, other):
-        return str(self.original_name) == str(other).lower()
+        return str(self.popname) == str(other).lower()
 
 class RefSeqGene(Entity):
     """ Table 'RefSeqGene'
@@ -341,7 +341,6 @@ class RefSeqGene(Entity):
     using_options(tablename = 'refseqgenes')
 
     genomic_build = Field(String(20))
-    pass    
     
     
     

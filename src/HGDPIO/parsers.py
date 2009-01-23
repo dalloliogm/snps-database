@@ -32,7 +32,7 @@ def rosenberg_parser(handle):
         if (included_in_dataset952 == "1") and (has_not_duplicated == "1"):
 #            print ind_id
             ind = Individual(ind_id)
-            popname = fields[2].replace('"', '')
+            popname = fields[2].replace('"', '').lower()
             popcode = fields[1].replace('"', '')
             working_unit = fields[25].replace('"', '')
             region = fields[3].replace('"', '')
