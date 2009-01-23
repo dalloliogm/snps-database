@@ -29,6 +29,10 @@ def parameters():
     parser.add_option('-t', '--test', action='callback', dest = _test)
     parser.add_option('-h', '--help', action='help')
 
+def upload_rosenberg_individuals():
+    """
+    upload individuals from the rosenberg files.
+    """
 
 def load_individuals_into_database():
     """launch the various scripts to insert data into the HGDP database."""

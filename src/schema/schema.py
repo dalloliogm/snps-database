@@ -353,6 +353,3 @@ if __name__ == '__main__':
     _test()
     # could launch test_insert_data here?
 #    from elixir import setup_all, create_all, session
-        
-        
-        
