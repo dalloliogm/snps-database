@@ -138,7 +138,7 @@ def genotypes_parser(handle, ):
     """
     Parse a genotypes file handler.
     
-    It returns a Marker object for every line of the file
+    It upload a Marker object to the database for every line of the file
 
     >>> from schema.debug_database import *
     >>> print metadata

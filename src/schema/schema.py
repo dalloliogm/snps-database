@@ -310,7 +310,7 @@ class Population(Entity):
 #                                default = datetime.now)
     source_file         = Field(String(20))
     
-    def __init__(self, popname, popcode, working_unit='undef', 
+    def __init__(self, popname, popcode=0, working_unit='undef', 
                  region = 'undef', continent_macroarea='undef', 
                  continent_code = 'undef'):
         #TODO: add a set method
