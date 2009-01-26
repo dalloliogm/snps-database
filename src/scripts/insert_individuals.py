@@ -7,27 +7,27 @@ Reads the data from HGDP (samples) and load it in the database
 from HGDPIO import parsers
 from schema.debug_database import *
 
-def parameters():
-    """Read arguments and parameters"""
-    
-    basedir = '/home/gioby/Data/HGDP/'
-    
-    # parse parameters
-    parser = OptionParser()
-    parser.set_defaults(genotypes_by_chr_dir = basedir + 'Genotypes_by_chr/',
-                        samplesfilepath = basedir + 'Annotations/samples_subset.csv',
-                        selected_chr = [22, ],  #FIXME: only the first chromosome is used 
-                        continent = 'Europe')
-    parser.add_option('-s', '--samplefile', action='store', type='string', 
-                      dest = 'samplesfilepath')
-    parser.add_option('-g', '--genotypes_by_chr_dir', action='store', 
-                      type='string', dest = 'genotypes_by_chr_dir')
-    parser.add_option('-c', '--continent', action='store', type='string', 
-                      dest = 'continent')
-    parser.add_option('-y', '--chromosomes', action='store', type='list', 
-                      dest = 'chromosomes')
-    parser.add_option('-t', '--test', action='callback', dest = _test)
-    parser.add_option('-h', '--help', action='help')
+#def parameters():
+#    """Read arguments and parameters"""
+#    
+#    basedir = '/home/gioby/Data/HGDP/'
+#    
+#    # parse parameters
+#    parser = OptionParser()
+#    parser.set_defaults(genotypes_by_chr_dir = basedir + 'Genotypes_by_chr/',
+#                        samplesfilepath = basedir + 'Annotations/samples_subset.csv',
+#                        selected_chr = [22, ],  #FIXME: only the first chromosome is used 
+#                        continent = 'Europe')
+#    parser.add_option('-s', '--samplefile', action='store', type='string', 
+#                      dest = 'samplesfilepath')
+#    parser.add_option('-g', '--genotypes_by_chr_dir', action='store', 
+#                      type='string', dest = 'genotypes_by_chr_dir')
+#    parser.add_option('-c', '--continent', action='store', type='string', 
+#                      dest = 'continent')
+#    parser.add_option('-y', '--chromosomes', action='store', type='list', 
+#                      dest = 'chromosomes')
+#    parser.add_option('-t', '--test', action='callback', dest = _test)
+#    parser.add_option('-h', '--help', action='help')
 
 def upload_rosenberg_individuals():
     """
@@ -60,7 +60,9 @@ def upload_rosenberg_individuals():
 #    print 'upload of tables finished'
 
 def _test():
-    """test the current module"""
+    """test the current module
+    
+    note: use nosetest to test the library"""
     import doctest 
     doctest.testmod()
 
