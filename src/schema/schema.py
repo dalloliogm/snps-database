@@ -95,8 +95,8 @@ class SNP(Entity):
     previous_snp        = OneToOne('SNP')
 
     # allele1 can be only A or T. allele2 only C or G
-    allele1             = Field(Enum('A', 'T', '-'))
-    allele2             = Field(Enum('C', 'G', '-'))
+    allele1             = Field(Enum(values=('A', 'T', '-', None)))
+    allele2             = Field(Enum(values=('C', 'G', '-', None)))
     derived_allele      = Field(String(1))
 #    dbSNP_ref           = Field(String(10)) # TODO: check if necessary ()
     
@@ -208,7 +208,7 @@ class Individual(Entity):
     name                = Field(String(10), unique=True)    # TODO: rename with 'id'?
     hgdp_individual_number = Field(String(10), unique = True)
     population          = ManyToOne('Population')
-    sex                 = Field(Enum([u'm', u'u', u'f']), default=u'u')
+    sex                 = Field(Enum((u'm', u'u', u'f', None)))
     
     haplotypes          = Field(Text(650000))
     genotypes_index     = Field(Integer, unique=True)
@@ -223,7 +223,7 @@ class Individual(Entity):
     # versioning
     source_file         = Field(Text(50))
     
-    def __init__(self, name, population = None, sex = None, source_file = '',
+    def __init__(self, name, population = None, sex = 'u', source_file = '',
                  region = 'undef', macroarea = 'undef', working_unit = 'undef'):
         
         self.name = str(name).upper() # the individual's name
