@@ -40,7 +40,7 @@ def rosenberg_parser(handle):
             region = fields[3].replace('"', '')
             continent_code = fields[27].replace('"', '')
             continent = fields[4].replace('"', '')
-            logging.debug(str((popname, popcode, working_unit, region, continent, continent_code)))
+#            logging.debug(str((popname, popcode, working_unit, region, continent, continent_code)))
             try:
                 population = Population.query.filter_by(popname = popname).one()
             except NoResultFound:
