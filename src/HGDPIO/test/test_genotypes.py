@@ -77,6 +77,11 @@ class test_genotypes(unittest.TestCase):
         print snps
         assert len(snps) == 17
 
+    def test_GenotypesFile(self):
+        """test if the url the to the genotypes file is saved correctly"""
+        for snp in SNP.query().all():
+            self.assertEqual(snp.genotypes_file, self.testfile)
+
     def test_SNPGenotypes(self):
         """test if the genotypes have been uploaded correctly"""
         for snp_id in self.known_snps:

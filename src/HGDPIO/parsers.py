@@ -122,6 +122,7 @@ def genotypes_parser(handle, ):
          
         # Initialize a SNP object 
         snp = SNP(id = fields[0], genotypes='')
+        snp.genotypes_file = handle.name
         
         # read all the file's rows
         for n in range(1, len(fields)):
