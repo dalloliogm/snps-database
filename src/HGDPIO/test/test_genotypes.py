@@ -14,19 +14,22 @@ class test_genotypes(unittest.TestCase):
     individualsfile = 'test/rosenberg_sample_short.txt'
     testfile = 'test/genotypes_sample.txt'
 #    _db_is_set = False
-    known_snps = {'HGDP00448':(),
-                    'HGDP00479' : (),
-                    'HGDP00985' : (),
-                    'HGDP01094' : (),
-                    'HGDP00982' : (),
-                    'HGDP00911' : (),   
-                    'HGDP01202' : (),   
-                    'HGDP00927' : (),   
-                    'HGDP00461' : (),   
-                    'HGDP00451' : (),   
-                    'HGDP00986' : (),
-                    'HGDP00449' : (),
-                    'HGDP009830' : ()}
+    known_individuals = {'HGDP00218': (),
+                    'HGDP00248': (),
+                    'HGDP00232': (),
+                    'HGDP00222': (),
+                    'HGDP00228': (),
+                    'HGDP00239': (),
+                    'HGDP00258': (),
+                    'HGDP00247': (),
+                    'HGDP00234': (),
+                    'HGDP00214': (),
+                    'HGDP00262': (),
+                    'HGDP00226': (),
+                    'HGDP00244': (),}
+    known_snps = ('rs4911642', 'rs2027653', 'rs5747620', 'rs9605903', 'rs5747968', 'rs2236639', 
+            'rs5747999', 'rs11089263', 'rs2096537', 'rs9604959', 'rs9604967', 'rs4819849', 
+            'rs9605028','rs1892844', 'rs361973', 'rs2845371', 'rs16981507')
     not_included = ()
 
     def setUp(self):
@@ -48,7 +51,7 @@ class test_genotypes(unittest.TestCase):
         snps = SNP.query().all()
         print len(snps)
         print snps
-        assert len(snps) == 2
+        assert len(snps) == 17
 
     def test_SameNumberOfFields(self):
         """
@@ -67,12 +70,11 @@ class test_genotypes(unittest.TestCase):
     def test_KnownSNPs(self):
         """
         """
-        for snp in self.known_snps.keys():
+        for snp in self.known_snps:
             print snp
             db_snp = SNP.query.filter_by(id=snp).one()
             print db_snp, dir(db_snp)
-            self.assert_(snp.id == snp)
-#        assert 1 == 2
+            self.assert_(db_snp.id == snp)
 
     def test_FirstSNP(self):
         """Get the first individual and check it"""
