@@ -26,23 +26,23 @@ class test_genotypes(unittest.TestCase):
                     'HGDP00214': {'index': 9,},
                     'HGDP00262': {'index': 10,},}
 
-    known_snps = ('rs4911642', 
-            'rs2027653', 
-            'rs5747620', 
-            'rs9605903', 
-            'rs5747968', 
-            'rs2236639', 
-            'rs5747999', 
-            'rs11089263', 
-            'rs2096537', 
-            'rs9604959', 
-            'rs9604967', 
-            'rs4819849', 
-            'rs9605028',
-            'rs1892844', 
-            'rs361973', 
-            'rs2845371', 
-            'rs16981507')
+    known_snps = {'rs4911642' : {'genotype' : 'TTTCTT--TTTCTCTCTTTT--',}, 
+            'rs2027653' : {'genotype' : '--TTTTTTTTTTTTTTTTTTTT',}, 
+            'rs5747620' : {'genotype' : 'TCTTTCTTTTTTTTTTTCTTTT',}, 
+            'rs9605903' : {'genotype' : 'TTTTTTTTTCTTTTTTTTTTTT',}, 
+            'rs5747968' : {'genotype' : 'TTTTTGTTTGTTTTTTTTTTTT',}, 
+            'rs2236639' : {'genotype' : 'GGGGAGGGAGAGGGGGGGGGGG',}, 
+            'rs5747999' : {'genotype' : 'CCACCCCCCCCCCCCCACACCC',}, 
+            'rs11089263' : {'genotype' : 'CCACCCCCACCCCCCCACACCC',}, 
+            'rs2096537' : {'genotype' : 'CCACCCACACCCCCCCACACAC',}, 
+            'rs9604959' : {'genotype' : 'TCTC--CCCCTTTCTCCCCCCC',}, 
+            'rs9604967' : {'genotype' : 'CCCCCCCCCCCCCCCCCCCCCC',}, 
+            'rs4819849' : {'genotype' : 'AAAAAAAAAAAA--AAAAAAAA',}, 
+            'rs9605028' : {'genotype' : 'AAAAAAAAAAAAAAAAAAAAAA',},
+            'rs1892844' : {'genotype' : 'AAAAAAAAAAAAAAAAAAAAAA',}, 
+            'rs361973' : {'genotype' : 'AGAGAAAAAAAGAA----AAAA',}, 
+            'rs2845371' : {'genotype' : 'AGAGGGAGAGAGGGAAAAAGGG',}, 
+            'rs16981507' : {'genotype' : 'CCTCCCCCCCCCCCCCCCCCCC',}}
     not_included_individuals = ('HGDP01004', 'HGDP00996')
     excluded_columns = [1, 11]
 
@@ -60,14 +60,23 @@ class test_genotypes(unittest.TestCase):
         session.close()
         drop_all()
 
-    def test_genotypes(self):
+    def test_NumberGenotypes(self):
         """test how many genotypes have been added"""
         snps = SNP.query().all()
         print len(snps)
         print snps
         assert len(snps) == 17
 
-    def test_genotypeindex(self):
+    def test_SNPGenotypes(self):
+        """test if the genotypes have been uploaded correctly"""
+        for snp_id in self.known_snps:
+            snp = SNP.query.filter_by(id=snp_id).one()
+            print snp_id, snp.id
+            print self.known_snps[snp_id]['genotype'], snp.genotypes
+            self.assertEqual(self.known_snps[snp_id]['genotype'], snp.genotypes)
+           
+
+    def test_GenotypeIndex(self):
         """test if the right index is added to every individual"""
         for ind_id in self.known_individuals.keys():
             ind = Individual.query.filter_by(name=ind_id).one()

@@ -123,7 +123,7 @@ def genotypes_parser(handle, ):
         # read all the file's rows
         for n in range(1, len(fields)):
 #            current_individual = individuals[n-1]
-            if n not in excluded_columns:
+            if n-1 not in excluded_columns:
                 current_genotype = fields[n]
                 snp.genotypes += current_genotype
 
