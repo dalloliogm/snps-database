@@ -33,29 +33,31 @@ def upload_rosenberg_individuals():
     """
     upload individuals from the rosenberg files.
     """
-    from schema.connection import session, metadata
+    from schema.connection import session, metadata # is session necessary?
     print metadata
     metadata.bind.echo = True
     rosenberg_path = '../data/Annotations/hgdpSampleinfoRosenberg-extended.csv'
     rosenberg_file = open(rosenberg_path, 'r')
     parsers.rosenberg_parser(rosenberg_file)
 
-def load_individuals_into_database():
-    """launch the various scripts to insert data into the HGDP database."""
-    
-    from schema.connection import session, metadata
-    from schema.connection import Individual, Population, SNP, RefSeqGene
+    print 'upload of Rosenberg Individuals to database %s completed' % metadata
+
+#def load_individuals_into_database():
+#    """launch the various scripts to insert data into the HGDP database."""
+#    
+#    from schema.connection import session, metadata
+#    from schema.connection import Individual, Population, SNP, RefSeqGene
+##    session.flush()
+#    print "now we are connected to the database:", metadata
+#    metadata.bind.echo = True
+#    
+#    samples_file = open('../data/Annotations/samples_subset.csv', 'r')
+#    
 #    session.flush()
-    print "now we are connected to the database:", metadata
-    metadata.bind.echo = True
-    
-    samples_file = open('../data/Annotations/samples_subset.csv', 'r')
-    
-    session.flush()
-    
-    parsers.samples_parser(samples_file)
-    session.commit()
-    print 'upload of tables finished'
+#    
+#    parsers.samples_parser(samples_file)
+#    session.commit()
+#    print 'upload of tables finished'
 
 def _test():
     """test the current module"""
