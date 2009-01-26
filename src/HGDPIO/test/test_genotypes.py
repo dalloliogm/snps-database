@@ -11,7 +11,7 @@ class test_genotypes(unittest.TestCase):
     Test the genotypes parser
     """
 
-    individualsfile = 'test/rosenberg_sample_short.txt'
+    individualsfile = 'test/rosenberg_sample.txt'
     testfile = 'test/genotypes_sample.txt'
 #    _db_is_set = False
     known_individuals = {'HGDP00218': (),
@@ -24,13 +24,12 @@ class test_genotypes(unittest.TestCase):
                     'HGDP00247': (),
                     'HGDP00234': (),
                     'HGDP00214': (),
-                    'HGDP00262': (),
-                    'HGDP00226': (),
-                    'HGDP00244': (),}
+                    'HGDP00262': (),}
     known_snps = ('rs4911642', 'rs2027653', 'rs5747620', 'rs9605903', 'rs5747968', 'rs2236639', 
             'rs5747999', 'rs11089263', 'rs2096537', 'rs9604959', 'rs9604967', 'rs4819849', 
             'rs9605028','rs1892844', 'rs361973', 'rs2845371', 'rs16981507')
-    not_included = ()
+    not_included_individuals = ('HGDP01004', 'HGDP00996')
+    excluded_columns = [11, 12]
 
     def setUp(self):
 #        self._setupdb()
@@ -68,7 +67,7 @@ class test_genotypes(unittest.TestCase):
         """
         Checks that the individuals that should not be included, are not in the database
         """
-        for snp in self.not_included:
+        for snp in self.not_included_individuals:
             db_snp = SNP.query.filter_by(id=snp).all()
             self.assertEqual(db_snp, [])
 

@@ -92,25 +92,26 @@ def genotypes_parser(handle, ):
         raise ValueError('Empty file!!')
 
     header_fields = header.split()
-    logging.debug(header_fields)
+#    logging.debug(header_fields)
     individuals = []
 
     current_genotype_index = 0
     excluded_columns = []  # a list of the genotypes to be excluded when parsing the snps fields
     for column_id in range(len(header_fields)):
-
         ind_id = header_fields[column_id]
-        #Check if there is an individual with the current id in the database
-        individual = Individual.query.filter_by(name = ind_id)
+#        logging.debug(ind_id)
 
+        #Check if there is an individual with the current id in the database
+        individual = Individual.query.filter_by(name = ind_id).all()
+        logging.debug(individual)
         if individual != []:
-            # the current individual is in the database - included in 952 and not duplicated
-            individual.genotype_index = current_genotype_index
+            individual[0].genotype_index = current_genotype_index
             current_genotype_index += 1
             individuals.append(individual)
-        else:
+        else: 
             excluded_columns.append(column_id)
-    logging.debug(individuals)
+#    logging.debug(individuals)
+    logging.debug(excluded_columns)
     
     # Read snp file line by line.
     for line in handle.readlines():
