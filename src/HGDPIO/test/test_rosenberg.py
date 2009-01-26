@@ -44,6 +44,7 @@ class test_rosenberg(unittest.TestCase):
         create_all()
         from parsers import rosenberg_parser
         rosenberg_parser(open(self.testfile, 'r'))
+        logging.debug('DB has been set')
 
     def tearDown(self):
         session.close()

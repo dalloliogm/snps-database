@@ -79,7 +79,7 @@ class test_genotypes(unittest.TestCase):
     def test_SNPGenotypes(self):
         """test if the genotypes have been uploaded correctly"""
         for snp_id in self.known_snps:
-            snp = SNP.query.filter_by(id=snp_id).one()
+            snp = SNP.get_by(id=snp_id)
             print snp_id, snp.id
             print self.known_snps[snp_id]['genotype'], snp.genotypes
             self.assertEqual(self.known_snps[snp_id]['genotype'], snp.genotypes)
@@ -88,7 +88,7 @@ class test_genotypes(unittest.TestCase):
     def test_GenotypeIndex(self):
         """test if the right index is added to every individual"""
         for ind_id in self.known_individuals.keys():
-            ind = Individual.query.filter_by(name=ind_id).one()
+            ind = Individual.get_by(name=ind_id)
             print ind_id, ind.genotype_index, self.known_individuals[ind_id]['index']
             self.assertEqual(ind.genotype_index, self.known_individuals[ind_id]['index'])
 
@@ -104,15 +104,15 @@ class test_genotypes(unittest.TestCase):
         Checks that the individuals that should not be included, are not in the database
         """
         for snp in self.not_included_individuals:
-            db_snp = SNP.query.filter_by(id=snp).all()
-            self.assertEqual(db_snp, [])
+            db_snp = SNP.get_by(id=snp)
+            self.assertEqual(db_snp, None)
 
     def test_KnownSNPs(self):
         """
         """
         for snp in self.known_snps:
             print snp
-            db_snp = SNP.query.filter_by(id=snp).one()
+            db_snp = SNP.get_by(id=snp)
             print db_snp, dir(db_snp)
             self.assert_(db_snp.id == snp)
 

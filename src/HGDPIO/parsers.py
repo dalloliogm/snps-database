@@ -101,10 +101,10 @@ def genotypes_parser(handle, ):
 #        logging.debug(ind_id)
 
         #Check if there is an individual with the current id in the database
-        individual = Individual.query.filter_by(name = ind_id).all()
+        individual = Individual.get_by(name = ind_id)
 #        logging.debug(individual)
-        if individual != []:
-            individual[0].genotype_index = column_id
+        if individual is not None:
+            individual.genotype_index = column_id
             individuals.append(individual)
         else: 
             excluded_columns.append(column_id)
