@@ -95,8 +95,8 @@ class SNP(Entity):
     previous_snp        = OneToOne('SNP')
 
     # allele1 can be only A or T. allele2 only C or G
-    allele1             = Field(Enum(values=('A', 'T', '-', None)))
-    allele2             = Field(Enum(values=('C', 'G', '-', None)))
+    allele1             = Field(Enum(values=(u'A', u'T', u'-')))
+    allele2             = Field(Enum(values=(u'C', u'G', u'-')))
     derived_allele      = Field(String(1))
 #    dbSNP_ref           = Field(String(10)) # TODO: check if necessary ()
     
@@ -110,10 +110,12 @@ class SNP(Entity):
     snp_build           = Field(String(10))
     genomic_build       = Field(String(10)) # build on ucsc
 
-    def __init__(self, id, genotypes=''):
+    def __init__(self, id, genotypes='', allele1=u'-', allele2=u'-'):
         self.id = id
         self.chromosome = ''
         self.genotypes = ''
+        self.allele1 = allele1
+        self.allele2 = allele2
             
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.

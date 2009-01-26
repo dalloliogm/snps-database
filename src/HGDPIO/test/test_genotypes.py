@@ -26,23 +26,24 @@ class test_genotypes(unittest.TestCase):
                     'HGDP00214': {'index': 9,},
                     'HGDP00262': {'index': 10,},}
 
-    known_snps = {'rs4911642' : {'genotype' : 'TTTCTT--TTTCTCTCTTTT--',}, 
-            'rs2027653' : {'genotype' : '--TTTTTTTTTTTTTTTTTTTT',}, 
-            'rs5747620' : {'genotype' : 'TCTTTCTTTTTTTTTTTCTTTT',}, 
-            'rs9605903' : {'genotype' : 'TTTTTTTTTCTTTTTTTTTTTT',}, 
-            'rs5747968' : {'genotype' : 'TTTTTGTTTGTTTTTTTTTTTT',}, 
-            'rs2236639' : {'genotype' : 'GGGGAGGGAGAGGGGGGGGGGG',}, 
-            'rs5747999' : {'genotype' : 'CCACCCCCCCCCCCCCACACCC',}, 
-            'rs11089263' : {'genotype' : 'CCACCCCCACCCCCCCACACCC',}, 
-            'rs2096537' : {'genotype' : 'CCACCCACACCCCCCCACACAC',}, 
-            'rs9604959' : {'genotype' : 'TCTC--CCCCTTTCTCCCCCCC',}, 
-            'rs9604967' : {'genotype' : 'CCCCCCCCCCCCCCCCCCCCCC',}, 
-            'rs4819849' : {'genotype' : 'AAAAAAAAAAAA--AAAAAAAA',}, 
-            'rs9605028' : {'genotype' : 'AAAAAAAAAAAAAAAAAAAAAA',},
-            'rs1892844' : {'genotype' : 'AAAAAAAAAAAAAAAAAAAAAA',}, 
-            'rs361973' : {'genotype' : 'AGAGAAAAAAAGAA----AAAA',}, 
-            'rs2845371' : {'genotype' : 'AGAGGGAGAGAGGGAAAAAGGG',}, 
-            'rs16981507' : {'genotype' : 'CCTCCCCCCCCCCCCCCCCCCC',}}
+    known_snps = {'rs4911642' : {'genotype' : 'TTTCTT--TTTCTCTCTTTT--', 'allele1': 'T', 'allele2': 'C'}, 
+            'rs2027653' : {'genotype' : '--TTTTTTTTTTTTTTTTTTTT', 'allele1': 'T', 'allele2': 'C'}, 
+            'rs5747620' : {'genotype' : 'TCTTTCTTTTTTTTTTTCTTTT', 'allele1': 'T', 'allele2': 'C'}, 
+            'rs9605903' : {'genotype' : 'TTTTTTTTTCTTTTTTTTTTTT', 'allele1': 'T', 'allele2': 'C'}, 
+            'rs5747968' : {'genotype' : 'TTTTTGTTTGTTTTTTTTTTTT', 'allele1': 'T', 'allele2': 'G'}, 
+            'rs2236639' : {'genotype' : 'GGGGAGGGAGAGGGGGGGGGGG', 'allele1': 'A', 'allele2': 'G'}, 
+            'rs5747999' : {'genotype' : 'CCACCCCCCCCCCCCCACACCC', 'allele1': 'A', 'allele2': 'C'}, 
+            'rs11089263' : {'genotype' : 'CCACCCCCACCCCCCCACACCC', 'allele1': 'A', 'allele2': 'C'}, 
+            'rs2096537' : {'genotype' : 'CCACCCACACCCCCCCACACAC', 'allele1': 'A', 'allele2': 'C'}, 
+            'rs9604959' : {'genotype' : 'TCTC--CCCCTTTCTCCCCCCC', 'allele1': 'T', 'allele2': 'C'}, 
+            'rs9604967' : {'genotype' : 'CCCCCCCCCCCCCCCCCCCCCC', 'allele1': '-', 'allele2': 'C'}, 
+            'rs4819849' : {'genotype' : 'AAAAAAAAAAAA--AAAAAAAA', 'allele1': 'A', 'allele2': '-'}, 
+            'rs9605028' : {'genotype' : 'AAAAAAAAAAAAAAAAAAAAAA', 'allele1': 'A', 'allele2': '-'},
+            'rs1892844' : {'genotype' : 'AAAAAAAAAAAAAAAAAAAAAA', 'allele1': 'A', 'allele2': '-'}, 
+            'rs361973' : {'genotype' : 'AGAGAAAAAAAGAA----AAAA', 'allele1': 'A', 'allele2': 'G'}, 
+            'rs2845371' : {'genotype' : 'AGAGGGAGAGAGGGAAAAAGGG', 'allele1': 'A', 'allele2': 'G'}, 
+            'rs16981507' : {'genotype' : 'CCTCCCCCCCCCCCCCCCCCCC', 'allele1': 'T', 'allele2': 'C'}
+            }
     not_included_individuals = ('HGDP01004', 'HGDP00996')
     excluded_columns = [1, 11]
 

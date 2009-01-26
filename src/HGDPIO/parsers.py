@@ -116,16 +116,29 @@ def genotypes_parser(handle, ):
         fields = line.split()   # TODO: add more rigorous conditions
         if fields is None:
             break
-        
+
+        allele1_is_set = False
+        allele2_is_set = False
+         
         # Initialize a SNP object 
         snp = SNP(id = fields[0], genotypes='')
         
         # read all the file's rows
         for n in range(1, len(fields)):
-#            current_individual = individuals[n-1]
             if n-1 not in excluded_columns:
+                # this is a valid genotype that we want to include in the db
                 current_genotype = fields[n]
                 snp.genotypes += current_genotype
+
+                if allele1_is_set is not True:
+                    if current_genotype[0] in ('a', 'A', 't', 'T'):
+                        snp.allele1 = unicode(current_genotype[0].upper())
+                        allele1_is_set = True
+                if allele2_is_set is not True:
+                    if current_genotype[1] in ('c', 'C', 'g', 'G'):
+                        snp.allele2 = unicode(current_genotype[1].upper())
+                        allele2_is_set = True
+
 
 #        logging.debug(snp.genotypes)
      
