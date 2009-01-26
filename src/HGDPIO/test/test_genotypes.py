@@ -53,6 +53,11 @@ class test_genotypes(unittest.TestCase):
         print snps
         assert len(snps) == 17
 
+    def test_genotypeindex(self):
+        """test if the right index is added to every individual"""
+        pass
+
+
     def test_SameNumberOfFields(self):
         """
         test if every line in the parser is splitted in the same number of fields
