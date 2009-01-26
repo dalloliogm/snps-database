@@ -15,7 +15,7 @@ class test_genotypes(unittest.TestCase):
     testfile = 'test/genotypes_sample.txt'
 #    _db_is_set = False
     known_individuals = {'HGDP00218': {'index': 0,},
-                    'HGDP00248': {'index': 1,},
+                    'HGDP00248': {'index': 12,},
                     'HGDP00232': {'index': 2,},
                     'HGDP00222': {'index': 3,},
                     'HGDP00228': {'index': 4,},
@@ -25,11 +25,12 @@ class test_genotypes(unittest.TestCase):
                     'HGDP00234': {'index': 8,},
                     'HGDP00214': {'index': 9,},
                     'HGDP00262': {'index': 10,},}
+
     known_snps = ('rs4911642', 'rs2027653', 'rs5747620', 'rs9605903', 'rs5747968', 'rs2236639', 
             'rs5747999', 'rs11089263', 'rs2096537', 'rs9604959', 'rs9604967', 'rs4819849', 
             'rs9605028','rs1892844', 'rs361973', 'rs2845371', 'rs16981507')
     not_included_individuals = ('HGDP01004', 'HGDP00996')
-    excluded_columns = [11, 12]
+    excluded_columns = [1, 11]
 
     def setUp(self):
 #        self._setupdb()
@@ -56,7 +57,7 @@ class test_genotypes(unittest.TestCase):
         """test if the right index is added to every individual"""
         for ind_id in self.known_individuals.keys():
             ind = Individual.query.filter_by(name=ind_id).one()
-            print ind.genotype_index
+            print ind_id, ind.genotype_index, self.known_individuals[ind_id]['index']
             self.assertEqual(ind.genotype_index, self.known_individuals[ind_id]['index'])
 
 

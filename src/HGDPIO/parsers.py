@@ -95,7 +95,6 @@ def genotypes_parser(handle, ):
 #    logging.debug(header_fields)
     individuals = []
 
-    current_genotype_index = 0
     excluded_columns = []  # a list of the genotypes to be excluded when parsing the snps fields
     for column_id in range(len(header_fields)):
         ind_id = header_fields[column_id]
@@ -105,8 +104,7 @@ def genotypes_parser(handle, ):
         individual = Individual.query.filter_by(name = ind_id).all()
         logging.debug(individual)
         if individual != []:
-            individual[0].genotype_index = current_genotype_index
-            current_genotype_index += 1
+            individual[0].genotype_index = column_id
             individuals.append(individual)
         else: 
             excluded_columns.append(column_id)
