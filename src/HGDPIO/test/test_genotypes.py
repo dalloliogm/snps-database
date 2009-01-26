@@ -46,7 +46,9 @@ class test_genotypes(unittest.TestCase):
     not_included_individuals = ('HGDP01004', 'HGDP00996')
     excluded_columns = [1, 11]
 
-    def setUp(self):
+    _db_set_up = False
+
+    def setupall(self):
 #        self._setupdb()
         logging.basicConfig(level=logging.DEBUG, format="%(funcName)s - %(lineno)d - %(message)s")
         metadata.bind = 'sqlite:///:memory:'
@@ -55,10 +57,17 @@ class test_genotypes(unittest.TestCase):
         # populate with some individuals
         rosenberg_parser(open(self.individualsfile, 'r'))
         genotypes_parser(open(self.testfile, 'r'))
+        logging.warn('db has been set')
 
+    def setUp(self):
+        if self._db_set_up is False:
+            self.setupall()
+            self._db_set_up = True
+#
     def tearDown(self):
         session.close()
         drop_all()
+#        self._db_set_up = True
 
     def test_NumberGenotypes(self):
         """test how many genotypes have been added"""

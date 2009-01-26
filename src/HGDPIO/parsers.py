@@ -127,7 +127,7 @@ def genotypes_parser(handle, ):
                 current_genotype = fields[n]
                 snp.genotypes += current_genotype
 
-        logging.debug(snp.genotypes)
+#        logging.debug(snp.genotypes)
      
 
 def _test():
