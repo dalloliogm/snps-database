@@ -20,35 +20,19 @@ class test_rosenberg(unittest.TestCase):
                                     'popname': 'Karitiana'}}
     not_included = ('HGDP01004', 'HGDP00996')
 
-    def _setupdb(self):
-        """
-        SetUpAll method
-        """
-        logging.basicConfig(level=logging.DEBUG, format="%(funcName)s - %(lineno)d - %(message)s")
-        self._db_is_set = True
-        
-        # create a debug database in memory (could have used debug_database)
-        print metadata.bind
-        metadata.bind.echo = True
-
-        from parsers import rosenberg_parser
-        rosenberg_parser(open(self.testfile, 'r'))
-
-#        individuals = Individual.query().all()
-#        logging.debug(individuals)
-
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
 #        self._setupdb()
         logging.basicConfig(level=logging.DEBUG, format="%(funcName)s - %(lineno)d - %(message)s")
         metadata.bind = 'sqlite:///:memory:'
         create_all()
         from parsers import rosenberg_parser
-        rosenberg_parser(open(self.testfile, 'r'))
-        logging.debug('DB has been set')
+        rosenberg_parser(open(cls.testfile, 'r'))
+        logging.debug('DB (rosenberg test) has been set')
 
-    def tearDown(self):
-        session.close()
-        drop_all()
+#    def tearDown(self):
+#        session.close()
+#        drop_all()
 
     def test_individuals(self):
         """test how many individuals"""

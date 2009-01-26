@@ -49,26 +49,17 @@ class test_genotypes(unittest.TestCase):
 
     _db_set_up = False
 
-    def setupall(self):
+    @classmethod
+    def setUpClass(cls):
 #        self._setupdb()
         logging.basicConfig(level=logging.DEBUG, format="%(funcName)s - %(lineno)d - %(message)s")
         metadata.bind = 'sqlite:///:memory:'
         create_all()
         from parsers import genotypes_parser, rosenberg_parser
         # populate with some individuals
-        rosenberg_parser(open(self.individualsfile, 'r'))
-        genotypes_parser(open(self.testfile, 'r'))
-        logging.warn('db has been set')
-
-    def setUp(self):
-        if self._db_set_up is False:
-            self.setupall()
-            self._db_set_up = True
-#
-    def tearDown(self):
-        session.close()
-        drop_all()
-#        self._db_set_up = True
+        rosenberg_parser(open(cls.individualsfile, 'r'))
+        genotypes_parser(open(cls.testfile, 'r'))
+        logging.warn('DB (genotype test) has been set')
 
     def test_NumberGenotypes(self):
         """test how many genotypes have been added"""
