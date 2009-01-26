@@ -102,7 +102,7 @@ def genotypes_parser(handle, ):
 
         #Check if there is an individual with the current id in the database
         individual = Individual.query.filter_by(name = ind_id).all()
-        logging.debug(individual)
+#        logging.debug(individual)
         if individual != []:
             individual[0].genotype_index = column_id
             individuals.append(individual)
@@ -118,14 +118,16 @@ def genotypes_parser(handle, ):
             break
         
         # Initialize a SNP object 
-        snp = SNP(id = fields[0])
+        snp = SNP(id = fields[0], genotypes='')
         
-        # read 
+        # read all the file's rows
         for n in range(1, len(fields)):
 #            current_individual = individuals[n-1]
-            current_genotype = fields[n]
-            
-            snp.genotypes = current_genotype
+            if n not in excluded_columns:
+                current_genotype = fields[n]
+                snp.genotypes += current_genotype
+
+        logging.debug(snp.genotypes)
      
 
 def _test():

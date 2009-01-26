@@ -110,9 +110,10 @@ class SNP(Entity):
     snp_build           = Field(String(10))
     genomic_build       = Field(String(10)) # build on ucsc
 
-    def __init__(self, id):
+    def __init__(self, id, genotypes=''):
         self.id = id
         self.chromosome = ''
+        self.genotypes = ''
             
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.
