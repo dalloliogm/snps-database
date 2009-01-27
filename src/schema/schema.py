@@ -108,7 +108,7 @@ class SNP(Entity):
 #                                default=datetime.now)
     # versioning
     snp_build           = Field(String(10))
-    genotypes_file      = Field(String(40)) # input file containing the genotypes
+    genotypes_file      = Field(String(80)) # input file containing the genotypes
     genomic_build       = Field(String(10)) # build on ucsc
 
     def __init__(self, id, genotypes='', allele1=u'-', allele2=u'-'):
@@ -225,7 +225,7 @@ class Individual(Entity):
 #                          default=datetime.now)
 
     # versioning
-    source_file         = Field(Text(50))
+    source_file         = Field(Text(80))
     
     def __init__(self, name, population = None, sex = 'u', source_file = '',
                  region = 'undef', macroarea = 'undef', working_unit = 'undef'):
@@ -312,7 +312,7 @@ class Population(Entity):
 #    version                 = Column(Integer, ForeignKey('versions.id'))
 #    last_modified       = Field(DateTime, onupdate=datetime.now,
 #                                default = datetime.now)
-    source_file         = Field(String(20))
+    source_file         = Field(String(80))
     
     def __init__(self, popname, popcode=0, working_unit='undef', 
                  region = 'undef', continent_macroarea='undef', 

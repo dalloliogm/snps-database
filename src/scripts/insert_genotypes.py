@@ -23,6 +23,7 @@ def upload_genotypes(genotypes_by_chr_dir, ):
     for filename in glob.glob(genotypes_by_chr_dir + '/*.geno'):
         print filename
         parsers.genotypes_parser(open(filename, 'r'))
+        session.commit()
 
 #    rosenberg_file = open(rosenberg_path, 'r')
 #    parsers.rosenberg_parser(rosenberg_file)
