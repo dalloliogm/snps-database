@@ -87,7 +87,7 @@ class SNP(Entity):
     using_options(tablename = 'snps')
     
     id                  = Field(String(10), primary_key=True, unique=True)
-    chromosome          = Field(String(10))
+    chromosome          = Field(String(10), index=True)
     physical_position   = Field(Integer)
     original_strand     = Field(String(1))
 
@@ -209,9 +209,9 @@ class Individual(Entity):
     """
     using_options(tablename = 'individuals')
     
-    name                = Field(String(10), unique=True)    # TODO: rename with 'id'?
+    name                = Field(String(10), unique=True, index=True)    # TODO: rename with 'id'?
     hgdp_individual_number = Field(String(10), unique = True)
-    population          = ManyToOne('Population')
+    population          = ManyToOne('Population')   # TODO: how to index?
     sex                 = Field(Enum((u'm', u'u', u'f', None)))
     
     haplotypes          = Field(Text(650000))
@@ -300,13 +300,13 @@ class Population(Entity):
     
     individuals         = OneToMany('Individual')
 
-    popname             = Field(String(50), unique=True)
-    popcode             = Field(Integer)
+    popname             = Field(String(50), unique=True, index=True)
+    popcode             = Field(Integer, index=True)
 #    alternate_popname   = Field(String(50)
     working_unit        = Field(String(50))
     region              = Field(String(50))
-    continent_macroarea = Field(String(30))
-    continent_code      = Field(String(8))
+    continent_macroarea = Field(String(30), index=True)
+    continent_code      = Field(String(8), index=True)
     # TODO: sort the input file by continent, working_unit, populations
     
 #    version                 = Column(Integer, ForeignKey('versions.id'))
