@@ -134,15 +134,28 @@ def genotypes_parser(handle, ):
         for n in range(1, len(fields)):
             if n-1 not in excluded_columns:
                 # this is a valid genotype that we want to include in the db
-                current_genotype = fields[n]
-                snp.genotypes += current_genotype
+                current_genotype = fields[n].upper()
+#                snp.genotypes += current_genotype
+
+                if current_genotype in ('AA', 'TT',):
+                    genotype_code = '0'
+                elif current_genotype in ('CC', 'GG'):
+                    genotype_code = '2'
+                elif current_genotype in ('--', ):
+                    genotype_code = '9'
+                elif current_genotype in ('AC', 'AG', 'TC', 'TG'):
+                    genotype_code = '1'
+                else:
+                    raise TypeError('genotype is of unknown format')
+
+                snp.genotypes += genotype_code
 
                 if allele1_is_set is not True:
-                    if current_genotype[0] in ('a', 'A', 't', 'T'):
+                    if current_genotype[0] in ('A', 'T'):
                         snp.allele1 = unicode(current_genotype[0].upper())
                         allele1_is_set = True
                 if allele2_is_set is not True:
-                    if current_genotype[1] in ('c', 'C', 'g', 'G'):
+                    if current_genotype[1] in ('C', 'G'):
                         snp.allele2 = unicode(current_genotype[1].upper())
                         allele2_is_set = True
 #    session.commit()
