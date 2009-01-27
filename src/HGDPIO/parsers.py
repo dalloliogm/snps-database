@@ -106,9 +106,9 @@ def genotypes_parser(handle, ):
         if individual is not None:
             individual.genotype_index = column_id
             individuals.append(individual)
+            logging.debug(individual.genotype_index)
         else: 
             excluded_columns.append(column_id)
-        logging.debug(individual.genotype_index)
 #    logging.debug(individuals)
     logging.debug(excluded_columns)
     
@@ -126,9 +126,9 @@ def genotypes_parser(handle, ):
 #        logging.debug(snp)
         snp.genotypes_file = handle.name
         # Try to determine chromosome's number from file name
-        chr = re.findall('chr(\d+).geno', 'chr1.geno')
+        chr = re.findall('chr(\d+).geno', handle.name)
         if chr != []:
-            snp.chromosome = chr[0]
+            snp.chromosome = unicode(chr[0])
         
         # read all the file's rows
         for n in range(1, len(fields)):
