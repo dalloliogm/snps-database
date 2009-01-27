@@ -59,7 +59,7 @@ class test_genotypes(unittest.TestCase):
         # populate with some individuals
         rosenberg_parser(open(cls.individualsfile, 'r'))
         genotypes_parser(open(cls.testfile, 'r'))
-        logging.warn('DB (genotype test) has been set')
+        logging.debug('DB (genotype test) has been set')
 
     def test_NumberGenotypes(self):
         """test how many genotypes have been added"""

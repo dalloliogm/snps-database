@@ -122,6 +122,7 @@ def genotypes_parser(handle, ):
          
         # Initialize a SNP object 
         snp = SNP(id = fields[0], genotypes='')
+        logging.debug(snp)
         snp.genotypes_file = handle.name
         
         # read all the file's rows
@@ -139,7 +140,7 @@ def genotypes_parser(handle, ):
                     if current_genotype[1] in ('c', 'C', 'g', 'G'):
                         snp.allele2 = unicode(current_genotype[1].upper())
                         allele2_is_set = True
-
+    session.commit()
 
 #        logging.debug(snp.genotypes)
      
