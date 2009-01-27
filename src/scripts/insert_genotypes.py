@@ -29,7 +29,7 @@ def upload_genotypes(genotypes_by_chr_dir, ):
 #    parsers.rosenberg_parser(rosenberg_file)
 
     print 'upload of Genotypes to database %s completed' % metadata
-    from schema import *
+#    from schema import *
 #    print SNP.get_by()
 
 

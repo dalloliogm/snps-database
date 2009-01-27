@@ -111,10 +111,10 @@ class SNP(Entity):
     genotypes_file      = Field(String(80)) # input file containing the genotypes
     genomic_build       = Field(String(10)) # build on ucsc
 
-    def __init__(self, id, allele1=u'-', allele2=u'-'):
+    def __init__(self, id, chromosome = '', genotypes = '', allele1=u'-', allele2=u'-'):
         self.id = id
-#        self.chromosome = ''
-#        self.genotypes = ''
+        self.chromosome = chromosome
+        self.genotypes = genotypes
         self.allele1 = allele1
         self.allele2 = allele2
             
