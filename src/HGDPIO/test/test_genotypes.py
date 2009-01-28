@@ -103,8 +103,8 @@ class test_genotypes(unittest.TestCase):
         """test if the right index is added to every individual"""
         for ind_id in self.known_individuals.keys():
             ind = Individual.get_by(name=ind_id)
-            print ind_id, ind.genotype_index, self.known_individuals[ind_id]['index']
-            self.assertEqual(ind.genotype_index, self.known_individuals[ind_id]['index'])
+            print ind_id, ind.genotypes_index, self.known_individuals[ind_id]['index']
+            self.assertEqual(ind.genotypes_index, self.known_individuals[ind_id]['index'])
 
 
     def test_SameNumberOfFields(self):

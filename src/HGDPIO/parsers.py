@@ -86,6 +86,31 @@ def rosenberg_parser(handle):
         
 #        raw_input()
 
+def individuals_genotypesindex_parser(handle):
+    """
+    add genotypes_index to every individual.
+    I am writing this script to fix a typo (see bug #4)
+    """
+#    handle.readline()       # first line is empty??
+    header = handle.readline()
+    if header is None:
+        raise ValueError('Empty file!!')
+
+    header_fields = header.split()
+#    logging.debug(header_fields)
+    individuals = []
+
+    for column_id in range(len(header_fields)):
+        ind_id = header_fields[column_id]
+
+        #Check if there is an individual with the current id in the database
+        individual = Individual.get_by(name = ind_id)
+        logging.debug(individual)
+        if individual is not None:
+            individual.genotypes_index = column_id
+            individuals.append(individual)
+            logging.debug(individual.genotypes_index)
+
 def genotypes_parser(handle, ):
     """
     Parse a genotypes file handler.

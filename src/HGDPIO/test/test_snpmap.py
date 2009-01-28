@@ -54,12 +54,12 @@ class test_map(unittest.TestCase):
         snpmap_parser(open(cls.mapfile, 'r'))
         logging.debug('DB (snp test) has been set')
 
-    def test_NumberGenotypes(self):
-        """test how many genotypes have been added"""
-        snps = SNP.query().all()
-        print len(snps)
-        print snps
-        assert len(snps) == 17
+#    def test_NumberGenotypes(self):
+#        """test how many genotypes have been added"""
+#        snps = SNP.query().all()
+#        print len(snps)
+#        print snps
+#        assert len(snps) == 17
 
     def test_ChromosomeAndPosition(self):
         """Test if chromosome and position are uploaded correctly"""
