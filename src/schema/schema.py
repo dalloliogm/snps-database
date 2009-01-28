@@ -216,6 +216,7 @@ class Individual(Entity):
     
     haplotypes          = Field(Text(650000))
     genotypes_index     = Field(Integer, unique=True)
+#    column_index        = Field(Integer, unique=True) # column index in the original file
 
     articles            = ManyToMany('Articles')
 #    population_label_believed_correct = Field(Boolean)
