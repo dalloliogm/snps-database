@@ -135,9 +135,9 @@ def genotypes_parser(handle, ):
         individual = Individual.get_by(name = ind_id)
         logging.debug(individual)
         if individual is not None:
-            individual.genotype_index = column_id
+            individual.genotypes_index = column_id
             individuals.append(individual)
-            logging.debug(individual.genotype_index)
+            logging.debug(individual.genotypes_index)
         else: 
             excluded_columns.append(column_id)
 #    logging.debug(individuals)
