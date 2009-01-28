@@ -5,6 +5,28 @@ import logging
 import csv
 from sqlalchemy.orm.exc import NoResultFound
 
+def snpmap_parser(handle):
+    """
+    Parse informations on SNPs (chromosome and position)
+
+    >>> from schema.debug_database import *
+    >>> from StringIO import StringIO
+    >>> snpmap_file = StringIO(
+    ... '''MitoT9900C      M       9900
+    ... MitoT9951C      M       9951
+    ... rs10000543      4       30979886
+    ... rs10000918      4       186505570
+    ... rs10000929      4       131516474
+    ... rs10001378      4       182579995
+    ... rs10001548      4       166098831
+    ... rs10002472      4       159087423''')
+
+    """
+    # SNPs should have already been uploaded to the database, with the genotype_parser function
+    for line in handle:
+        print line
+
+
 def rosenberg_parser(handle):
     """
     Parse the annotations on individuals and populations provided in the Rosenberg 2006.
