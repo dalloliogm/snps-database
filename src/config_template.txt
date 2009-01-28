@@ -1,21 +1,21 @@
 #                      DATABASE CONFIGURATION
 #---------------------------------------------------------------------
-# The DBMS name "Database management system" (example: mysql, postres)
-# DBMS= "oracle"
-#DBMS= "postgres"
+# The DBMS name Database management system (example: mysql, postres)
+# DBMS= oracle
+#DBMS= postgres
 [Database configuration]
-DBMS = "mysql"
+DBMS = mysql
 # Data base name
-db_name = "test"
-# Badabase Host
-host = "localhost"
+db_name = test
+# Database Host
+host = localhost
 # Data base connection port
-#db_port = "5432" # postgres default port
-port = "3306"
+#db_port = 5432 # postgres default port
+port = 3306
 # Data_base user_name
-#db_user = "root"
-user = "gioby"
+#db_user = root
+user = gioby
 # Data_base password
-password = ""
+password = 
 # ********************************************************** 
 
