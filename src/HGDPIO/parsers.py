@@ -24,7 +24,16 @@ def snpmap_parser(handle):
     """
     # SNPs should have already been uploaded to the database, with the genotype_parser function
     for line in handle:
-        print line
+#        logging.debug(line)
+        fields = line.split()
+        if len(fields) != 3:
+            pass
+        else:
+            id = fields[0].lower()
+            snp = SNP.get_by(id=id)
+
+            snp.chromosome = fields[1]
+            snp.physical_position = int(fields[2])
 
 
 def rosenberg_parser(handle):

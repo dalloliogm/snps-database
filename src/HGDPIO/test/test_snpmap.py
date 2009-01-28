@@ -14,45 +14,24 @@ class test_map(unittest.TestCase):
 #    individualsfile = 'test/rosenberg_sample.txt'
     mapfile = 'test/map_sample.txt'
 
-    known_snps = {'rs4911642' : {'raw_genotype' : 'TTTCTT--TTTCTCTCTTTT--', 
-                                    'genotype_code': '01090111009', 'allele1': 'T', 'allele2': 'C'}, 
-            'rs2027653' : {'raw_genotype' : '--TTTTTTTTTTTTTTTTTTTT', 
-                                    'genotype_code': '90000000000', 'allele1': 'T', 'allele2': 'C'}, 
-            'rs5747620' : {'raw_genotype' : 'TCTTTCTTTTTTTTTTTCTTTT', 
-                                    'genotype_code': '10100000100', 'allele1': 'T', 'allele2': 'C'}, 
-            'rs9605903' : {'raw_genotype' : 'TTTTTTTTTCTTTTTTTTTTTT', 
-                                    'genotype_code': '00001000000', 'allele1': 'T', 'allele2': 'C'}, 
-            'rs5747968' : {'raw_genotype' : 'TTTTTGTTTGTTTTTTTTTTTT', 
-                                    'genotype_code': '00101000000', 'allele1': 'T', 'allele2': 'G'}, 
-            'rs2236639' : {'raw_genotype' : 'GGGGAGGGAGAGGGGGGGGGGG', 
-                                    'genotype_code': '22121122222', 'allele1': 'A', 'allele2': 'G'}, 
-            'rs5747999' : {'raw_genotype' : 'CCACCCCCCCCCCCCCACACCC', 
-                                    'genotype_code': '21222222112', 'allele1': 'A', 'allele2': 'C'}, 
-            'rs11089263' : {'raw_genotype' : 'CCACCCCCACCCCCCCACACCC', 
-                                    'genotype_code': '21221222112', 'allele1': 'A', 'allele2': 'C'}, 
-            'rs2096537' : {'raw_genotype' : 'CCACCCACACCCCCCCACACAC', 
-                                    'genotype_code': '21211222111', 'allele1': 'A', 'allele2': 'C'}, 
-            'rs9604959' : {'raw_genotype' : 'TCTC--CCCCTTTCTCCCCCCC', 
-                                    'genotype_code': '11922011222', 'allele1': 'T', 'allele2': 'C'}, 
-            'rs9604967' : {'raw_genotype' : 'CCCCCCCCCCCCCCCCCCCCCC', 
-                                    'genotype_code': '22222222222', 'allele1': '-', 'allele2': 'C'}, 
-            'rs4819849' : {'raw_genotype' : 'AAAAAAAAAAAA--AAAAAAAA', 
-                                    'genotype_code': '00000090000', 'allele1': 'A', 'allele2': '-'}, 
-            'rs9605028' : {'raw_genotype' : 'AAAAAAAAAAAAAAAAAAAAAA', 
-                                    'genotype_code': '00000000000', 'allele1': 'A', 'allele2': '-'},
-            'rs1892844' : {'raw_genotype' : 'AAAAAAAAAAAAAAAAAAAAAA', 
-                                    'genotype_code': '00000000000', 'allele1': 'A', 'allele2': '-'}, 
-            'rs361973' : {'raw_genotype' : 'AGAGAAAAAAAGAA----AAAA', 
-                                    'genotype_code': '11000109900', 'allele1': 'A', 'allele2': 'G'}, 
-            'rs2845371' : {'raw_genotype' : 'AGAGGGAGAGAGGGAAAAAGGG', 
-                                    'genotype_code': '11211120012', 'allele1': 'A', 'allele2': 'G'}, 
-            'rs16981507' : {'raw_genotype' : 'CCTCCCCCCCCCCCCCCCCCCC', 
-                                    'genotype_code': '21222222222', 'allele1': 'T', 'allele2': 'C'}
+    known_snps = {'rs4911642' : {'chromosome': 'M', 'position': 9900, },
+            'rs2027653' : {'chromosome': 'M', 'position': 9951, },
+            'rs5747620' : {'chromosome': '4', 'position': 30979886, },
+            'rs9605903' : {'chromosome': '4', 'position': 186505570, },
+            'rs5747968' : {'chromosome': '4', 'position': 131516474, },
+            'rs2236639' : {'chromosome': '4', 'position': 182579995, },
+            'rs5747999' : {'chromosome': '4', 'position': 166098831, },
+            'rs11089263' : {'chromosome': '4', 'position': 159087423, },
+            'rs2096537' : {'chromosome': '5', 'position': 1000, },
+            'rs9604959' : {'chromosome': '5', 'position': 1200, },
+            'rs9604967' : {'chromosome': '5', 'position': 1400, },
+            'rs4819849' : {'chromosome': '5', 'position': 1600, },
+            'rs9605028' : {'chromosome': '5', 'position': 2000, },
+            'rs1892844' : {'chromosome': '10', 'position': 10000, },
+            'rs361973' : {'chromosome': '10', 'position': 12000, },
+            'rs2845371' : {'chromosome': '10', 'position': 14000, },
+            'rs16981507' : {'chromosome': '10', 'position': 16000, },
             }
-    not_included_individuals = ('HGDP01004', 'HGDP00996')
-    excluded_columns = [1, 11]
-
-    _db_set_up = False
 
     @classmethod
     def setUpClass(cls):
@@ -60,11 +39,20 @@ class test_map(unittest.TestCase):
         logging.basicConfig(level=logging.DEBUG, format="%(funcName)s - %(lineno)d - %(message)s")
         metadata.bind = 'sqlite:///:memory:'
         create_all()
-        from parsers import genotypes_parser, rosenberg_parser
+
+        # upload some SNPs to test the get_by_or_update behaviour
+#        SNP('rs4911642')
+#        SNP('rs2027653')
+#        SNP('rs5747620')
+        for snp_id in cls.known_snps:
+            SNP(snp_id)
+        session.commit()
+#        logging.debug(SNP.query().all())
+
+        from parsers import snpmap_parser
         # populate with some individuals
-        rosenberg_parser(open(cls.individualsfile, 'r'))
-        genotypes_parser(open(cls.testfile, 'r'))
-        logging.debug('DB (genotype test) has been set')
+        snpmap_parser(open(cls.mapfile, 'r'))
+        logging.debug('DB (snp test) has been set')
 
     def test_NumberGenotypes(self):
         """test how many genotypes have been added"""
@@ -73,41 +61,17 @@ class test_map(unittest.TestCase):
         print snps
         assert len(snps) == 17
 
-    def test_GenotypesFile(self):
-        """test if the url the to the genotypes file is saved correctly"""
-        for snp in SNP.query().all():
-            self.assertEqual(snp.genotypes_file, self.testfile)
-
-    def test_SNPGenotypes(self):
-        """test if the genotypes have been uploaded correctly"""
+    def test_ChromosomeAndPosition(self):
+        """Test if chromosome and position are uploaded correctly"""
         for snp_id in self.known_snps:
             snp = SNP.get_by(id=snp_id)
-            print snp_id, snp.id
-            print self.known_snps[snp_id]['genotype_code'], snp.genotypes
-            self.assertEqual(self.known_snps[snp_id]['genotype_code'], snp.genotypes)
-           
+            self.assertEqual(self.known_snps[snp_id]['chromosome'], snp.chromosome)
+            self.assertEqual(self.known_snps[snp_id]['position'], snp.physical_position)
 
-    def test_GenotypeIndex(self):
-        """test if the right index is added to every individual"""
-        for ind_id in self.known_individuals.keys():
-            ind = Individual.get_by(name=ind_id)
-            print ind_id, ind.genotype_index, self.known_individuals[ind_id]['index']
-            self.assertEqual(ind.genotype_index, self.known_individuals[ind_id]['index'])
-
-
-    def test_SameNumberOfFields(self):
-        """
-        test if every line in the parser is splitted in the same number of fields
-        """
-        pass
-
-    def test_NotIncluded(self):
-        """
-        Checks that the individuals that should not be included, are not in the database
-        """
-        for snp in self.not_included_individuals:
-            db_snp = SNP.get_by(id=snp)
-            self.assertEqual(db_snp, None)
+#    def test_GenotypesFile(self):
+#        """test if the url the to the SNP map file is saved correctly"""
+#        for snp in SNP.query().all():
+#            self.assertEqual(snp.genotypes_file, self.mapfile)
 
     def test_KnownSNPs(self):
         """
