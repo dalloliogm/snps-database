@@ -100,16 +100,14 @@ def individuals_genotypesindex_parser(handle):
 #    logging.debug(header_fields)
     individuals = []
 
-    for column_id in range(len(header_fields)):
-        ind_id = header_fields[column_id]
+    current_index = 0
+    for ind_id in header.split():
 
         #Check if there is an individual with the current id in the database
         individual = Individual.get_by(name = ind_id)
-        logging.debug(individual)
         if individual is not None:
-            individual.genotypes_index = column_id
-            individuals.append(individual)
-            logging.debug(individual.genotypes_index)
+            individual.genotypes_index = current_index
+            current_index += 1
 
 def genotypes_parser(handle, ):
     """
@@ -152,6 +150,7 @@ def genotypes_parser(handle, ):
     individuals = []
 
     excluded_columns = []  # a list of the genotypes to be excluded when parsing the snps fields
+    current_index = 0
     for column_id in range(len(header_fields)):
         ind_id = header_fields[column_id]
 #        logging.debug(ind_id)
@@ -160,7 +159,9 @@ def genotypes_parser(handle, ):
         individual = Individual.get_by(name = ind_id)
         logging.debug(individual)
         if individual is not None:
-            individual.genotypes_index = column_id
+            individual.genotypes_index = current_index
+            individual.column_index = column_id
+            current_index += 1
             individuals.append(individual)
             logging.debug(individual.genotypes_index)
         else: 
