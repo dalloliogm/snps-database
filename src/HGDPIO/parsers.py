@@ -126,7 +126,7 @@ def genotypes_parser(handle, ):
 #        logging.debug(snp)
         snp.genotypes_file = handle.name
         # Try to determine chromosome's number from file name
-        chr = re.findall('chr(\d+).geno', handle.name)
+        chr = re.findall('chr(.*).geno', handle.name)
         if chr != []:
             snp.chromosome = unicode(chr[0])
         
