@@ -57,10 +57,14 @@ def rosenberg_parser(handle):
         ind_id = fields[24].replace('"', '')
         included_in_dataset952 = fields[15]
         has_not_duplicated = fields[9]
+        included_in_Li = fields[28].replace('"', '')
+     
+#        logging.debug(included_in_Li)
+#        logging.debug(len(fields))
 
 #        logging.debug(str([ind_id, included_in_dataset952, has_not_duplicated]))
 
-        if (included_in_dataset952 == "1") and (has_not_duplicated == "1"):
+        if (included_in_dataset952 == "1") and (included_in_Li == "TRUE"):
 #            print ind_id
             ind = Individual(ind_id, source_file = handle.name, sex = fields[5][1])
             ind.hgdp_individual_number = fields[0]
@@ -157,7 +161,7 @@ def genotypes_parser(handle, ):
 
         #Check if there is an individual with the current id in the database
         individual = Individual.get_by(name = ind_id)
-        logging.debug(individual)
+#        logging.debug(individual)
         if individual is not None:
             individual.genotypes_index = current_index
             individual.column_index = column_id
