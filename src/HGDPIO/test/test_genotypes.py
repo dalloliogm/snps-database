@@ -15,16 +15,16 @@ class test_genotypes(unittest.TestCase):
     testfile = 'test/genotypes_sample.txt'
 #    _db_is_set = False
     known_individuals = {'HGDP00218': {'index': 0,},
-                    'HGDP00248': {'index': 12,},
-                    'HGDP00232': {'index': 2,},
-                    'HGDP00222': {'index': 3,},
-                    'HGDP00228': {'index': 4,},
-                    'HGDP00239': {'index': 5,},
-                    'HGDP00258': {'index': 6,},
-                    'HGDP00247': {'index': 7,},
-                    'HGDP00234': {'index': 8,},
-                    'HGDP00214': {'index': 9,},
-                    'HGDP00262': {'index': 10,},}
+                    'HGDP00248': {'index': 10,},
+                    'HGDP00232': {'index': 1,},
+                    'HGDP00222': {'index': 2,},
+                    'HGDP00228': {'index': 3,},
+                    'HGDP00239': {'index': 4,},
+                    'HGDP00258': {'index': 5,},
+                    'HGDP00247': {'index': 6,},
+                    'HGDP00234': {'index': 7,},
+                    'HGDP00214': {'index': 8,},
+                    'HGDP00262': {'index': 9,},}
 
     known_snps = {'rs4911642' : {'raw_genotype' : 'TTTCTT--TTTCTCTCTTTT--', 
                                     'genotype_code': '01090111009', 'allele1': 'T', 'allele2': 'C'}, 
