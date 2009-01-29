@@ -1,9 +1,9 @@
 #!/Usr/bin/env python
 
 
-from schema import *
+from schema.schema import *
 from elixir import setup_all, create_all, session
-from config import connection_line
+from schema.config import connection_line
 
 metadata.bind = connection_line
 metadata.bind.echo = True

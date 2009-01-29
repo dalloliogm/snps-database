@@ -5,7 +5,7 @@
 218	58	"Pathan"	"Pakistan"	"CENTRAL_SOUTH_ASIA"	"m"	1	1	1	1	1	1	1	0	1	1	218	58	"Pathan"	1	846	102	48	3	"HGDP00218"	"Pathan"	"TRUE"	"CSASIA"	"TRUE"
 248	58	"Pathan"	"Pakistan"	"CENTRAL_SOUTH_ASIA"	"m"	1	1	1	1	1	1	1	0	1	1	248	58	"Pathan"	13	946	8	26	6	"HGDP00248"	"Pathan"	"TRUE"	"CSASIA"	"TRUE"
 232	58	"Pathan"	"Pakistan"	"CENTRAL_SOUTH_ASIA"	"f"	1	1	1	1	1	1	1	0	1	1	232	58	"Pathan"	2	836	156	4	2	"HGDP00232"	"Pathan"	"TRUE"	"CSASIA"	"TRUE"
-220	58	"Pathan"	"Pakistan"	"CENTRAL_SOUTH_ASIA"	"m"	1	1	1	0	0	"NA"	"NA"	"NA"	0	1	111	58	"Pathan"	2	734	231	26	7	"HGDP00220"	"Pathan"	"TRUE"	"CSASIA"	"TRUE"
+220	58	"South Africans"	"South Africa"	"CENTRAL_SOUTH_ASIA"	"m"	1	1	1	0	0	"NA"	"NA"	"NA"	0	1	111	58	"Pathan"	2	734	231	26	7	"HGDP00220"	"Pathan"	"TRUE"	"CSASIA"	"TRUE"
 222	58	"Pathan"	"Pakistan"	"CENTRAL_SOUTH_ASIA"	"m"	1	1	1	1	1	1	1	0	1	1	222	58	"Pathan"	1	851	132	11	4	"HGDP00222"	"Pathan"	"TRUE"	"CSASIA"	"TRUE"
 228	58	"Pathan"	"Pakistan"	"CENTRAL_SOUTH_ASIA"	"m"	1	1	1	1	1	1	1	0	1	1	228	58	"Pathan"	2	01.15.00	219	11	17	"HGDP00228"	"Pathan"	"TRUE"	"CSASIA"	"TRUE"
 239	58	"Pathan"	"Pakistan"	"CENTRAL_SOUTH_ASIA"	"f"	1	1	1	1	1	1	1	0	1	1	239	58	"Pathan"	3	809	158	26	4	"HGDP00239"	"Pathan"	"TRUE"	"CSASIA"	"TRUE"

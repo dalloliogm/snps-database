@@ -53,11 +53,16 @@ def rosenberg_parser(handle):
     # I won't use the csv module because it has problems with the field 21
     headers = handle.readline().split()
     for line in handle:
-        fields = line.split()
+        fields = line.split('\t')
         ind_id = fields[24].replace('"', '')
         included_in_dataset952 = fields[15]
         has_not_duplicated = fields[9]
-        included_in_Li = fields[28].replace('"', '')
+#        print fields
+        included_in_Li = fields[-1].strip().replace('"', '')
+        print included_in_Li
+        print included_in_Li == '"TRUE"'
+#        print included_in_dataset952
+#        raw_input()
      
 #        logging.debug(included_in_Li)
 #        logging.debug(len(fields))
