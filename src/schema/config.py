@@ -3,7 +3,7 @@
 import ConfigParser
 
 config = ConfigParser.RawConfigParser()
-config.read('config.txt')
+config.read('/home/gioby/workspace/HGDP database/src/config.txt')
 
 
 DBMS = config.get('Database configuration', 'DBMS')
