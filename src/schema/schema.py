@@ -86,7 +86,7 @@ class SNP(Entity):
     """
     using_options(tablename = 'snps')
     
-    id                  = Field(String(10), primary_key=True, unique=True)
+    id                  = Field(String(30), primary_key=True, unique=True)
     chromosome          = Field(String(10), index=True)
     physical_position   = Field(Integer)
     original_strand     = Field(String(1))
