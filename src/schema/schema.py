@@ -209,7 +209,7 @@ class Individual(Entity):
     """
     using_options(tablename = 'individuals')
     
-    name                = Field(String(10), unique=True, index=True)    # TODO: rename with 'id'?
+    name                = Field(String(30), unique=True, index=True)    # TODO: rename with 'id'?
     hgdp_individual_number = Field(String(10), unique = True)
     population          = ManyToOne('Population')   # TODO: how to index?
     sex                 = Field(Enum((u'm', u'u', u'f', None)))
@@ -228,7 +228,7 @@ class Individual(Entity):
     # versioning
     source_file         = Field(Text(80))
     
-    def __init__(self, name, population = None, sex = 'u', source_file = '',
+    def __init__(self, name, population = None, sex = u'u', source_file = '',
                  region = 'undef', macroarea = 'undef', working_unit = 'undef'):
         
         self.name = str(name).upper() # the individual's name
@@ -244,9 +244,9 @@ class Individual(Entity):
                                                 working_unit = working_unit) 
             self.population = poprecord
             
-        if sex is not None:
+        if sex is not None:     
             sex = str(sex).lower()
-            if sex in (1, '1', 'm', 'male',):
+            if sex in (1, '1', 'm', 'male',):   # does it include also u'm', u'1'?
                 self.sex = u'm'
             elif sex in (2, '2', 'f', 'female'):
                 self.sex = u'f'
