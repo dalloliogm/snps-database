@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: add an __eq__ method to population
+desc: So you could do things like Individual.query.filter_by(population='Papuan')
+type: :bugfix
+component: database schema
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-03 12:05:39.066258 Z
+references: []
+
+id: fc611f6b4f2e6e0e8e9656cefc83b012d80eea6b
+log_events: 
+- - 2009-02-03 12:05:40.155561 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""
