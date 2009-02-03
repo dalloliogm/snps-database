@@ -342,8 +342,11 @@ class Population(Entity):
 
 class RefSeqGene(Entity):
     """ Table 'RefSeqGene'
+    name, chrom, strand, txStart, txEnd, cdsStart, cdsEnd, exonCount, exonStarts, exonEnds, alternateName, cdsStartStat, cdsEndStat, exonFrames
     """
     using_options(tablename = 'refseqgenes')
+
+    ncbi_transcript_id = Field(String(15))
 
     genomic_build = Field(String(20))
     
