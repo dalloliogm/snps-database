@@ -1,0 +1,20 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: convert all tests to mysql
+desc: |-
+  All tests should be start using mysql instead of sqlite, because there are differences in the behaviour of these two dbms.
+  Ideally, I should put an entry in the config file from which all the tests should derive the connection string
+type: :task
+component: HGDP database
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-04 10:51:02.669708 Z
+references: []
+
+id: 1f396fde8a7f3265f7338ec868d17ffbdc3a4c05
+log_events: 
+- - 2009-02-04 10:51:03.646082 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""
