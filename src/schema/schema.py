@@ -349,6 +349,21 @@ class RefSeqGene(Entity):
     ncbi_transcript_id = Field(String(15))
 
     genomic_build = Field(String(20))
+
+    chromosome = Field(String(3))
+    strand = Field(Enum(('-', '+', None)))
+    txStart = Field(Integer)
+    txEnd = Field(Integer)
+    cdsStart = Field(Integer)
+    cdsEnd = Field(Integer)
+    exonCount = Field(Integer)
+    exonStarts = Field(Text)
+    exonEnds = Field(Text)
+    alternateName = Field(String(100))
+    cdsStart = Field(Integer)
+    cdsEnd = Field(Integer)
+    exonFrames = Field(Text)
+
     
     
     

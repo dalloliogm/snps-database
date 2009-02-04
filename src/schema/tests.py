@@ -24,14 +24,16 @@ class TestHGDPDatabase(unittest.TestCase):
     """
     Metaclass for all the unittests
     """
-    def setUp(self):
+    @classmethod
+    def setUpClass(cls):
         """create a test database in RAM memory"""
         metadata.bind = 'sqlite:///:memory:'
 #        metadata.bind.echo = True
         setup_all()
         create_all()
         
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(self):
         # clear the session and rollback any open transaction
         session.close()
         # drop all tables, so that we don't leak any data from one test to the
