@@ -364,6 +364,7 @@ class RefSeqGene(Entity):
     cdsEnd = Field(Integer)
     exonFrames = Field(Text)
 
+    source_file = Field(String(50))
     
     
     
