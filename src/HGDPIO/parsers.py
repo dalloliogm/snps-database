@@ -5,6 +5,13 @@ import logging
 import csv
 from sqlalchemy.orm.exc import NoResultFound
 
+
+def refseqgenes_parser(handle):
+    """
+    Parse information for refseqgenes, from a table taken from ucsc
+    """
+    pass
+
 def snpmap_parser(handle):
     """
     Parse informations on SNPs (chromosome and position)
@@ -35,6 +42,11 @@ def snpmap_parser(handle):
             snp.chromosome = fields[1]
             snp.physical_position = int(fields[2])
 
+def snpHap650Annotations(handle):
+    """
+    Reads annotations on snps from a file called HumanHap650Yv3 _Gene_Annotation
+    """
+    pass
 
 def rosenberg_parser(handle):
     """
