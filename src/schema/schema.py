@@ -107,9 +107,9 @@ class SNP(Entity):
 #    last_modified       = Field(DateTime, onupdate=datetime.now,
 #                                default=datetime.now)
     # versioning
-    snp_build           = Field(String(10))
+    snp_build           = Field(String(40))
     genotypes_file      = Field(String(80)) # input file containing the genotypes
-    genomic_build       = Field(String(10)) # build on ucsc
+    genomic_build       = Field(String(40)) # build on ucsc
 
     def __init__(self, id, chromosome = '', genotypes = '', allele1=u'-', allele2=u'-'):
         self.id = id

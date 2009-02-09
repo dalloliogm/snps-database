@@ -29,28 +29,20 @@ from schema.debug_database import *
 #    parser.add_option('-t', '--test', action='callback', dest = _test)
 #    parser.add_option('-h', '--help', action='help')
 
-def upload_rosenberg_individuals():
+def upload_rosenberg_individuals(rosenberg_file, session, metadata):
     """
     upload individuals from the rosenberg files.
     """
-    from schema.connection import session, metadata # is session necessary?
-    print metadata
     metadata.bind.echo = True
-    rosenberg_path = '../data/Annotations/hgdpSampleinfoRosenberg-extended.csv'
-    rosenberg_file = open(rosenberg_path, 'r')
     parsers.rosenberg_parser(rosenberg_file)
 
     print 'upload of Rosenberg Individuals to database %s completed' % metadata
 
 
-def _test():
-    """test the current module
-    
-    note: use nosetest to test the library"""
-    import doctest 
-    doctest.testmod()
-
 if __name__ == '__main__':
-    _test()
-    upload_rosenberg_individuals()
+    rosenberg_path = '../data/Annotations/hgdpSampleinfoRosenberg-extended.csv'
+    rosenberg_file = open(rosenberg_path, 'r')
+    from schema.connection import session, metadata # is session necessary?
+    print metadata
+    upload_rosenberg_individuals(rosenberg_file, session, metadata)
     
