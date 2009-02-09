@@ -103,9 +103,22 @@ class SNP(Entity):
     genotypes           = Field(Text(2000), default='')  
     haplotypes_index    = Field(Integer)
     
+    # Reference to closest gene 
     refseqgene          = ManyToOne('RefSeqGene')
-#    last_modified       = Field(DateTime, onupdate=datetime.now,
-#                                default=datetime.now)
+    # The following annotations come from a file called HumanHap650v3GeneAnnotation
+
+    hap_chromosome = Field(String(10))
+    hap_coordinate = Field(Integer)
+    hap_genomebuild = Field(String(40))
+    gene_symbol = Field(Text)
+    gene = Field(Text)
+    location = Field(Text)
+    location_relative_to_gene = Field(String(30))
+    coding_status = Field(String(30))
+    aminoacid_change = Field(String(40))
+    id_with_mouse = Field(String(40))
+    phast_conservation = Field(Integer) # TODO: supports negative numbers?
+
     # versioning
     snp_build           = Field(String(40))
     genotypes_file      = Field(String(80)) # input file containing the genotypes
