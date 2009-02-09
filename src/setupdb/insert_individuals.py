@@ -33,7 +33,8 @@ def upload_rosenberg_individuals(rosenberg_file, session, metadata):
     """
     upload individuals from the rosenberg files.
     """
-    parsers.rosenberg_parser(rosenberg_file)
+    individuals = parsers.rosenberg_parser(rosenberg_file, session, metadata)
+    session.add_all(individuals)
 
     print 'upload of Rosenberg Individuals to database %s completed' % metadata
 

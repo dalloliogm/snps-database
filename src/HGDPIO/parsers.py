@@ -48,7 +48,7 @@ def snpHap650Annotations(handle):
     """
     pass
 
-def rosenberg_parser(handle):
+def rosenberg_parser(handle, session, metadata):
     """
     Parse the annotations on individuals and populations provided in the Rosenberg 2006.
     
@@ -64,6 +64,8 @@ def rosenberg_parser(handle):
     """
     # I won't use the csv module because it has problems with the field 21
     headers = handle.readline().split()
+    individuals = []
+
     for line in handle:
         fields = line.split('\t')
         ind_id = fields[24].replace('"', '')
@@ -103,6 +105,9 @@ def rosenberg_parser(handle):
                 population.source_file = handle.name
 
             ind.population = population
+            individuals.append(ind)
+    session.add_all(individuals)
+    return individuals
 
         
 #        raw_input()

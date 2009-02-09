@@ -1,0 +1,20 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Upload HumanHapAnnotations with genes informations
+desc: |-
+  The file HumanHap650Yv3 contains informations about snps and their closest genes.
+  Modify the structure of the database and upload it
+type: :task
+component: HGDP database
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-06 11:06:30.013704 Z
+references: []
+
+id: 8f2a7786a2288363aeb6b2891dab51b2f0a06258
+log_events: 
+- - 2009-02-06 11:06:31.441057 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""
