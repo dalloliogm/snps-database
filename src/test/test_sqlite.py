@@ -17,7 +17,10 @@ class SNPTest(U.TestCase):
     @classmethod
     def setUpAll(cls):
         logging.debug('database connection initialized to %s' % metadata)
-        metadata.bind.echo = True
+        metadata.bind.echo = False
+        upload_rosenberg_individuals(open('../data/Annotations/hgdpSampleinfoRosenberg-extended.csv', 'r'),
+                                        session, metadata)
+
         
 
     def setUp(self):

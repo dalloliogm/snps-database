@@ -33,7 +33,6 @@ def upload_rosenberg_individuals(rosenberg_file, session, metadata):
     """
     upload individuals from the rosenberg files.
     """
-    metadata.bind.echo = True
     parsers.rosenberg_parser(rosenberg_file)
 
     print 'upload of Rosenberg Individuals to database %s completed' % metadata
@@ -44,5 +43,6 @@ if __name__ == '__main__':
     rosenberg_file = open(rosenberg_path, 'r')
     from schema.connection import session, metadata # is session necessary?
     print metadata
+    metadata.bind.echo = True
     upload_rosenberg_individuals(rosenberg_file, session, metadata)
     
