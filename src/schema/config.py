@@ -13,4 +13,4 @@ port = config.get('Database configuration', 'port')
 user = config.get('Database configuration', 'user')
 password = config.get('Database configuration', 'password')
 
-connection_line = "%s://%s@%s:%s/%s" % (DBMS, user, host, port, db_name)
+connection_line = "%s://%s:%s@%s:%s/%s" % (DBMS, user, password, host, port, db_name)
