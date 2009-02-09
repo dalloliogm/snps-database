@@ -7,7 +7,7 @@ Test the performance on retrieval of data from hgdp db
 import unittest as U
 import logging
 from schema.debug_database import *
-#from setup.insert_individuals import upload_rosenberg_individuals
+from setupdb.insert_individuals import upload_rosenberg_individuals
 
 class SNPTest(U.TestCase):
     """
