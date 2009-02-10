@@ -1,3 +1,6 @@
+connect:
+	ipython -c 'from schema.connection import *'
+
 test_all: test_hgdpio test_schema
 
 test_schema:

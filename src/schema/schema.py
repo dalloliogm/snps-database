@@ -125,6 +125,26 @@ class SNP(Entity):
 #        - n -> numerical (0, 1, 2)
 #        """
 #        pass
+
+    @classmethod
+    def get_snps_by_region(cls, chromosome, lower_limit, upper_limit):
+        """
+        Get the snps within a region
+        >>> print SNP.get_snps_by_region('11', 1000000, 1050000)
+        [SNP rs9442372,
+        SNP rs3737728,
+        SNP rs11260588,
+        SNP rs9442398,
+        SNP rs6687776,
+        SNP rs9651273,
+        SNP rs4970405,
+        SNP rs12726255]
+        """
+        snps = SNP.query.filter(SNP.chromosome == chromosome).filter(SNP.physical_position > lower_limit).\
+            filter(SNP.physical_position < upper_limit).all()
+        snps.sort(key=lambda x:x.physical_position)
+#        print snps
+        return snps
     
     def get_next_snp(self):
         """get the next SNP on the chromosome
