@@ -246,10 +246,39 @@ class Individual(Entity):
         return self.name == str(other).upper()
     def __ne__(self, other):
         return self.name != str(other).upper()
-    
+   
+    def genotypes(self, list_of_snps):
+        """Given a list of snps, the their genotypes
+        """
+        if isinstance(list):
+            pass
+        pass
+          
     def get_genotype(self, snp):
         """Given a snp id, get the genotype
+        
+        require 'snps' as input.
+        snps can be:
+        - a snp id string
+        - a list of snp id strings
+        - a SNP instance
+        - a list of SNP instances
+
+        >>> snp1, snp2 = SNP.query().limit(2).all()
+        >>> ind1 = Individual.query().first()
+        >>> ind.get_genotypes('rs10009279')
+        '1'
+        
+        >>> ind.get_genotypes(rs10009279, rs13125929)
         """
+        genotype = ''
+        if isinstance(snp, str):
+            snp_h = SNP.get_by(id = snp)
+            genotype = snp_h.genotypes[self.genotypes_index]
+        if isinstance(snp, SNP):
+            genotype = snp.genotypes[self.genotypes_index]
+        return genotype
+
         pass
     
     @classmethod
