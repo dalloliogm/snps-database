@@ -1,0 +1,51 @@
+Uses Elixir syntax instead of sqlalchemy
+- http://elixir.ematia.de/
+
+To make this example working on your system, you will need:
+- sqllite
+- sqllite bindings for python
+- sqlalchemy (best if installed with easy_install. version 0.5)
+- elixir plugin for sqlalchemy
+On an Ubuntu installation, you will do:
+$: sudo apt-get install python-setuptools sqlite python-sqlite2
+$: sudo easy_install sqlalchemy Elixir
+
+>>> from elixir import *
+>>> metadata.bind = 'sqlite:///:memory:'
+
+#>>> metadata.bind.echo = True
+
+# Create SQLAlchemy Tables along with their mapper objects
+>>> setup_all()
+
+# Issue the SQL command to create the Tables
+>>> create_all()
+
+
+Here they are some examples on how to create some individuals 
+objects and define their populations.
+# Let's create a population:        # TODO: use best examples
+>>> pop1 = Population('greeks')
+
+# You can define an individual' population by 
+# defining its population field
+>>> ind1 = Individual('Archimede')
+>>> ind1.population = pop1
+
+# You can also do it by appending an individual to pop.individuals
+>>> ind2 = Individual('Spartacus')
+>>> pop1.individuals.append(ind2)
+
+# You can also define population and individuals at the same time  
+>>> ind3 = Individual('Democritus', population = 'greeks')
+>>> ind4 = Individual('ET', population = 'aliens')
+
+>>> pop1.individuals
+[Mr. ARCHIMEDE (greeks), Mr. SPARTACUS (greeks), Mr. DEMOCRITUS (greeks)]
+
+>>> session.commit()
+>>> Population.query().all()
+[greeks, aliens]
+>>> print Population.get_by(popname = 'aliens').individuals
+[Mr. ET (aliens)]
+"
