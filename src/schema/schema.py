@@ -117,15 +117,6 @@ class SNP(Entity):
         """
         pass
 
-#    def get_genotype_by_region(self, region, format='c'): # TODO: needed?
-#        """Given a chromosomal region, get its genotype
-#
-#        format can be:
-#        - c -> character 
-#        - n -> numerical (0, 1, 2)
-#        """
-#        pass
-
     @classmethod
     def get_snps_by_region(cls, chromosome, lower_limit, upper_limit):
         """
@@ -140,10 +131,10 @@ class SNP(Entity):
         SNP rs4970405,
         SNP rs12726255]
         """
-        snps = SNP.query.filter(SNP.chromosome == chromosome).filter(SNP.physical_position > lower_limit).\
+        snps = SNP.query.filter(SNP.chromosome == str(chromosome)).\
+            filter(SNP.physical_position > lower_limit).\
             filter(SNP.physical_position < upper_limit).all()
         snps.sort(key=lambda x:x.physical_position)
-#        print snps
         return snps
     
     def get_next_snp(self):
@@ -261,6 +252,23 @@ class Individual(Entity):
         """
         pass
     
+    @classmethod
+    def get_by_working_unit(cls, popname):
+        """
+        get all individuals belonging to a population working unit
+
+        >>> Individual.get_by_population('colombian')
+        [Mrs. HGDP00704 (colombian),
+        Mrs. HGDP00706 (colombian),
+        Mrs. HGDP00702 (colombian),
+        Mr. HGDP00710 (colombian),
+        Mrs. HGDP00970 (colombian),
+        Mr. HGDP00703 (colombian),
+        Mrs. HGDP00708 (colombian)]
+
+        """
+        inds = Individual.query.filter(Individual.population.has(working_unit = str(popname.lower()))).all()
+        return inds
     
 class Population(Entity):
     """ Table 'Population'
