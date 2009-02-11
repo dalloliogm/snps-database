@@ -118,7 +118,7 @@ class SNP(Entity):
         pass
 
     @classmethod
-    def get_snps_by_region(cls, chromosome, lower_limit, upper_limit):
+    def get_snps_by_region(cls, chromosome, lower_limit = 0, upper_limit = -1):
         """
         Get the snps within a region
         >>> print SNP.get_snps_by_region('11', 1000000, 1050000)
