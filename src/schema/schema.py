@@ -130,10 +130,17 @@ class SNP(Entity):
         SNP rs9651273,
         SNP rs4970405,
         SNP rs12726255]
+
+        note: if upper_limit == -1, get all the snps until the end of the chr.
         """
-        snps = SNP.query.filter(SNP.chromosome == str(chromosome)).\
-            filter(SNP.physical_position > lower_limit).\
-            filter(SNP.physical_position < upper_limit).all()
+        if upper_limit == -1:
+            snps = SNP.query.filter(SNP.chromosome == str(chromosome).upper()).\
+                filter(SNP.physical_position > lower_limit).all()
+        else:
+            snps = SNP.query.filter(SNP.chromosome == str(chromosome).upper()).\
+                filter(SNP.physical_position > lower_limit).\
+                filter(SNP.physical_position < upper_limit).all()
+
         snps.sort(key=lambda x:x.physical_position)
         return snps
     
