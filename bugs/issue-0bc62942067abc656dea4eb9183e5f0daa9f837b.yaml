@@ -5,8 +5,8 @@ type: :task
 component: HGDP database
 release: 
 reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2009-02-03 11:49:16.082286 Z
 references: []
 
@@ -15,4 +15,8 @@ log_events:
 - - 2009-02-03 11:49:17.810375 Z
   - Giovanni Dall'Olio <dalloliogm@gmail.com>
   - created
+  - ""
+- - 2009-02-11 10:56:08.886845 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - closed with disposition fixed
   - ""

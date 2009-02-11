@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: check Tu, Uygur and Xibo for continent (are they east or west asia?)
+desc: ""
+type: :task
+component: HGDP database
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-10 10:51:34.592575 Z
+references: []
+
+id: 3800267c9e74211c5aaf45c39f7cdbe8af8c2bfd
+log_events: 
+- - 2009-02-10 10:51:35.643509 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""
