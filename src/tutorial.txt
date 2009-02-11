@@ -1,0 +1,73 @@
+HGDP database APIs tutorial
+
+Welcome to the HGDP database APIs tutorial.
+This document will show you how to download these apis and how to use them to connect to my local hgdp database.
+
+################################################################################
+1. Download and Installation from Github
+The source code for these APIs is hosted on my online account on github:
+- http://github.com/dalloliogm/snps-database/tree/master
+
+It is recommended to use git to download the code, because this way it will be easier to keep the code update after.
+In case something goes wrong, you can find a 'download' link in the same page.
+If you want to contribute with code changes to the APIs, it would be easier if you open an account on github and store your branch of code there.
+It would be better for me, too, because then I will be able to change the repository into a private one and it will be better.
+
+
+################################################################################
+1b. Accessory libraries and modules needed
+There is a tool called 'easy_install' which is the official one used to download python packages (like CPAN for perl or CRAN for R).
+It is recommended to use it to install automatically all the modules indicated below, because it will save you time.
+
+On an Ubuntu/Debian distribution, you can install easy_install with this command:
+$: sudo apt-get install python-setuptools
+Otherwise, follow the instructions here:
+- http://peak.telecommunity.com/DevCenter/EasyInstall
+
+After installing easy_install, execute the following commands:
+$: sudo easy_install -U "nose>0.10" "sqlalchemy>0.5" "elixir>0.6" ipython
+the program will download and install automatically some files, and then you will be ready to use the APIs.
+Note that you can use easy_install to download most of the modules for python.
+
+
+################################################################################
+1c. Configuring the connection
+Once downloaded and unzipped, you should have a directory like this:
+|-- bugs
+|-- data
+|   |-- Annotations -> /home/gioby/Data/HGDP/Annotations/
+|   `-- Genotypes_by_chr -> /home/gioby/Data/HGDP/Genotypes_by_chr/
+|-- docs
+|   |-- Slides
+|   |-- UML
+|   |-- tutorial
+|   `-- use cases
+|-- src
+|   |-- HGDPIO
+|   |   `-- test
+|   |-- profiles
+|   |-- schema
+|   |   |-- recipes
+|   |   `-- tests
+|   |-- setupdb
+|   |-- sql_queries
+|   |-- test
+|   `-- utils
+`-- test
+
+Enter the 'src' directory: you will see a file called 'config_template.txt'.
+Open it and enter the parameters for your connection, and then save it as 'config.txt' in the same directory.
+
+
+################################################################################
+Testing and using the APIs
+In the src folder, there is a file called 'Makefile'. It contains some shortcuts to repeat some of the commands used more often.
+Execute 'make test' from the src dir (you will need to have the program 'make' installed, but most of the Linux distributions already have) to execute some tests:
+- if you see any error which looks like 'Import error', it means that you need to install some other library. Tell me because it means that I forgot to put it.
+- if you see any error which looks like 'connection error', check the parameters you put in config.txt.
+
+
+
+
+
+
