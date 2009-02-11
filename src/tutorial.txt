@@ -25,7 +25,7 @@ Otherwise, follow the instructions here:
 - http://peak.telecommunity.com/DevCenter/EasyInstall
 
 After installing easy_install, execute the following commands:
-$: sudo easy_install -U "nose>0.10" "sqlalchemy>0.5" "elixir>0.6" ipython
+$: sudo easy_install -U "nose>0.10" "sqlalchemy>0.5" "elixir>0.6" ipython pysqlite mysqldba
 the program will download and install automatically some files, and then you will be ready to use the APIs.
 Note that you can use easy_install to download most of the modules for python.
 
@@ -60,14 +60,175 @@ Open it and enter the parameters for your connection, and then save it as 'confi
 
 
 ################################################################################
-Testing and using the APIs
+1d. Testing and using the APIs
 In the src folder, there is a file called 'Makefile'. It contains some shortcuts to repeat some of the commands used more often.
 Execute 'make test' from the src dir (you will need to have the program 'make' installed, but most of the Linux distributions already have) to execute some tests:
 - if you see any error which looks like 'Import error', it means that you need to install some other library. Tell me because it means that I forgot to put it.
 - if you see any error which looks like 'connection error', check the parameters you put in config.txt.
 
+I wanted to create a 'make test_database' command to create a local mysql database so you could have been able to try it locally, but I didn't have time to do it.
 
 
+################################################################################
+1f. Documentation and recommended lectures
+These APIs use an ORM module called elixir to interact with the database.
+You can have a look at elixir's tutorial to have an idea of how it works:
+- http://elixir.ematia.de/trac/wiki/TutorialDivingIn
+
+Also, most of the querying part is documented in this document:
+- http://www.sqlalchemy.org/docs/05/session.html#querying (only the 'querying' part)
+
+
+################################################################################
+2. Connecting to the database
+The easiest way to connect to the database is to go to the 'src' directory and execute 'make connect'.
+You will have open an ipython shell (ipython is an extended consolle for python) already connected to the database.
+
+To connect manually, open a python shell and execute: 'from schema.connection import *'
+
+
+################################################################################
+2a. Usage examples
+
+Type dir() on the terminal to have a list of all the objects imported in the workspace: 
+>>> dir() 
+['Articles', ..., 'Individual', ..., 'Population', ..., 'RefSeqGene', ..., 'SNP', ...]
+
+
+The 'Articles', 'Individual', etc.. objects are classes that correspond both to the correspective tables in the database, and to the structure of an instance of every row in the table.
+You can retrieve a list of all the methods/properties available to any object with the dir() command:
+>>> dir(SNP)
+['__...__', 'add_genotype', 'allele1', 'allele2', .....]
+
+I know it can seem a bit confusing to have the methods relative to the table and to the instances in the same object, but it facilitates a lot the development.
+You can also retrieve help on an object with the python help() function:
+>>> help(SNP)
+|  Table 'SNPs'.
+|  
+|  This class represents both the table SNP, and the structure of an instance of a SNP object
+|  
+|  >>> rs1333 = SNP('rs1333')    # tests SNP.__init__
+|  >>> print rs1333              # tests SNP.__repr__
+|  SNP rs1333
+|  >>> rs1333.refseqgene = 'cox2' 
+| ...
+ 
+
+################################################################################ 
+2b. Query examples
+For the documentation, refer to the tutorials linked in section 1f of this file.
+
+- For querying, there are two syntaxes available: the first is from the elixir library,
+the second from sqlalchemy.
+
+Retrieve the list of all individuals:
+>>> session.query(Individual).all()
+[...]
+
+Retrieve the list of the first 100 snps in the db:
+>>> session.query(SNP).limit().all()
+[...]
+
+
+- Alternative elixir syntax:
+the following examples are equivalent to the previous ones, with a different syntax:
+Retrieve the list of all individuals:
+>>> Individual.query().all()
+[...]
+
+Retrieve the list of the first 100 snps in the db:
+>>> SNP.query().limit(100).all()
+[...]
+
+
+- Querying only specific fields:
+>>> session.query(SNP.id, SNP.genotypes).limit(2).all()
+[('rs10009279',
+  '1000012110.....'),
+  ('rs13125929',
+  '0000000000.....')]
+
+
+Selecting under particular conditions:
+>>> session.query(SNP).filter_by(chromosome = 'Y').all()
+[SNP rs2032590,
+SNP rs2058276,
+SNP rs1865680,
+SNP rs2032597,
+SNP rs2032624,
+SNP rs3848982,
+SNP rs2032612,
+SNP rs2032621,
+SNP rs2032617,
+SNP rs2032652]
+
+
+################################################################################
+2d. Special querying methods
+I have wrote some special methods to interrogate the database.
+
+- SNP.get_snps_by_region
+this method get all the snps in a specific region.
+e.g.: chromosome 1 between 1000000 and 1050000:
+>>> print SNP.get_snps_by_region('11', 1000000, 1050000)
+[SNP rs9442372,
+SNP rs3737728,
+SNP rs11260588,
+SNP rs9442398,
+SNP rs6687776,
+SNP rs9651273,
+SNP rs4970405,
+SNP rs12726255]
+
+- Individual.get_by_(working_unit/continent/continent_code)
+Get all the Individuals belonging to a continent/working unit
+>>> Individual.get_by_population('Europe')[0:5]
+[Mrs. HGDP01401 (adygei),
+Mrs. HGDP01388 (adygei),
+Mr. HGDP01383 (adygei),
+Mr. HGDP01403 (adygei),
+Mrs. HGDP01387 (adygei)]
+
+
+
+################################################################################
+2e. Playing with Individual objects
+
+Retrieve the individual in the first row of the Individual table, and save it as 'ind1':
+>>> ind1 = Individual.query().first()
+
+This is equivalent to:
+>>> ind1 = session.query(Individual).first()
+
+
+Print the individual ind1 (this executes the function schema.py/Individual.__repr__)
+>>> ind1
+Mr. HGDP01419 (bantukenya)
+
+Print ind1's population:
+>>> ind1.population
+bantukenya
+
+Print ind1's continent:
+>>> print ind1.population.continent_macroarea, ind1.population.continent_code
+africa SSAFR
+
+Individual's genotype on snp rs2078750:
+>>> ind1.get_genotype('rs2078750')  # here rs2078750 can be a snp object or a string
+'1'
+
+
+2f. Playing with SNPs methods
+
+>>> snp1 = SNP.query().filter_by(chromosome = '22').first()
+>>> print snp1
+SNP rs2078750
+
+>>> snp1.genotypes[0:30]    # only the first 30 genotypes
+'101110201010120001011011001000'
+
+>>> snp1.allele1
+u'T'
 
 
 
