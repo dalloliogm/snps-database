@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: tests for the get_genotypes and get_by_workingunit/continent
+desc: ""
+type: :bugfix
+component: database schema
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-11 11:23:17.122749 Z
+references: []
+
+id: eb044dc6a001078821bf669cd3abc53ad215930f
+log_events: 
+- - 2009-02-11 11:23:17.667438 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""

@@ -264,7 +264,7 @@ class Individual(Entity):
         - a SNP instance
         - a list of SNP instances
 
-        >>> snp1, snp2 = SNP.query().limit(2).all()
+#        >>> snp1, snp2 = SNP.query().limit(2).all()
         >>> ind1 = Individual.query().first()
         >>> ind.get_genotypes('rs10009279')
         '1'
@@ -279,8 +279,36 @@ class Individual(Entity):
             genotype = snp.genotypes[self.genotypes_index]
         return genotype
 
-        pass
-    
+    @classmethod
+    def get_by_continent(cls, continent):
+        """
+        get all individuals belonging to a population working unit
+
+        >>> Individual.get_by_population('Europe')[0:5]
+        [Mrs. HGDP01401 (adygei),
+         Mrs. HGDP01388 (adygei),
+         Mr. HGDP01383 (adygei),
+         Mr. HGDP01403 (adygei),
+         Mrs. HGDP01387 (adygei)]
+        """
+        inds = Individual.query.filter(Individual.population.has(continent_macroarea = str(continent.lower()))).all()
+        return inds
+ 
+    @classmethod
+    def get_by_continent_code(cls, continent_code):
+        """
+        get all individuals belonging to a population working unit
+
+        >>> Individual.get_by_population('Europe')[0:5]
+        [Mrs. HGDP01401 (adygei),
+         Mrs. HGDP01388 (adygei),
+         Mr. HGDP01383 (adygei),
+         Mr. HGDP01403 (adygei),
+         Mrs. HGDP01387 (adygei)]
+        """
+        inds = Individual.query.filter(Individual.population.has(continent_code = str(continent_code.upper()))).all()
+        return inds
+ 
     @classmethod
     def get_by_working_unit(cls, popname):
         """
@@ -288,12 +316,12 @@ class Individual(Entity):
 
         >>> Individual.get_by_population('colombian')
         [Mrs. HGDP00704 (colombian),
-        Mrs. HGDP00706 (colombian),
-        Mrs. HGDP00702 (colombian),
-        Mr. HGDP00710 (colombian),
-        Mrs. HGDP00970 (colombian),
-        Mr. HGDP00703 (colombian),
-        Mrs. HGDP00708 (colombian)]
+         Mrs. HGDP00706 (colombian),
+         Mrs. HGDP00702 (colombian),
+         Mr. HGDP00710 (colombian),
+         Mrs. HGDP00970 (colombian),
+         Mr. HGDP00703 (colombian),
+         Mrs. HGDP00708 (colombian)]
 
         """
         inds = Individual.query.filter(Individual.population.has(working_unit = str(popname.lower()))).all()
@@ -396,5 +424,4 @@ def _test():
     
 if __name__ == '__main__':
     _test()
-    # could launch test_insert_data here?
-#    from elixir import setup_all, create_all, session
+
