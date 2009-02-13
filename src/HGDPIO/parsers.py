@@ -235,11 +235,11 @@ def genotypes_parser(handle, ):
 
                 if allele1_is_set is not True:
                     if current_genotype[0] in ('A', 'T'):
-                        snp.allele1 = unicode(current_genotype[0].upper())
+                        snp.allele1 = current_genotype[0].upper()
                         allele1_is_set = True
                 if allele2_is_set is not True:
                     if current_genotype[1] in ('C', 'G'):
-                        snp.allele2 = unicode(current_genotype[1].upper())
+                        snp.allele2 = current_genotype[1].upper()
                         allele2_is_set = True
 #    session.commit()
 

@@ -47,8 +47,8 @@ class SNP(Entity):
     previous_snp        = OneToOne('SNP')
 
     # allele1 can be only A or T. allele2 only C or G
-    allele1             = Field(Enum(values=(u'A', u'T', u'-')))
-    allele2             = Field(Enum(values=(u'C', u'G', u'-')))
+    allele1             = Field(Enum(values=('A', 'T', '-')))
+    allele2             = Field(Enum(values=('C', 'G', '-')))
     derived_allele      = Field(String(1))
 #    dbSNP_ref           = Field(String(10)) # TODO: check if necessary ()
     
@@ -76,7 +76,7 @@ class SNP(Entity):
     genotypes_file      = Field(String(80)) # input file containing the genotypes
     genomic_build       = Field(String(40)) # build on ucsc
 
-    def __init__(self, id, chromosome = '', genotypes = '', allele1=u'-', allele2=u'-'):
+    def __init__(self, id, chromosome = '', genotypes = '', allele1='-', allele2='-'):
         self.id = id
         self.chromosome = chromosome
         self.genotypes = genotypes
