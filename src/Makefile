@@ -1,5 +1,5 @@
 connect:
-	ipython -c 'from schema.connection import *'
+	ipython -i -c 'from schema.connection import *'
 
 test_all: test_hgdpio test_schema
 

@@ -15,6 +15,7 @@ from elixir import metadata, using_options
 from elixir.ext.versioned import acts_as_versioned
 from config import connection_line
 from datetime import datetime
+import logging
 
 #from PopGen.Gio.Individual import Individual
 #from PopGen.Gio.SNP import SNP
@@ -88,17 +89,11 @@ class SNP(Entity):
 
     def get_dbSNP_url(self):
         """get the url to dbSNP"""
-        pass
+        raise NotImplementedError
 
     def get_ensembl_ref(self):
         """get the url to ensembl (put this in RefSeqGene?)"""
-        pass
-
-    def add_genotype(self, genotype):
-        """add genotypes"""
-        # check that 'genotype' only contains 0, 1, 2
-        # update table
-        pass
+        raise NotImplementedError
 
     def get_genes(self, upstream, downstream):
         """Get genes in an interval of [upstream, downstream] from the snp position
@@ -106,16 +101,62 @@ class SNP(Entity):
         >>> rs1333.get_genes(100, 100)
         -> all genes 100 upstream or downstream the position
         """
-        pass
+        raise NotImplementedError
+
+    def add_genotype(self, genotype):
+        """add genotypes"""
+        # check that 'genotype' only contains 0, 1, 2
+        # update table
+        raise NotImplementedError
 
     def get_genotype_by_individuals(self, individuals, format='c'):
         """Given a list of individuals, get its genotype
+
+        >>> snp = SNP.query().first()
+        >>> snp.get_genotype_by_individuals(individuals = ('HGDP00001', 'HGDP01419'))
+        [193L, 791L]
 
         format can be:
         - c -> character 
         - n -> numerical (0, 1, 2)
         """
-        pass
+        genotypes = []
+        for ind in individuals:
+            if isinstance(ind, Individual):
+                ind_index = ind.genotypes_index
+            elif isinstance(ind, str):
+#                logging.debug(ind)
+                ind_obj = Individual.query().filter_by(name = ind.strip()).first()
+                if ind_obj is None:
+                    return 'Could not find individual %s' % ind
+                ind_index = ind_obj.genotypes_index
+
+            if format == 'c':
+                genotypes.append(self.get_genotype_char(ind_index))
+            else:
+                genotypes.append(ind_obj.genotypes_index)
+        return genotypes
+
+    def get_genotype_char(self, ind_index):
+        """
+        Get the genotype in the 'character' format.
+
+        e.g. instead of [0, 1, 2, 9]
+        get ['AA', 'AG', 'GG', 'CC', 'CT', 'TT']
+        """
+        bin_genotype = self.genotypes[ind_index]
+#        logging.debug(bin_genotype, type(bin_genotype))
+
+        char_genotype = ''
+        if bin_genotype == '9':
+            char_genotype = '--'
+        elif bin_genotype == '0':
+            char_genotype = self.allele1 + self.allele1
+        elif bin_genotype == '1':
+            char_genotype = self.allele1 + self.allele2
+        elif bin_genotype == '2':
+            char_genotype = self.allele2 + self.allele2
+        return char_genotype
 
     @classmethod
     def get_snps_by_region(cls, chromosome, lower_limit = 0, upper_limit = -1):
