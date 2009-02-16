@@ -24,4 +24,4 @@ password =
 # Base data dir
 data_dir = /home/gioby/workspace/HGDP database/data
 # Refseq annotations - remember to annotate the date or the release
-refseq_annotations = $(data_dir)s/Annotations/ucsc/genes_refseq.csv
+refseq_annotations = %(data_dir)s/Annotations/ucsc/genes_refseq.csv
