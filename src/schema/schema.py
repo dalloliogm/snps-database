@@ -109,7 +109,7 @@ class SNP(Entity):
         # update table
         raise NotImplementedError
 
-    def get_genotype_by_individuals(self, individuals, format='c'):
+    def get_genotype_by_individuals(self, individuals, format='n'):
         """Given a list of individuals, get its genotype
 
         >>> snp = SNP.query().first()
