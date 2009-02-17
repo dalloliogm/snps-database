@@ -98,16 +98,24 @@ class SNP(Entity):
     def get_genes(self, upstream, downstream):
         """Get genes in an interval of [upstream, downstream] from the snp position
         
+        >>> from debug_database import *
         >>> rs1333 = SNP('rs1333')
         >>> rs1333.chromosome = '11'
         >>> rs1333.physical_position = 900
+
+
+        ### INCLUSION CRITERIAS ###
+        Let's say we want to get all genes 100 upstream or downstream the position,
+            so from 800 to 1000 on chromosome 11.
+
+        >>> gene1 = RefSeqGene('gene1', 11, 700, 800)   # not included 
+        >>> gene2 = RefSeqGene('gene2', 11, 700, 810)   # not included, it ends within the interval but it starts before
+        >>> gene3 = RefSeqGene('gene3', 11, 800, 900)   # included
+        >>> gene4 = RefSeqGene('gene4', 11, 900, 1000)  # included
+        >>> gene5 = RefSeqGene('gene5', 11, 1000, 1100) # not included 
+
         >>> rs1333.get_genes(100, 100)
-        -> all genes 100 upstream or downstream the position,
-        from 800 to 1000 on chromosome 11
-
-        The genes are included if they 
-
-        >>> gene1 = RefSeqGene()
+        [gene3, gene4]
         """
         if not isinstance(upstream, int) and not isinstance(downstream, int):
             raise TypeError("SNP.get_genes requires two integers as input")
@@ -487,7 +495,7 @@ class RefSeqGene(Entity):
 
     def __init__(self, ncbi_id, chromosome, cdsStart, cdsEnd):
         self.ncbi_transcript_id = ncbi_id.upper()
-        self.chromosome = chromosome.lower()
+        self.chromosome = str(chromosome).lower()
         self.cdsStart = int(cdsStart)
         self.cdsEnd = int(cdsEnd)
 
