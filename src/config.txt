@@ -7,13 +7,13 @@ DBMS = mysql
 # Data base name
 db_name = hgdp
 # Database Host
-host = 172.22.1.247
+host = localhost
 # Data base connection port. Defaults: mysql 3306, postrgres 5432
 port = 3306
 # Data_base user_name
-user = hafid
+user = root
 # Data_base password
-password = 
+password = kl0043i
 # ********************************************************** 
 
 
@@ -22,6 +22,6 @@ password =
 #---------------------------------------------------------------------
 [Data files]
 # Base data dir
-data_dir = /home/gioby/workspace/HGDP database/data
+data_dir = /home/gioby/workspace/HGDP_database/data
 # Refseq annotations - remember to annotate the date or the release
-refseq_annotations = %(data_dir)s/Annotations/ucsc/genes_refseq.csv
+refseq_annotations = %(data_dir)s/Annotations/ucsc/genes_refseq_mar2006.csv

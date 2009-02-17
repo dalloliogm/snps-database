@@ -447,7 +447,7 @@ class RefSeqGene(Entity):
 
     genomic_build = Field(String(20))
 
-    chromosome = Field(String(3))
+    chromosome = Field(String(10))
     strand = Field(Enum(('-', '+', None)))
     txStart = Field(Integer)
     txEnd = Field(Integer)
@@ -457,8 +457,8 @@ class RefSeqGene(Entity):
     exonStarts = Field(Text)
     exonEnds = Field(Text)
     alternateName = Field(String(100))
-    cdsStart = Field(Integer)
-    cdsEnd = Field(Integer)
+    cdsStartStat = Field(Integer)
+    cdsEndStat = Field(Integer)
     exonFrames = Field(Text)
 
     source_file = Field(String(50))
