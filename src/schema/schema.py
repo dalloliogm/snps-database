@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # Create a database for HGDP data
 """
-This is the schema for a database designed to handle HGDP SNPs data.
 To use it, you should better use 'from connection import *' (see connection.py
 script) to use the existing MySql database on my computer.
 
@@ -33,12 +32,14 @@ class SNP(Entity):
     >>> rs1333 = SNP('rs1333')    # tests SNP.__init__
     >>> print rs1333              # tests SNP.__repr__
     SNP rs1333
-    >>> rs1333.refseqgene = 'cox2' 
 
     Let's add six genotypes. The first individual is homozygote for 'allele2', 
 
     >>> rs1333.add_genotype('200109')
-    >>> session.clear()
+    Traceback (most recent call last):
+    ...
+    NotImplementedError
+    >>> session.close()
     """
     using_options(tablename = 'snps')
     
@@ -60,7 +61,7 @@ class SNP(Entity):
     haplotypes_index    = Field(Integer)
     
     # Reference to closest gene 
-    refseqgene          = ManyToOne('RefSeqGene')
+    refseqgene          = ManyToOne('RefSeqGene')       # deprecate!! 
     # The following annotations come from a file called HumanHap650v3GeneAnnotation
 
     hap_chromosome = Field(String(10))
@@ -123,7 +124,8 @@ class SNP(Entity):
         >>> rs1333.get_genes(100, 100)
         [gene3, gene4]
 
-        >>> session.clear()
+        >>> session.close()
+        >>> drop_all()
         """
         if not isinstance(upstream, int) and not isinstance(downstream, int):
             raise TypeError("SNP.get_genes requires two integers as input")
@@ -160,7 +162,7 @@ class SNP(Entity):
         format can be:
         - c -> character 
         - n -> numerical (0, 1, 2)
-        >>> session.clear()
+        >>> session.close()
         """
         genotypes = []
         for ind in individuals:
@@ -205,19 +207,12 @@ class SNP(Entity):
         """
         Get the snps within a region
         >>> from connection import *    # be careful - don't write anything to the db!
-        >>> print SNP.get_snps_by_region('11', 1000000, 1050000)
-        [SNP rs9442372,
-        SNP rs3737728,
-        SNP rs11260588,
-        SNP rs9442398,
-        SNP rs6687776,
-        SNP rs9651273,
-        SNP rs4970405,
-        SNP rs12726255]
+        >>> print SNP.get_snps_by_region('1', 1000000, 1050000)
+        [SNP rs9442372, SNP rs3737728, SNP rs11260588, SNP rs9442398, SNP rs6687776, SNP rs9651273, SNP rs4970405, SNP rs12726255]
 
         note: if upper_limit == -1, get all the snps until the end of the chr.
 
-        >>> session.clear()
+        >>> session.close()
         """
         if upper_limit == -1:
             snps = SNP.query.filter(SNP.chromosome == str(chromosome).upper()).\
@@ -260,6 +255,7 @@ class Articles(Entity):
 class Individual(Entity):
     """ Table 'Individuals'
     
+    >>> session.close()
     >>> from debug_database import *
     >>> print metadata
     MetaData(Engine(sqlite:///:memory:))
@@ -277,7 +273,7 @@ class Individual(Entity):
     >>> print ind2.population
     vesuvians
     
-    >>> session.clear()
+    >>> session.close()
     """
     using_options(tablename = 'individuals')
     
@@ -344,10 +340,10 @@ class Individual(Entity):
     def __ne__(self, other):
         return self.name != str(other).upper()
    
-    def genotypes(self, list_of_snps):
+    def get_genotypes(self, list_of_snps):
         """Given a list of snps, the their genotypes
         """
-        if isinstance(list):
+        if isinstance(list_of_snps, list):
             pass
         pass
           
@@ -365,12 +361,12 @@ class Individual(Entity):
 
 #        >>> snp1, snp2 = SNP.query().limit(2).all()
         >>> ind1 = Individual.query().first()
-        >>> ind.get_genotypes('rs10009279')
+        >>> ind1.get_genotypes('rs10009279')
         '1'
         
-        >>> ind.get_genotypes(rs10009279, rs13125929)
+        >>> ind1.get_genotypes(rs10009279, rs13125929)
 
-        >>> session.clear()
+        >>> session.close()
         """
         genotype = ''
         if isinstance(snp, str):
@@ -387,13 +383,9 @@ class Individual(Entity):
 
         >>> from connection import *
         >>> Individual.get_by_continent('Europe')[0:5]
-        [Mrs. HGDP01401 (adygei),
-         Mrs. HGDP01388 (adygei),
-         Mr. HGDP01383 (adygei),
-         Mr. HGDP01403 (adygei),
-         Mrs. HGDP01387 (adygei)]
+        [Mrs. HGDP01401 (adygei), Mrs. HGDP01388 (adygei), Mr. HGDP01383 (adygei), Mr. HGDP01403 (adygei), Mrs. HGDP01387 (adygei)]
 
-        >>> session.clear()
+        >>> session.close()
         """
         inds = Individual.query.filter(Individual.population.has(continent_macroarea = str(continent.lower()))).all()
         return inds
@@ -404,14 +396,10 @@ class Individual(Entity):
         get all individuals belonging to a population working unit
 
         >>> from connection import *
-        >>> Individual.get_by_population('Europe')[0:5]
-        [Mrs. HGDP01401 (adygei),
-         Mrs. HGDP01388 (adygei),
-         Mr. HGDP01383 (adygei),
-         Mr. HGDP01403 (adygei),
-         Mrs. HGDP01387 (adygei)]
+        >>> Individual.get_by_continent_code('EUR')[0:5]
+        [Mrs. HGDP01401 (adygei), Mrs. HGDP01388 (adygei), Mr. HGDP01383 (adygei), Mr. HGDP01403 (adygei), Mrs. HGDP01387 (adygei)]
 
-        >>> session.clear()
+        >>> session.close()
         """
         inds = Individual.query.filter(Individual.population.has(continent_code = str(continent_code.upper()))).all()
         return inds
@@ -422,16 +410,10 @@ class Individual(Entity):
         get all individuals belonging to a population working unit
 
         >>> from connection import *
-        >>> Individual.get_by_population('colombian')
-        [Mrs. HGDP00704 (colombian),
-         Mrs. HGDP00706 (colombian),
-         Mrs. HGDP00702 (colombian),
-         Mr. HGDP00710 (colombian),
-         Mrs. HGDP00970 (colombian),
-         Mr. HGDP00703 (colombian),
-         Mrs. HGDP00708 (colombian)]
+        >>> Individual.get_by_working_unit('colombian')
+        [Mrs. HGDP00704 (colombian), Mrs. HGDP00706 (colombian), Mrs. HGDP00702 (colombian), Mr. HGDP00710 (colombian), Mrs. HGDP00970 (colombian), Mr. HGDP00703 (colombian), Mrs. HGDP00708 (colombian)]
 
-        >>> session.clear()
+        >>> session.close()
         """
         inds = Individual.query.filter(Individual.population.has(working_unit = str(popname.lower()))).all()
         return inds
@@ -457,7 +439,7 @@ class Population(Entity):
     >>> martians.continent_macroarea = 'Mars'    # will give you trouble
     ...                                          # because is not lowercase.
 
-    >>> session.clear()
+    >>> session.close()
     
     """
     using_options(tablename = 'populations')
