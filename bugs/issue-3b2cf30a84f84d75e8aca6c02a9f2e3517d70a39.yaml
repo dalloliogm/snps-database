@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: SNP.get_next_snp method (test)
+desc: ""
+type: :task
+component: database schema
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-17 18:19:35.327688 Z
+references: []
+
+id: 3b2cf30a84f84d75e8aca6c02a9f2e3517d70a39
+log_events: 
+- - 2009-02-17 18:19:36.003539 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""

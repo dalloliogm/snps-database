@@ -125,8 +125,10 @@ class SNP(Entity):
         >>> gene4 = RefSeqGene('gene4', 11, 900, 1000)  # included
         >>> gene5 = RefSeqGene('gene5', 11, 1000, 1100) # not included 
 
+        >>> genereverse = RefSeqGene('genereverse', 11, 900, 800)   # included
+
         >>> rs1333.get_genes(100, 100)
-        [gene GENE3 on chromosome 11 (800-900), gene GENE4 on chromosome 11 (900-1000)]
+        [gene GENE3 on chromosome 11 (800-900), gene GENE4 on chromosome 11 (900-1000), gene GENEREVERSE on chromosome 11 (900-800)]
 
         >>> session.close()
         """
@@ -250,6 +252,8 @@ class SNP(Entity):
         [SNP rs9442372, SNP rs3737728, SNP rs11260588, SNP rs9442398, SNP rs6687776, SNP rs9651273, SNP rs4970405, SNP rs12726255]
 
         note: if upper_limit == -1, get all the snps until the end of the chr.
+        >>> SNP.get_snps_by_region('Y', -1, 13000000)
+        [SNP rs2058276, SNP rs1865680]
 
         >>> session.close()
         """
@@ -267,8 +271,10 @@ class SNP(Entity):
     def get_next_snp(self):
         """get the next SNP on the chromosome
         """
-        return SNP.get_by(id = self.next_snp)
-    
+#        return SNP.get_by(id = self.next_snp)
+        return SNP.query().filter_by(chromosome = self.chromosome).\
+                filter(SNP.physical_position > self.physical_position).order_by(SNP.physical_position).first()
+        
     def get_previous_snp(self):
         """get the previous SNP on the chromosome
         """
