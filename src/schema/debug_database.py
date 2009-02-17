@@ -14,3 +14,4 @@ print 'using test database %s ' % metadata.bind
 setup_all()
 create_all()
 
+session.clear()
