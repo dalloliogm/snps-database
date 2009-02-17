@@ -42,7 +42,6 @@ class SNP(Entity):
     ...
     NotImplementedError
     >>> session.close()
-    >>> del metadata, session
     """
     using_options(tablename = 'snps')
     
@@ -130,7 +129,6 @@ class SNP(Entity):
         [gene GENE3 on chromosome 11 (800-900), gene GENE4 on chromosome 11 (900-1000)]
 
         >>> session.close()
-        >>> del metadata, session
         """
         if not isinstance(upstream, int) and not isinstance(downstream, int):
             raise TypeError("SNP.get_genes requires two integers as input")
@@ -157,6 +155,10 @@ class SNP(Entity):
     def get_genotype_by_individuals(self, individuals, format='n'):
         """Given a list of individuals, get its genotype
 
+        format can be:
+        - c -> character 
+        - n -> numerical (0, 1, 2)
+
         >>> from connection import *
         >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp'
         >>> setup_all()
@@ -168,11 +170,7 @@ class SNP(Entity):
         >>> snp.get_genotype_by_individuals(individuals = ('HGDP00001', 'HGDP01419'), format = 'c')
         [u'TT', u'TC']
 
-        format can be:
-        - c -> character 
-        - n -> numerical (0, 1, 2)
-        >>> session.close()
-        >>> del metadata, session
+       >>> session.close()
         """
         genotypes = []
         for ind in individuals:
@@ -225,7 +223,6 @@ class SNP(Entity):
         note: if upper_limit == -1, get all the snps until the end of the chr.
 
         >>> session.close()
-        >>> del metadata, session
         """
         if upper_limit == -1:
             snps = SNP.query.filter(SNP.chromosome == str(chromosome).upper()).\
@@ -288,7 +285,6 @@ class Individual(Entity):
     vesuvians
     
     >>> session.close()
-    >>> del metadata, session
     """
     using_options(tablename = 'individuals')
     
@@ -384,7 +380,6 @@ class Individual(Entity):
         >>> ind1.get_genotypes((snp1, snp2))
 
         >>> session.close()
-        >>> del metadata, session
         """
         genotype = ''
         if isinstance(snp, str):
@@ -406,7 +401,6 @@ class Individual(Entity):
         [Mrs. HGDP01401 (adygei), Mrs. HGDP01388 (adygei), Mr. HGDP01383 (adygei), Mr. HGDP01403 (adygei), Mrs. HGDP01387 (adygei)]
 
         >>> session.close()
-        >>> del metadata, session
         """
         inds = Individual.query.filter(Individual.population.has(continent_macroarea = str(continent.lower()))).all()
         return inds
@@ -423,7 +417,6 @@ class Individual(Entity):
         [Mrs. HGDP01401 (adygei), Mrs. HGDP01388 (adygei), Mr. HGDP01383 (adygei), Mr. HGDP01403 (adygei), Mrs. HGDP01387 (adygei)]
 
         >>> session.close()
-        >>> del metadata, session
         """
         inds = Individual.query.filter(Individual.population.has(continent_code = str(continent_code.upper()))).all()
         return inds
@@ -440,7 +433,6 @@ class Individual(Entity):
         [Mrs. HGDP00704 (colombian), Mrs. HGDP00706 (colombian), Mrs. HGDP00702 (colombian), Mr. HGDP00710 (colombian), Mrs. HGDP00970 (colombian), Mr. HGDP00703 (colombian), Mrs. HGDP00708 (colombian)]
 
         >>> session.close()
-        >>> del metadata, session
         """
         inds = Individual.query.filter(Individual.population.has(working_unit = str(popname.lower()))).all()
         return inds
@@ -469,7 +461,6 @@ class Population(Entity):
     ...                                          # because is not lowercase.
 
     >>> session.close()
-    >>> del metadata, session
     
     """
     using_options(tablename = 'populations')
