@@ -27,6 +27,8 @@ class SNP(Entity):
     This class represents both the table SNP, and the structure of an instance of a SNP object
     
     >>> from debug_database import *
+    >>> metadata.bind = 'sqlite:///:memory:'
+    >>> setup_all(); create_all()
     >>> print metadata
     MetaData(Engine(sqlite:///:memory:))
     >>> rs1333 = SNP('rs1333')    # tests SNP.__init__
@@ -125,7 +127,7 @@ class SNP(Entity):
         >>> gene5 = RefSeqGene('gene5', 11, 1000, 1100) # not included 
 
         >>> rs1333.get_genes(100, 100)
-        [gene3, gene4]
+        [gene GENE3 on chromosome 11 (800-900), gene GENE4 on chromosome 11 (900-1000)]
 
         >>> session.close()
         >>> del metadata, session
@@ -267,6 +269,8 @@ class Individual(Entity):
     """ Table 'Individuals'
     
     >>> from debug_database import *
+    >>> metadata.bind = 'sqlite:///:memory:'
+    >>> setup_all(); create_all()
     >>> print metadata
     MetaData(Engine(sqlite:///:memory:))
     >>> ind = Individual('Einstein')
@@ -447,6 +451,8 @@ class Population(Entity):
     Population supports a methods called 'get_by_or_init', which enable you 
     to create an object in case it doesn't exists already.
     >>> from debug_database import *
+    >>> metadata.bind = 'sqlite:///:memory:'
+    >>> setup_all(); create_all()
     >>> print metadata
     MetaData(Engine(sqlite:///:memory:))
     >>> martians = Population('martians')
@@ -540,6 +546,9 @@ class RefSeqGene(Entity):
         self.chromosome = str(chromosome).lower()
         self.cdsStart = int(cdsStart)
         self.cdsEnd = int(cdsEnd)
+
+    def __repr__(self):
+        return "gene %s on chromosome %s (%i-%i)" % (self.ncbi_transcript_id, self.chromosome, self.cdsStart, self.cdsEnd)
 
 
     

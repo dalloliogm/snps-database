@@ -9,7 +9,6 @@ from config import connection_line
 from schema import *
 
 metadata.bind = 'sqlite:///:memory:'
-print 'using test database %s ' % metadata.bind
 #metadata.bind.echo = True
 setup_all()
 create_all()
