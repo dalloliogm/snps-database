@@ -23,4 +23,10 @@ upload_database: setupdb/create_database.py setupdb/insert_individuals.py setupd
 
 	@echo "Updating map (chromosome and position) information for snps"
 	python setupdb/insert_mapinfos.py
+	
+	@make upload_genesrefseq
+
+upload_genesrefseq:
+	python setupdb/setup_refseqgenes.py
+	python setupdb/insert_refseqgenes.py
 
