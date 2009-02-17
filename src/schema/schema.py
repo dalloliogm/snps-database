@@ -155,6 +155,10 @@ class SNP(Entity):
     def get_genotype_by_individuals(self, individuals, format='n'):
         """Given a list of individuals, get its genotype
 
+        individuals can be:
+        - a single string (corresponding to an individual.id) or Individual object;
+        - a list of strings or of Individual objects.
+
         format can be:
         - c -> character 
         - n -> numerical (0, 1, 2)
@@ -164,29 +168,54 @@ class SNP(Entity):
         >>> setup_all()
 
         >>> snp = SNP.query().first()
+        >>> snp.get_genotype_by_individuals('HGDP00001')
+        [193L]
+
         >>> snp.get_genotype_by_individuals(individuals = ('HGDP00001', 'HGDP01419'), format = 'n')
         [193L, 791L]
         
         >>> snp.get_genotype_by_individuals(individuals = ('HGDP00001', 'HGDP01419'), format = 'c')
         [u'TT', u'TC']
 
-       >>> session.close()
+        >>> session.close()
         """
         genotypes = []
-        for ind in individuals:
-            if isinstance(ind, Individual):
-                ind_index = ind.genotypes_index
-            elif isinstance(ind, str):
-#                logging.debug(ind)
-                ind_obj = Individual.query().filter_by(name = ind.strip()).first()
+
+        # case 1: individuals is a single individual id, or object
+        if isinstance(individuals, str) or isinstance(individuals, Individual):
+            if isinstance(individuals, str):
+                ind_obj = Individual.query().filter_by(name = individuals.strip()).first()
                 if ind_obj is None:
                     return 'Could not find individual %s' % ind
+                logging.debug(ind_obj)
                 ind_index = ind_obj.genotypes_index
-
+            elif isinstance(individuals, Individual):
+                print 'dddd'
+                ind_index = individuals.genotypes_index
             if format == 'c':
                 genotypes.append(self.get_genotype_char(ind_index))
             else:
                 genotypes.append(ind_obj.genotypes_index)
+ 
+        # case 2: individuals is a list of individuals
+        elif isinstance(individuals, list) or isinstance(individuals, tuple):
+            for ind in individuals:
+                if isinstance(ind, Individual):
+                    ind_index = ind.genotypes_index
+                elif isinstance(ind, str):
+#                logging.debug(ind)
+                    ind_obj = Individual.query().filter_by(name = ind.strip()).first()
+                    if ind_obj is None:
+                        return 'Could not find individual %s' % ind
+                    ind_index = ind_obj.genotypes_index
+
+                if format == 'c':
+                    genotypes.append(self.get_genotype_char(ind_index))
+                else:
+                    genotypes.append(ind_obj.genotypes_index)
+        else:
+            raise TypeError("individuals should be a list of string or Individual objects, or a single individual/string")
+
         return genotypes
 
     def get_genotype_char(self, ind_index):
