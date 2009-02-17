@@ -10,6 +10,8 @@ def upload_annotations(refseq_annotations_fh, session, metadata):
     upload annotations
 
     >>> from schema.debug_database import *
+    >>> print metadata
+    MetaData(Engine(sqlite:///:memory:))
     >>> annotations = StringIO.StringIO('''\
     ... "NR_024077" "chr1"  "-" 4268    14754   14754   14754   10  "4268,4832,5658,6469,"   "4692,4901,5810,6631,6918"   "WASH2P"    "unk"   "unk"   "-1,-1,-1,-1,"
     ... "NM_001005484"  "chr1"  "+" 58953   59871   58953   59871   1   58953   59871   "OR4F5" "cmpl"  "cmpl"  0

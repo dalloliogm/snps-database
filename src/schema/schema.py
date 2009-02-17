@@ -27,6 +27,9 @@ class SNP(Entity):
     
     This class represents both the table SNP, and the structure of an instance of a SNP object
     
+    >>> from debug_database import *
+    >>> print metadata
+    MetaData(Engine(sqlite:///:memory:))
     >>> rs1333 = SNP('rs1333')    # tests SNP.__init__
     >>> print rs1333              # tests SNP.__repr__
     SNP rs1333
@@ -35,6 +38,7 @@ class SNP(Entity):
     Let's add six genotypes. The first individual is homozygote for 'allele2', 
 
     >>> rs1333.add_genotype('200109')
+    >>> session.clear()
     """
     using_options(tablename = 'snps')
     
@@ -99,6 +103,8 @@ class SNP(Entity):
         """Get genes in an interval of [upstream, downstream] from the snp position
         
         >>> from debug_database import *
+        >>> print metadata
+        MetaData(Engine(sqlite:///:memory:))
         >>> rs1333 = SNP('rs1333')
         >>> rs1333.chromosome = '11'
         >>> rs1333.physical_position = 900
@@ -116,11 +122,13 @@ class SNP(Entity):
 
         >>> rs1333.get_genes(100, 100)
         [gene3, gene4]
+
+        >>> session.clear()
         """
         if not isinstance(upstream, int) and not isinstance(downstream, int):
             raise TypeError("SNP.get_genes requires two integers as input")
         
-        if (chromosome is None) or (physical_position is None):
+        if (self.chromosome is None) or (self.physical_position is None):
             raise ValueError('unknown coordinates for current snp')
 
         # get the proper interval where to find genes
@@ -129,7 +137,7 @@ class SNP(Entity):
 
         genes = RefSeqGene.query().filter_by(chromosome = self.chromosome).\
                                         filter_by(cdsStart >= lower_limit).\
-                                        filter_by(cdsEnd =< upper_limit).all()
+                                        filter_by(cdsEnd <= upper_limit).all()
         return genes
 
 
@@ -142,6 +150,9 @@ class SNP(Entity):
     def get_genotype_by_individuals(self, individuals, format='n'):
         """Given a list of individuals, get its genotype
 
+        >>> from debug_database import *
+        >>> print metadata
+        MetaData(Engine(sqlite:///:memory:))
         >>> snp = SNP.query().first()
         >>> snp.get_genotype_by_individuals(individuals = ('HGDP00001', 'HGDP01419'))
         [193L, 791L]
@@ -149,6 +160,7 @@ class SNP(Entity):
         format can be:
         - c -> character 
         - n -> numerical (0, 1, 2)
+        >>> session.clear()
         """
         genotypes = []
         for ind in individuals:
@@ -192,6 +204,7 @@ class SNP(Entity):
     def get_snps_by_region(cls, chromosome, lower_limit = 0, upper_limit = -1):
         """
         Get the snps within a region
+        >>> from connection import *    # be careful - don't write anything to the db!
         >>> print SNP.get_snps_by_region('11', 1000000, 1050000)
         [SNP rs9442372,
         SNP rs3737728,
@@ -203,6 +216,8 @@ class SNP(Entity):
         SNP rs12726255]
 
         note: if upper_limit == -1, get all the snps until the end of the chr.
+
+        >>> session.clear()
         """
         if upper_limit == -1:
             snps = SNP.query.filter(SNP.chromosome == str(chromosome).upper()).\
@@ -245,6 +260,9 @@ class Articles(Entity):
 class Individual(Entity):
     """ Table 'Individuals'
     
+    >>> from debug_database import *
+    >>> print metadata
+    MetaData(Engine(sqlite:///:memory:))
     >>> ind = Individual('Einstein')
     >>> ind                              # Test __repr__ method
     Mr. EINSTEIN (None)
@@ -259,6 +277,7 @@ class Individual(Entity):
     >>> print ind2.population
     vesuvians
     
+    >>> session.clear()
     """
     using_options(tablename = 'individuals')
     
@@ -342,12 +361,16 @@ class Individual(Entity):
         - a SNP instance
         - a list of SNP instances
 
+        >>> from connection import *
+
 #        >>> snp1, snp2 = SNP.query().limit(2).all()
         >>> ind1 = Individual.query().first()
         >>> ind.get_genotypes('rs10009279')
         '1'
         
         >>> ind.get_genotypes(rs10009279, rs13125929)
+
+        >>> session.clear()
         """
         genotype = ''
         if isinstance(snp, str):
@@ -362,12 +385,15 @@ class Individual(Entity):
         """
         get all individuals belonging to a population working unit
 
-        >>> Individual.get_by_population('Europe')[0:5]
+        >>> from connection import *
+        >>> Individual.get_by_continent('Europe')[0:5]
         [Mrs. HGDP01401 (adygei),
          Mrs. HGDP01388 (adygei),
          Mr. HGDP01383 (adygei),
          Mr. HGDP01403 (adygei),
          Mrs. HGDP01387 (adygei)]
+
+        >>> session.clear()
         """
         inds = Individual.query.filter(Individual.population.has(continent_macroarea = str(continent.lower()))).all()
         return inds
@@ -377,12 +403,15 @@ class Individual(Entity):
         """
         get all individuals belonging to a population working unit
 
+        >>> from connection import *
         >>> Individual.get_by_population('Europe')[0:5]
         [Mrs. HGDP01401 (adygei),
          Mrs. HGDP01388 (adygei),
          Mr. HGDP01383 (adygei),
          Mr. HGDP01403 (adygei),
          Mrs. HGDP01387 (adygei)]
+
+        >>> session.clear()
         """
         inds = Individual.query.filter(Individual.population.has(continent_code = str(continent_code.upper()))).all()
         return inds
@@ -392,6 +421,7 @@ class Individual(Entity):
         """
         get all individuals belonging to a population working unit
 
+        >>> from connection import *
         >>> Individual.get_by_population('colombian')
         [Mrs. HGDP00704 (colombian),
          Mrs. HGDP00706 (colombian),
@@ -401,6 +431,7 @@ class Individual(Entity):
          Mr. HGDP00703 (colombian),
          Mrs. HGDP00708 (colombian)]
 
+        >>> session.clear()
         """
         inds = Individual.query.filter(Individual.population.has(working_unit = str(popname.lower()))).all()
         return inds
@@ -410,6 +441,9 @@ class Population(Entity):
     
     Population supports a methods called 'get_by_or_init', which enable you 
     to create an object in case it doesn't exists already.
+    >>> from debug_database import *
+    >>> print metadata
+    MetaData(Engine(sqlite:///:memory:))
     >>> martians = Population('martians')
     
     # It is recommended to use the 'set' method to modify a population's 
@@ -422,6 +456,8 @@ class Population(Entity):
     # lower case strings 
     >>> martians.continent_macroarea = 'Mars'    # will give you trouble
     ...                                          # because is not lowercase.
+
+    >>> session.clear()
     
     """
     using_options(tablename = 'populations')
@@ -505,6 +541,7 @@ class RefSeqGene(Entity):
     
 def _test():
     """ test the current module"""
+    from debug_database import *
     import doctest
     doctest.testmod()
     
