@@ -98,10 +98,32 @@ class SNP(Entity):
     def get_genes(self, upstream, downstream):
         """Get genes in an interval of [upstream, downstream] from the snp position
         
+        >>> rs1333 = SNP('rs1333')
+        >>> rs1333.chromosome = '11'
+        >>> rs1333.physical_position = 900
         >>> rs1333.get_genes(100, 100)
-        -> all genes 100 upstream or downstream the position
+        -> all genes 100 upstream or downstream the position,
+        from 800 to 1000 on chromosome 11
+
+        The genes are included if they 
+
+        >>> gene1 = RefSeqGene()
         """
-        raise NotImplementedError
+        if not isinstance(upstream, int) and not isinstance(downstream, int):
+            raise TypeError("SNP.get_genes requires two integers as input")
+        
+        if (chromosome is None) or (physical_position is None):
+            raise ValueError('unknown coordinates for current snp')
+
+        # get the proper interval where to find genes
+        lower_limit = self.physical_position - upstream
+        upper_limit = self.physical_position + downstream
+
+        genes = RefSeqGene.query().filter_by(chromosome = self.chromosome).\
+                                        filter_by(cdsStart >= lower_limit).\
+                                        filter_by(cdsEnd =< upper_limit).all()
+        return genes
+
 
     def add_genotype(self, genotype):
         """add genotypes"""
@@ -462,6 +484,14 @@ class RefSeqGene(Entity):
     exonFrames = Field(Text)
 
     source_file = Field(String(50))
+
+    def __init__(self, ncbi_id, chromosome, cdsStart, cdsEnd):
+        self.ncbi_transcript_id = ncbi_id.upper()
+        self.chromosome = chromosome.lower()
+        self.cdsStart = int(cdsStart)
+        self.cdsEnd = int(cdsEnd)
+
+
     
     
     
