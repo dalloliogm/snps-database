@@ -6,6 +6,6 @@ the genotypes have uploaded, so I don't want to drop everything again and reuplo
 
 from schema.connection import *
 
-RefSeqGene.table.drop()
+RefSeqTranscript.table.drop()
 
-RefSeqGene.table.create()
+RefSeqTranscript.table.create()

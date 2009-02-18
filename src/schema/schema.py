@@ -62,17 +62,17 @@ class SNP(Entity):
     genotypes           = Field(Text(2000), default='')  
     haplotypes_index    = Field(Integer)
     
-    # Reference to closest gene 
-    refseqgene          = ManyToOne('RefSeqGene')       # deprecate!! 
+    # Reference to closest transcript 
+    refseqtranscript          = ManyToOne('RefSeqTranscript')       # deprecate!! 
     # The following annotations come from a file called HumanHap650v3GeneAnnotation
 
     hap_chromosome = Field(String(10))
     hap_coordinate = Field(Integer)
     hap_genomebuild = Field(String(40))
-    gene_symbol = Field(Text)
-    gene = Field(Text)
+    transcript_symbol = Field(Text)
+    transcript = Field(Text)
     location = Field(Text)
-    location_relative_to_gene = Field(String(30))
+    location_relative_to_transcript = Field(String(30))
     coding_status = Field(String(30))
     aminoacid_change = Field(String(40))
     id_with_mouse = Field(String(40))
@@ -102,11 +102,11 @@ class SNP(Entity):
         raise NotImplementedError
 
     def get_ensembl_ref(self):
-        """get the url to ensembl (put this in RefSeqGene?)"""
+        """get the url to ensembl (put this in RefSeqTranscript?)"""
         raise NotImplementedError
 
-    def get_genes(self, upstream, downstream):
-        """Get genes in an interval of [upstream, downstream] from the snp position
+    def get_transcripts(self, upstream, downstream):
+        """Get transcripts in an interval of [upstream, downstream] from the snp position
         
         >>> from debug_database import *
         >>> metadata.bind = 'sqlite:///:memory:'
@@ -119,36 +119,36 @@ class SNP(Entity):
 
 
         ### INCLUSION CRITERIAS ###
-        Let's say we want to get all genes 100 upstream or downstream the position,
+        Let's say we want to get all transcripts 100 upstream or downstream the position,
             so from 800 to 1000 on chromosome 11.
 
-        >>> gene1 = RefSeqGene('gene1', 11, 700, 800)   # not included 
-        >>> gene2 = RefSeqGene('gene2', 11, 700, 810)   # not included, it ends within the interval but it starts before
-        >>> gene3 = RefSeqGene('gene3', 11, 800, 900)   # included
-        >>> gene4 = RefSeqGene('gene4', 11, 900, 1000)  # included
-        >>> gene5 = RefSeqGene('gene5', 11, 1000, 1100) # not included 
+        >>> transcript1 = RefSeqTranscript('transcript1', 11, 700, 800)   # not included 
+        >>> transcript2 = RefSeqTranscript('transcript2', 11, 700, 810)   # not included, it ends within the interval but it starts before
+        >>> transcript3 = RefSeqTranscript('transcript3', 11, 800, 900)   # included
+        >>> transcript4 = RefSeqTranscript('transcript4', 11, 900, 1000)  # included
+        >>> transcript5 = RefSeqTranscript('transcript5', 11, 1000, 1100) # not included 
 
-        >>> genereverse = RefSeqGene('genereverse', 11, 900, 800)   # included
+        >>> transcriptreverse = RefSeqTranscript('transcriptreverse', 11, 900, 800)   # included
 
-        >>> rs1333.get_genes(100, 100)
-        [gene GENE3 on chromosome 11 (800-900), gene GENE4 on chromosome 11 (900-1000), gene GENEREVERSE on chromosome 11 (900-800)]
+        >>> rs1333.get_transcripts(100, 100)
+        [transcript GENE3 on chromosome 11 (800-900), transcript GENE4 on chromosome 11 (900-1000), transcript GENEREVERSE on chromosome 11 (900-800)]
 
         >>> session.close()
         """
         if not isinstance(upstream, int) and not isinstance(downstream, int):
-            raise TypeError("SNP.get_genes requires two integers as input")
+            raise TypeError("SNP.get_transcripts requires two integers as input")
         
         if (self.chromosome is None) or (self.physical_position is None):
             raise ValueError('unknown coordinates for current snp')
 
-        # get the proper interval where to find genes
+        # get the proper interval where to find transcripts
         lower_limit = self.physical_position - upstream
         upper_limit = self.physical_position + downstream
 
-        genes = RefSeqGene.query().filter_by(chromosome = self.chromosome).\
-                                        filter(RefSeqGene.cdsStart >= lower_limit).\
-                                        filter(RefSeqGene.cdsEnd <= upper_limit).all()
-        return genes
+        transcripts = RefSeqTranscript.query().filter_by(chromosome = self.chromosome).\
+                                        filter(RefSeqTranscript.cdsStart >= lower_limit).\
+                                        filter(RefSeqTranscript.cdsEnd <= upper_limit).all()
+        return transcripts
 
 
     def add_genotype(self, genotype):
@@ -546,11 +546,11 @@ class Population(Entity):
     def __ne__(self, other):
         return str(self.popname) == str(other).lower()
 
-class RefSeqGene(Entity):
-    """ Table 'RefSeqGene'
+class RefSeqTranscript(Entity):
+    """ Table 'RefSeqTranscript'
     name, chrom, strand, txStart, txEnd, cdsStart, cdsEnd, exonCount, exonStarts, exonEnds, alternateName, cdsStartStat, cdsEndStat, exonFrames
     """
-    using_options(tablename = 'refseqgenes')
+    using_options(tablename = 'refseqtranscripts')
 
     ncbi_transcript_id = Field(String(15))
 
@@ -582,11 +582,11 @@ class RefSeqGene(Entity):
             self.cdsEnd = int(cdsEnd)
 
     def __repr__(self):
-        return "gene %s on chromosome %s (%i-%i)" % (self.ncbi_transcript_id, self.chromosome, self.cdsStart, self.cdsEnd)
+        return "transcript %s on chromosome %s (%i-%i)" % (self.ncbi_transcript_id, self.chromosome, self.cdsStart, self.cdsEnd)
 
     def get_snps(self, upstream, downstream):
         """
-        Get all the snps in an interval of (gene.CDSstart - downstream, gene.CDSEnd + upstream) of the gene position
+        Get all the snps in an interval of (transcript.CDSstart - downstream, transcript.CDSEnd + upstream) of the transcript position
 
         >>> from debug_database import *
         >>> metadata.bind = 'sqlite:///:memory:'
@@ -597,7 +597,7 @@ class RefSeqGene(Entity):
 
         Example: get all the snps with upstream=300, downstream=300
 
-        >>> gene1 = RefSeqGene('gene1', 11, 1000, 1200)
+        >>> transcript1 = RefSeqTranscript('transcript1', 11, 1000, 1200)
 
         >>> snp1 = SNP('snp1', chromosome = 11, physical_position = 500)    # not included
         >>> snp2 = SNP('snp2', chromosome = 11, physical_position = 700)    # included
@@ -609,13 +609,13 @@ class RefSeqGene(Entity):
         >>> snp8 = SNP('snp8', chromosome = 1, physical_position = 1000)   # not included (other chromosome)
         >>> snp4b = SNP('snp4b', chromosome = 11, physical_position = 1100) # included and after snp4
 
-        >>> gene1.get_snps(300, 300)
+        >>> transcript1.get_snps(300, 300)
         [SNP snp2, SNP snp3, SNP snp4, SNP snp4b, SNP snp5, SNP snp6]
 
         >>> session.close()
         """
         if not isinstance(upstream, int) and not isinstance(downstream, int):
-            raise TypeError("SNP.get_genes requires two integers as input")
+            raise TypeError("SNP.get_transcripts requires two integers as input")
         
         if (self.chromosome is None):   # should check also for cdsStart, etc..
             raise ValueError('unknown coordinates for current snp')

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Insert the UCSC refseqgene table in the db.
+Insert the UCSC refseqtranscript table in the db.
 """
 
 import logging
@@ -18,8 +18,8 @@ def upload_annotations(refseq_annotations_fh, session, metadata):
     ... "NM_001005484"  "chr1"  "+" 58953   59871   58953   59871   1   58953   59871   "OR4F5" "cmpl"  "cmpl"  0
     ... "NM_001005224"  "chr1"  "+" 357521  358460  357521  358460  1   357521  358460  "OR4F3" "cmpl"  "cmpl"  0)
     >>> upload_annotations(annotations)
-    >>> gene1 = RefSeqGene.query().filter_by(ncbi_transcript_id = 'NR_024077')
-    >>> print gene1.chromosome, gene1.strand, gene1.txStart
+    >>> transcript = RefSeqTranscript.query().filter_by(ncbi_transcript_id = 'NR_024077')
+    >>> print transcript.chromosome, transcript.strand, transcript.txStart
     chr1 - 4268
 
     """
@@ -29,38 +29,38 @@ def upload_annotations(refseq_annotations_fh, session, metadata):
 #    for ind in session.execute('select * from individuals limit 10;'):
 #        print ind
 
-#    session.execute("""LOAD DATA LOCAL INFILE '%s' into table refseqgenes FIELDS TERMINATED BY '\t' ENCLOSED BY "" (ncbi_transcript_id, chromosome, strand, txStart, txEnd, cdsStart, cdsEnd, exonCount, exonStarts, exonEnds, alternateName, cdsStartStat, cdsEndStat, exonFrames)""" % refseq_annotations_filename)
+#    session.execute("""LOAD DATA LOCAL INFILE '%s' into table refseqtranscript FIELDS TERMINATED BY '\t' ENCLOSED BY "" (ncbi_transcript_id, chromosome, strand, txStart, txEnd, cdsStart, cdsEnd, exonCount, exonStarts, exonEnds, alternateName, cdsStartStat, cdsEndStat, exonFrames)""" % refseq_annotations_filename)
 
 #    annotations_fh = open(refseq_annotations_filename, 'r')
     logging.basicConfig(level=logging.DEBUG)
     for line in refseq_annotations_fh:
         line = line.strip()
         if line and not line.startswith('"#'):
-            gene = RefSeqGene()
-            gene.source_file = refseq_annotations_fh.name
+            transcript = RefSeqGene()
+            transcript.source_file = refseq_annotations_fh.name
 
             fields = line.split()
             logging.debug(fields)
             
-            gene.bin = fields[0]
-            gene.ncbi_transcript_id = fields[1].replace('"', '')
+            transcript.bin = fields[0]
+            transcript.ncbi_transcript_id = fields[1].replace('"', '')
             chromosome = fields[2].replace('"', '')
-            gene.chromosome = re.findall('chr(.*)', chromosome)[0]
-            gene.strand = fields[3][1]
-            gene.txStart = int(fields[4])
-            gene.txEnd = int(fields[5])
-            gene.cdsStart = int(fields[6])
-            gene.cdsEnd = int(fields[7])
-            gene.exonCount = int(fields[8])
-            gene.exonStarts = fields[9].replace('"', '')
+            transcript.chromosome = re.findall('chr(.*)', chromosome)[0]
+            transcript.strand = fields[3][1]
+            transcript.txStart = int(fields[4])
+            transcript.txEnd = int(fields[5])
+            transcript.cdsStart = int(fields[6])
+            transcript.cdsEnd = int(fields[7])
+            transcript.exonCount = int(fields[8])
+            transcript.exonStarts = fields[9].replace('"', '')
             if len(fields) > 10:
-                gene.exonEnds = fields[10].replace('"', '')
+                transcript.exonEnds = fields[10].replace('"', '')
                 if len(fields) > 11:
                     unknown = fields[11]
-                    gene.alternateName = fields[12].replace('"', '')
-                    gene.cdsStartStat = fields[13].replace('"', '')
-                    gene.cdsEndStat = fields[14].replace('"', '')
-                    gene.exonFrames = fields[15].replace('"', '')
+                    transcript.alternateName = fields[12].replace('"', '')
+                    transcript.cdsStartStat = fields[13].replace('"', '')
+                    transcript.cdsEndStat = fields[14].replace('"', '')
+                    transcript.exonFrames = fields[15].replace('"', '')
 
             session.commit()
 
