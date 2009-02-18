@@ -83,12 +83,15 @@ class SNP(Entity):
     genotypes_file      = Field(String(80)) # input file containing the genotypes
     genomic_build       = Field(String(40)) # build on ucsc
 
-    def __init__(self, id, chromosome = '', genotypes = '', allele1='-', allele2='-'):
+    def __init__(self, id, chromosome = '', genotypes = '', allele1='-', allele2='-',
+                        physical_position = None):
         self.id = id
-        self.chromosome = chromosome
+        self.chromosome = str(chromosome)
         self.genotypes = genotypes
         self.allele1 = allele1
         self.allele2 = allele2
+        if physical_position is not None:
+            self.physical_position = int(physical_position)
             
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.
@@ -578,13 +581,55 @@ class RefSeqGene(Entity):
     def __repr__(self):
         return "gene %s on chromosome %s (%i-%i)" % (self.ncbi_transcript_id, self.chromosome, self.cdsStart, self.cdsEnd)
 
+    def get_snps(self, upstream, downstream):
+        """
+        Get all the snps in an interval of (gene.CDSstart - downstream, gene.CDSEnd + upstream) of the gene position
 
-    
+        >>> from debug_database import *
+        >>> metadata.bind = 'sqlite:///:memory:'
+        >>> setup_all(); create_all()
+        >>> print metadata
+        MetaData(Engine(sqlite:///:memory:))
+
+
+        Example: get all the snps with upstream=300, downstream=300
+
+        >>> gene1 = RefSeqGene('gene1', 11, 1000, 1200)
+
+        >>> snp1 = SNP('snp1', chromosome = 11, physical_position = 500)    # not included
+        >>> snp2 = SNP('snp2', chromosome = 11, physical_position = 700)    # included
+        >>> snp3 = SNP('snp3', chromosome = 11, physical_position = 800)    # included
+        >>> snp4 = SNP('snp4', chromosome = 11, physical_position = 1000)   # included
+        >>> snp5 = SNP('snp5', chromosome = 11, physical_position = 1200)   # included
+        >>> snp6 = SNP('snp6', chromosome = 11, physical_position = 1500)   # included
+        >>> snp7 = SNP('snp7', chromosome = 11, physical_position = 1600)   # not included
+        >>> snp8 = SNP('snp8', chromosome = 1, physical_position = 1000)   # not included (other chromosome)
+
+
+        >>> gene1.get_snps(300, 300)
+        [SNP snp2, SNP snp3, SNP snp4, SNP snp5, SNP snp6]
+
+        >>> session.close()
+        """
+        if not isinstance(upstream, int) and not isinstance(downstream, int):
+            raise TypeError("SNP.get_genes requires two integers as input")
+        
+        if (self.chromosome is None):   # should check also for cdsStart, etc..
+            raise ValueError('unknown coordinates for current snp')
+
+        lower_limit = self.cdsStart - upstream
+        upper_limit = self.cdsEnd + downstream
+        logging.debug(lower_limit, upper_limit)
+                
+        snps = SNP.query().filter_by(chromosome = self.chromosome).\
+                                filter(SNP.physical_position >= lower_limit).\
+                                filter(SNP.physical_position <= upper_limit).all()  
+        return snps
     
     
 def _test():
     """ test the current module"""
-    from debug_database import *
+#    from debug_database import *
     import doctest
     doctest.testmod()
     
