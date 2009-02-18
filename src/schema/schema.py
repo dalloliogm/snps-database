@@ -601,8 +601,8 @@ class RefSeqGene(Entity):
 
         >>> snp1 = SNP('snp1', chromosome = 11, physical_position = 500)    # not included
         >>> snp2 = SNP('snp2', chromosome = 11, physical_position = 700)    # included
-        >>> snp3 = SNP('snp3', chromosome = 11, physical_position = 800)    # included
-        >>> snp4 = SNP('snp4', chromosome = 11, physical_position = 1000)   # included
+        >>> snp4 = SNP('snp4', chromosome = 11, physical_position = 800)    # included
+        >>> snp3 = SNP('snp3', chromosome = 11, physical_position = 1000)   # included
         >>> snp5 = SNP('snp5', chromosome = 11, physical_position = 1200)   # included
         >>> snp6 = SNP('snp6', chromosome = 11, physical_position = 1500)   # included
         >>> snp7 = SNP('snp7', chromosome = 11, physical_position = 1600)   # not included
@@ -627,6 +627,7 @@ class RefSeqGene(Entity):
         snps = SNP.query().filter_by(chromosome = self.chromosome).\
                                 filter(SNP.physical_position >= lower_limit).\
                                 filter(SNP.physical_position <= upper_limit).all()  
+        snps = sorted(snps, cmp=lambda x, y: x.physical_position > y.physical_position)
         return snps
     
     
