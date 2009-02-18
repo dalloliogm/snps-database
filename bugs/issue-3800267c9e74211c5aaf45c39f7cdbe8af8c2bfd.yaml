@@ -2,7 +2,7 @@
 title: check Tu, Uygur and Xibo for continent (are they east or west asia?)
 desc: ""
 type: :task
-component: HGDP database
+component: to discuss
 release: 
 reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
 status: :unstarted
@@ -15,4 +15,8 @@ log_events:
 - - 2009-02-10 10:51:35.643509 Z
   - Giovanni Dall'Olio <dalloliogm@gmail.com>
   - created
+  - ""
+- - 2009-02-18 14:52:41.354337 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - assigned to component to discuss from HGDP database
   - ""

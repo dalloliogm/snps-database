@@ -12,5 +12,7 @@ components:
   name: hgdp files parsing
 - !ditz.rubyforge.org,2008-03-06/component 
   name: query scripts
+- !ditz.rubyforge.org,2008-03-06/component 
+  name: to discuss
 releases: []
 

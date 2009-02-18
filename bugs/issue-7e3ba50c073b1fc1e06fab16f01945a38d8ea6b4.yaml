@@ -7,8 +7,8 @@ type: :task
 component: hgdp files parsing
 release: 
 reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2009-02-03 12:22:58.614783 Z
 references: []
 
@@ -18,3 +18,7 @@ log_events:
   - Giovanni Dall'Olio <dalloliogm@gmail.com>
   - created
   - ""
+- - 2009-02-18 14:58:24.312358 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - closed with disposition fixed
+  - fixed, it's 940 individuals.

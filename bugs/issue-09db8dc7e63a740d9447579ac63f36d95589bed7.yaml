@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: "RefSeqGene.get_snps: should I consider the cdsStart and End, or the transcription Start and End? "
+desc: ""
+type: :task
+component: to discuss
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-18 14:22:59.122293 Z
+references: []
+
+id: 09db8dc7e63a740d9447579ac63f36d95589bed7
+log_events: 
+- - 2009-02-18 14:22:59.798161 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""

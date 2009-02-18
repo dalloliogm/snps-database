@@ -1,0 +1,20 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: "RefSeqGene.get_snps: upstream and downstream intervals, snps that fall in other genes"
+desc: |-
+  RefSeqGene.get_snps gets all the snps in an interval of (upstream, downstream) bases from the cdsStart and cdsEnd of a gene.
+  What should we do with the snps which falls in other genes? Should I ignore the problem? or should I remove them?
+type: :task
+component: to discuss
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-18 14:22:16.552926 Z
+references: []
+
+id: 1b07ec1b16d04948de2268fa93f1549976fc90ab
+log_events: 
+- - 2009-02-18 14:22:16.966617 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""
