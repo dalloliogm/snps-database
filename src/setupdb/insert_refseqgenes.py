@@ -37,7 +37,7 @@ def upload_annotations(refseq_annotations_fh, session, metadata):
         line = line.strip()
         if line and not line.startswith('"#'):
             gene = RefSeqGene()
-            gene.sourcefile = refseq_annotations_fh.name
+            gene.source_file = refseq_annotations_fh.name
 
             fields = line.split()
             logging.debug(fields)

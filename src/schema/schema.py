@@ -570,7 +570,7 @@ class RefSeqGene(Entity):
     cdsEndStat = Field(Integer)
     exonFrames = Field(Text)
 
-    source_file = Field(String(50))
+    source_file = Field(String(100))
 
     def __init__(self, ncbi_id = '', chromosome = '', cdsStart = None, cdsEnd = None):
         self.ncbi_transcript_id = ncbi_id.upper()
