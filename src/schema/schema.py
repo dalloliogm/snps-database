@@ -278,7 +278,9 @@ class SNP(Entity):
     def get_previous_snp(self):
         """get the previous SNP on the chromosome
         """
-        return SNP.get_by(id = self.previous_snp)
+#        return SNP.get_by(id = self.previous_snp)
+        return SNP.query().filter_by(chromosome = self.chromosome).\
+                filter(SNP.physical_position > self.physical_position).order_by(SNP.physical_position).first()
 
 class Articles(Entity):
     """ Table 'Articles'
