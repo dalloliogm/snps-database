@@ -50,8 +50,8 @@ class SNP(Entity):
     physical_position   = Field(Integer)
     original_strand     = Field(String(1))
 
-    next_snp            = ManyToOne('SNP')   # next SNP on the chromosome
-    previous_snp        = OneToOne('SNP')
+#    next_snp            = ManyToOne('SNP')   # next SNP on the chromosome
+#    previous_snp        = OneToOne('SNP')
 
     # allele1 can be only A or T. allele2 only C or G
     allele1             = Field(Enum(values=('A', 'T', '-')))
@@ -63,25 +63,28 @@ class SNP(Entity):
     haplotypes_index    = Field(Integer)
     
     # Reference to closest transcript 
-    refseqtranscript          = ManyToOne('RefSeqTranscript')       # deprecate!! 
+#    refseqtranscript_id         = Field(String, default=None)
+#    gene_id          = Field(String, default=None)
+#    gene          = Field(String, default=None)
+#    refseqtranscript          = ManyToOne('RefSeqTranscript')       # deprecate!! 
     # The following annotations come from a file called HumanHap650v3GeneAnnotation
 
-    hap_chromosome = Field(String(10))
-    hap_coordinate = Field(Integer)
-    hap_genomebuild = Field(String(40))
-    transcript_symbol = Field(Text)
-    transcript = Field(Text)
-    location = Field(Text)
-    location_relative_to_transcript = Field(String(30))
-    coding_status = Field(String(30))
-    aminoacid_change = Field(String(40))
-    id_with_mouse = Field(String(40))
-    phast_conservation = Field(Integer) # TODO: supports negative numbers?
+#    hap_chromosome = Field(String(10))
+#    hap_coordinate = Field(Integer)
+#    hap_genomebuild = Field(String(40))
+#    transcript_symbol = Field(Text)
+#    transcript = Field(Text)
+#    location = Field(Text)
+#    location_relative_to_transcript = Field(String(30))
+#    coding_status = Field(String(30))
+#    aminoacid_change = Field(String(40))
+#    id_with_mouse = Field(String(40))
+#    phast_conservation = Field(Integer) # TODO: supports negative numbers?
 
     # versioning
-    snp_build           = Field(String(40))
+    snp_build           = Field(String(80))
     genotypes_file      = Field(String(80)) # input file containing the genotypes
-    genomic_build       = Field(String(40)) # build on ucsc
+    genomic_build       = Field(String(80)) # build on ucsc
 
     def __init__(self, id, chromosome = '', genotypes = '', allele1='-', allele2='-',
                         physical_position = None):
@@ -552,7 +555,7 @@ class RefSeqTranscript(Entity):
     """
     using_options(tablename = 'refseqtranscripts')
 
-    ncbi_transcript_id = Field(String(15))
+    transcript_id = Field(String(15))
 
     genomic_build = Field(String(20))
 
@@ -573,7 +576,7 @@ class RefSeqTranscript(Entity):
     source_file = Field(String(100))
 
     def __init__(self, ncbi_id = '', chromosome = '', cdsStart = None, cdsEnd = None):
-        self.ncbi_transcript_id = ncbi_id.upper()
+        self.transcript_id = ncbi_id.upper()
         self.chromosome = str(chromosome).lower()
 
         if cdsStart is not None:
@@ -582,7 +585,7 @@ class RefSeqTranscript(Entity):
             self.cdsEnd = int(cdsEnd)
 
     def __repr__(self):
-        return "transcript %s on chromosome %s (%i-%i)" % (self.ncbi_transcript_id, self.chromosome, self.cdsStart, self.cdsEnd)
+        return "transcript %s on gene %s on chromosome %s (%i-%i)" % (self.transcript_id, self.alternateName, self.chromosome, self.cdsStart, self.cdsEnd)
 
     def get_snps(self, upstream, downstream):
         """
