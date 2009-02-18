@@ -572,11 +572,14 @@ class RefSeqGene(Entity):
 
     source_file = Field(String(50))
 
-    def __init__(self, ncbi_id, chromosome, cdsStart, cdsEnd):
+    def __init__(self, ncbi_id = '', chromosome = '', cdsStart = None, cdsEnd = None):
         self.ncbi_transcript_id = ncbi_id.upper()
         self.chromosome = str(chromosome).lower()
-        self.cdsStart = int(cdsStart)
-        self.cdsEnd = int(cdsEnd)
+
+        if cdsStart is not None:
+            self.cdsStart = int(cdsStart)
+        if cdsEnd is not None:
+            self.cdsEnd = int(cdsEnd)
 
     def __repr__(self):
         return "gene %s on chromosome %s (%i-%i)" % (self.ncbi_transcript_id, self.chromosome, self.cdsStart, self.cdsEnd)

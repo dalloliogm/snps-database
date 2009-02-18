@@ -4,6 +4,7 @@ Insert the UCSC refseqgene table in the db.
 """
 
 import logging
+import re
 
 def upload_annotations(refseq_annotations_fh, session, metadata):
     """
@@ -34,30 +35,32 @@ def upload_annotations(refseq_annotations_fh, session, metadata):
     logging.basicConfig(level=logging.DEBUG)
     for line in refseq_annotations_fh:
         line = line.strip()
-        if line and not line.startswith('#'):
+        if line and not line.startswith('"#'):
             gene = RefSeqGene()
             gene.sourcefile = refseq_annotations_fh.name
 
             fields = line.split()
             logging.debug(fields)
             
-            gene.ncbi_transcript_id = fields[0].replace('"', '')
-            gene.chromosome = fields[1].replace('"', '')
-            gene.strand = fields[2][1]
-            gene.txStart = int(fields[3])
-            gene.txEnd = int(fields[4])
-            gene.cdsStart = int(fields[5])
-            gene.cdsEnd = int(fields[6])
-            gene.exonCount = int(fields[7])
-            gene.exonStarts = fields[8].replace('"', '')
-            if len(fields) > 9:
-                gene.exonEnds = fields[9].replace('"', '')
-                if len(fields) > 10:
-                    unknown = fields[10]
-                    gene.alternateName = fields[11].replace('"', '')
-                    gene.cdsStartStat = fields[12].replace('"', '')
-                    gene.cdsEndStat = fields[13].replace('"', '')
-                    gene.exonFrames = fields[14].replace('"', '')
+            gene.bin = fields[0]
+            gene.ncbi_transcript_id = fields[1].replace('"', '')
+            chromosome = fields[2].replace('"', '')
+            gene.chromosome = re.findall('chr(.*)', chromosome)[0]
+            gene.strand = fields[3][1]
+            gene.txStart = int(fields[4])
+            gene.txEnd = int(fields[5])
+            gene.cdsStart = int(fields[6])
+            gene.cdsEnd = int(fields[7])
+            gene.exonCount = int(fields[8])
+            gene.exonStarts = fields[9].replace('"', '')
+            if len(fields) > 10:
+                gene.exonEnds = fields[10].replace('"', '')
+                if len(fields) > 11:
+                    unknown = fields[11]
+                    gene.alternateName = fields[12].replace('"', '')
+                    gene.cdsStartStat = fields[13].replace('"', '')
+                    gene.cdsEndStat = fields[14].replace('"', '')
+                    gene.exonFrames = fields[15].replace('"', '')
 
             session.commit()
 
