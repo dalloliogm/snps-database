@@ -331,7 +331,7 @@ class Individual(Entity):
     name                = Field(String(30), unique=True, index=True)    # TODO: rename with 'id'?
     hgdp_individual_number = Field(String(10), unique = True)
     population          = ManyToOne('Population')   # TODO: how to index?
-    sex                 = Field(Enum((u'm', u'u', u'f', None)))
+    sex                 = Field(Enum(('m', 'u', 'f', None)))
     
     haplotypes          = Field(Text(650000))
     genotypes_index     = Field(Integer, unique=True)
@@ -347,7 +347,7 @@ class Individual(Entity):
     # versioning
     source_file         = Field(Text(80))
     
-    def __init__(self, name, population = None, sex = u'u', source_file = '',
+    def __init__(self, name, population = None, sex = 'u', source_file = '',
                  region = 'undef', macroarea = 'undef', working_unit = 'undef'):
         
         self.name = str(name).upper() # the individual's name
@@ -366,13 +366,13 @@ class Individual(Entity):
         if sex is not None:     
             sex = str(sex).lower()
             if sex in (1, '1', 'm', 'male',):   # does it include also u'm', u'1'?
-                self.sex = u'm'
+                self.sex = 'm'
             elif sex in (2, '2', 'f', 'female'):
-                self.sex = u'f'
+                self.sex = 'f'
             else:
-                self.sex = u'u'
+                self.sex = 'u'
         else:
-            self.sex = u'u'
+            self.sex = 'u'
 
         self.source_file = source_file
         
