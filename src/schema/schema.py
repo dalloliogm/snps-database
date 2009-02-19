@@ -266,6 +266,7 @@ class SNP(Entity):
 
         >>> session.close()
         """
+        # note: doesn't work if self.physical_position is none.
         if upper_limit == -1:
             snps = SNP.query.filter(SNP.chromosome == str(chromosome).upper()).\
                 filter(SNP.physical_position > lower_limit).all()

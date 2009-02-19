@@ -24,7 +24,7 @@
 from sqlalchemy import types, exceptions
 
 class Enum(types.TypeDecorator):
-    impl = types.Unicode
+    impl = types.String
     
     def __init__(self, values, empty_to_none=False, strict=False):
         """Emulate an Enum type.
@@ -69,16 +69,16 @@ if __name__ == '__main__':
     from sqlalchemy import *
     t = Table('foo', MetaData('sqlite:///'),
               Column('id', Integer, primary_key=True),
-              Column('e', Enum([u'foobar', u'baz', u'quux', None])))
+              Column('e', Enum(['foobar', 'baz', 'quux', None])))
     t.create()
 
-    t.insert().execute(e=u'foobar')
-    t.insert().execute(e=u'baz')
-    t.insert().execute(e=u'quux')
+    t.insert().execute(e='foobar')
+    t.insert().execute(e='baz')
+    t.insert().execute(e='quux')
     t.insert().execute(e=None)
     
     try:
-        t.insert().execute(e=u'lala')
+        t.insert().execute(e='lala')
         assert False
     except AssertionError:
         print 'ok'
