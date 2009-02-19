@@ -36,7 +36,7 @@ def upload_annotations(refseq_annotations_fh, session, metadata):
     for line in refseq_annotations_fh:
         line = line.strip()
         if line and not line.startswith('"#'):
-            transcript = RefSeqGene()
+            transcript = RefSeqTranscript()
             transcript.source_file = refseq_annotations_fh.name
 
             fields = line.split()
