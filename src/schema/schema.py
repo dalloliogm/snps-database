@@ -62,6 +62,9 @@ class SNP(Entity):
     genotypes           = Field(Text(2000), default='')  
     haplotypes_index    = Field(Integer)
     
+    annotations         = OneToMany('Annotations')
+    stats               = OneToMany('Stats')
+
     # Reference to closest transcript 
 #    refseqtranscript_id         = Field(String, default=None)
 #    gene_id          = Field(String, default=None)
@@ -480,6 +483,14 @@ class Individual(Entity):
         inds = Individual.query.filter(Individual.population.has(working_unit = str(popname.lower()))).all()
         return inds
     
+class Annotations(Entity):
+    using_options(tablename = 'annotations')
+    snp = ManyToOne('SNP')
+
+class Stats(Entity):
+    using_options(tablename = 'stats')
+    snp = ManyToOne('SNP')
+
 class Population(Entity):
     """ Table 'Population'
     
@@ -623,8 +634,8 @@ class RefSeqTranscript(Entity):
         if (self.chromosome is None):   # should check also for cdsStart, etc..
             raise ValueError('unknown coordinates for current snp')
 
-        lower_limit = self.cdsStart - upstream
-        upper_limit = self.cdsEnd + downstream
+        lower_limit = self.txStart - upstream
+        upper_limit = self.txEnd + downstream
         logging.debug(lower_limit, upper_limit)
                 
         snps = SNP.query().filter_by(chromosome = self.chromosome).\
