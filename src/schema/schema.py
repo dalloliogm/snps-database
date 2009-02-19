@@ -281,13 +281,16 @@ class SNP(Entity):
         """get the next SNP on the chromosome
         """
 #        return SNP.get_by(id = self.next_snp)
+        if self.physical_position is None:
+            raise ValueError('position of the snp in the chromosome has not been uploaded yet')
         return SNP.query().filter_by(chromosome = self.chromosome).\
                 filter(SNP.physical_position > self.physical_position).order_by(SNP.physical_position).first()
         
     def get_previous_snp(self):
         """get the previous SNP on the chromosome
         """
-#        return SNP.get_by(id = self.previous_snp)
+        if self.physical_position is None:
+            raise ValueError('position of the snp in the chromosome has not been uploaded yet')
         return SNP.query().filter_by(chromosome = self.chromosome).\
                 filter(SNP.physical_position > self.physical_position).order_by(SNP.physical_position).first()
 
