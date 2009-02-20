@@ -110,7 +110,7 @@ class SNP(Entity):
         url = "http://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=%s&rs=%s" % (type, id)
         return url
 
-    def get_transcripts(self, upstream, downstream):
+    def get_transcripts(self, upstream = 0, downstream = 0):
         """Get transcripts in an interval of [upstream, downstream] from the snp position
         
         >>> from debug_database import *
@@ -210,6 +210,7 @@ class SNP(Entity):
         elif isinstance(individuals, list) or isinstance(individuals, tuple):
             for ind in individuals:
                 if isinstance(ind, Individual):
+                    ind_obj = ind    # TODO: not necessary
                     ind_index = ind.genotypes_index
                 elif isinstance(ind, str):
 #                logging.debug(ind)
@@ -221,7 +222,7 @@ class SNP(Entity):
                 if format == 'c':
                     genotypes.append(self.get_genotype_char(ind_index))
                 else:
-                    genotypes.append(ind_obj.genotypes_index)
+                    genotypes.append(self.genotypes[ind_obj.genotypes_index])
         else:
             raise TypeError("individuals should be a list of string or Individual objects, or a single individual/string")
 
