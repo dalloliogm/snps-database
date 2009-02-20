@@ -18,7 +18,7 @@ import unittest
 from connection import session 
 from elixir import metadata, setup_all, create_all, drop_all
 from sqlalchemy.exceptions import IntegrityError
-from schema import Individual, Population, SNP, RefSeqGene
+from schema.schema import Individual, Population, SNP, RefSeqTranscript
 
 class TestHGDPDatabase(unittest.TestCase):
     """

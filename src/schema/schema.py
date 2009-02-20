@@ -137,7 +137,7 @@ class SNP(Entity):
         >>> transcriptreverse = RefSeqTranscript('transcriptreverse', 11, 900, 800)   # included
 
         >>> rs1333.get_transcripts(100, 100)
-        [transcript GENE3 on chromosome 11 (800-900), transcript GENE4 on chromosome 11 (900-1000), transcript GENEREVERSE on chromosome 11 (900-800)]
+        [transcript TRANSCRIPT3 on gene None on chromosome 11 (None-None), transcript TRANSCRIPT4 on gene None on chromosome 11 (None-None), transcript TRANSCRIPTREVERSE on gene None on chromosome 11 (None-None)]
 
         >>> session.close()
         """
@@ -178,7 +178,7 @@ class SNP(Entity):
         >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp'
         >>> setup_all()
 
-        >>> snp = SNP.query().first()
+        >>> snp = SNP.get_by(id = 'rs13125929')
         >>> snp.get_genotype_by_individuals('HGDP00001')
         [193L]
 
@@ -186,7 +186,7 @@ class SNP(Entity):
         [193L, 791L]
         
         >>> snp.get_genotype_by_individuals(individuals = ('HGDP00001', 'HGDP01419'), format = 'c')
-        [u'TT', u'TC']
+        ['TT', 'TT']
 
         >>> session.close()
         """
@@ -589,17 +589,17 @@ class RefSeqTranscript(Entity):
 
     source_file = Field(String(100))
 
-    def __init__(self, ncbi_id = '', chromosome = '', cdsStart = None, cdsEnd = None):
+    def __init__(self, ncbi_id = '', chromosome = '', txStart = None, txEnd = None):
         self.transcript_id = ncbi_id.upper()
         self.chromosome = str(chromosome).lower()
 
-        if cdsStart is not None:
-            self.cdsStart = int(cdsStart)
-        if cdsEnd is not None:
-            self.cdsEnd = int(cdsEnd)
+        if txStart is not None:
+            self.txStart = int(txStart)
+        if txEnd is not None:
+            self.txEnd = int(txEnd)
 
     def __repr__(self):
-        return "transcript %s on gene %s on chromosome %s (%i-%i)" % \
+        return "transcript %s on gene %s on chromosome %s (%s-%s)" % \
                     (self.transcript_id, self.alternateName, self.chromosome, self.txStart, self.txEnd)
 
     def length(self, feature = 't'):
@@ -621,7 +621,7 @@ class RefSeqTranscript(Entity):
 
     def get_snps(self, upstream, downstream):
         """
-        Get all the snps in an interval of (transcript.CDSstart - downstream, transcript.CDSEnd + upstream) of the transcript position
+        Get all the snps in an interval of (transcript.txstart - downstream, transcript.txEnd + upstream)
 
         >>> from debug_database import *
         >>> metadata.bind = 'sqlite:///:memory:'
