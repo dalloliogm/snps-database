@@ -249,6 +249,27 @@ class SNP(Entity):
             char_genotype = self.allele2 + self.allele2
         return char_genotype
 
+
+    def get_nearby_snps(self, upstream, downstream):
+        """
+        Get all snps in a window of (upstream, downstream) bases
+
+        >>> from connection import *
+        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp'
+        >>> setup_all()
+
+        >>> snp = SNP.get_by(id = 'rs13125929')
+        >>> print snp.get_nearby_snps(1000000, 1050000)
+        [SNP rs9442372, SNP rs3737728, SNP rs11260588, SNP rs9442398, SNP rs6687776, SNP rs9651273, SNP rs4970405, SNP rs12726255]
+        """
+        if not isinstance(upstream, int) and not isinstance(downstream, int):
+            raise TypeError("SNP.get_nearby_snps requires two integers as input")
+
+        lower_limit = self.physical_position - upstream
+        upper_limit = self.physical_position + downstream
+
+        return SNP.get_snps_by_region(self.chromosome, lower_limit, upper_limit)
+    
     @classmethod
     def get_snps_by_region(cls, chromosome, lower_limit = 0, upper_limit = -1):
         """
