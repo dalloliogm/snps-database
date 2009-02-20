@@ -201,7 +201,6 @@ class SNP(Entity):
                 logging.debug(ind_obj)
                 ind_index = ind_obj.genotypes_index
             elif isinstance(individuals, Individual):
-                print 'dddd'
                 ind_index = individuals.genotypes_index
             if format == 'c':
                 genotypes.append(self.get_genotype_char(ind_index))
@@ -600,7 +599,25 @@ class RefSeqTranscript(Entity):
             self.cdsEnd = int(cdsEnd)
 
     def __repr__(self):
-        return "transcript %s on gene %s on chromosome %s (%i-%i)" % (self.transcript_id, self.alternateName, self.chromosome, self.cdsStart, self.cdsEnd)
+        return "transcript %s on gene %s on chromosome %s (%i-%i)" % \
+                    (self.transcript_id, self.alternateName, self.chromosome, self.txStart, self.txEnd)
+
+    def length(self, feature = 't'):
+        """Length of the trascript, from txStart to txEnd
+        
+        if feature == 't', return the transcript length (default)
+        if feature == 'c', return the coding length
+        """
+        if feature.lower() in ('t', 'transcript', 'tr'):
+            return self.txEnd - self.txStart
+        elif feature.lower() in ('c', 'coding', 'co'):
+            return self.cdsEnd - self.cdsStart
+        else:
+            raise TypeError('unknown value for parameter "feature"')
+
+    def __len__(self):
+        return self.txEnd - self.txStart
+        
 
     def get_snps(self, upstream, downstream):
         """
