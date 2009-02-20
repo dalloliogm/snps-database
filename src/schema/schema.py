@@ -105,11 +105,10 @@ class SNP(Entity):
 
     def get_dbSNP_url(self):
         """get the url to dbSNP"""
-        raise NotImplementedError
-
-    def get_ensembl_ref(self):
-        """get the url to ensembl (put this in RefSeqTranscript?)"""
-        raise NotImplementedError
+        type = self.id[0:2]     # should always be rs
+        id = self.id[2:]
+        url = "http://www.ncbi.nlm.nih.gov/SNP/snp_ref.cgi?type=%s&rs=%s" % (type, id)
+        return url
 
     def get_transcripts(self, upstream, downstream):
         """Get transcripts in an interval of [upstream, downstream] from the snp position
@@ -268,7 +267,9 @@ class SNP(Entity):
         lower_limit = self.physical_position - upstream
         upper_limit = self.physical_position + downstream
 
-        return SNP.get_snps_by_region(self.chromosome, lower_limit, upper_limit)
+        snps = SNP.get_snps_by_region(self.chromosome, lower_limit, upper_limit)
+        snps.pop(snps.index(self))
+        return snps
     
     @classmethod
     def get_snps_by_region(cls, chromosome, lower_limit = 0, upper_limit = -1):
@@ -639,6 +640,9 @@ class RefSeqTranscript(Entity):
     def __len__(self):
         return self.txEnd - self.txStart
         
+    def get_ensembl_ref(self):
+        """get the url to ensembl (put this in RefSeqTranscript?)"""
+        raise NotImplementedError
 
     def get_snps(self, upstream, downstream):
         """
