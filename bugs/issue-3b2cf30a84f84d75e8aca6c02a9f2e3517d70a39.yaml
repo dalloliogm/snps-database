@@ -5,8 +5,8 @@ type: :task
 component: database schema
 release: 
 reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2009-02-17 18:19:35.327688 Z
 references: []
 
@@ -15,4 +15,8 @@ log_events:
 - - 2009-02-17 18:19:36.003539 Z
   - Giovanni Dall'Olio <dalloliogm@gmail.com>
   - created
+  - ""
+- - 2009-02-24 10:31:38.127663 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - closed with disposition fixed
   - ""
