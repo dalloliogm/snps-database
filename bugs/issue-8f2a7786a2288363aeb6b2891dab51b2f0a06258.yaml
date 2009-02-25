@@ -7,8 +7,8 @@ type: :task
 component: HGDP database
 release: 
 reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2009-02-06 11:06:30.013704 Z
 references: []
 
@@ -18,3 +18,7 @@ log_events:
   - Giovanni Dall'Olio <dalloliogm@gmail.com>
   - created
   - ""
+- - 2009-02-25 11:43:07.924723 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - closed with disposition fixed
+  - I preferred to upload a refseqtranscript table and calculate those information on runtime.
