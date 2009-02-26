@@ -519,8 +519,8 @@ class Stats(Entity):
 
     population_key = Field(String(30), primary_key = True, default = None)
 
-    iHS = Field(Float(20))      # which is the best precision?
-    frequency = Field(Float)
+    iHS = Field(Float(2, 32))      # which is the best precision?
+    frequency = Field(Float(2, 10))
 
     def __init__(self, snp, pop_key):
         if isinstance(snp, str):
