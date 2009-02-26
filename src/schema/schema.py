@@ -7,7 +7,7 @@ script) to use the existing MySql database on my computer.
 Refer to tutorial.txt for an introduction
 """
 
-from elixir import Entity, Field, Unicode, Integer, UnicodeText, String, Text
+from elixir import Entity, Field, Unicode, Integer, UnicodeText, String, Text, Float
 from recipes.enum import Enum
 from elixir import ManyToOne, OneToMany, OneToOne, ManyToMany, DateTime
 from elixir import metadata, using_options
@@ -517,7 +517,25 @@ class Stats(Entity):
     using_options(tablename = 'stats')
     snp = ManyToOne('SNP', primary_key = True)
 
-    population_key = Field(String(30), primary_key = True)
+    population_key = Field(String(30), primary_key = True, default = None)
+
+    iHS = Field(Float(20))      # which is the best precision?
+    frequency = Field(Float)
+
+    def __init__(self, snp, pop_key):
+        if isinstance(snp, str):
+            snp = SNP.get_by(id = str)
+        elif not isinstance(snp, SNP):
+            raise TypeError('snp should be a SNP instance or a string')
+        self.snp = snp
+
+        self.population_key = pop_key
+        
+
+    def __repr__(self):
+        repr = 'stats on SNP %s on %s: iHS %s, frequency %s' % (self.snp, self.population_key, self.iHS, self.frequency)
+        return repr
+        
 
 class Population(Entity):
     """ Table 'Population'
