@@ -529,7 +529,7 @@ class Stats(Entity):
             raise TypeError('snp should be a SNP instance or a string')
         self.snp = snp
 
-        self.population_key = pop_key
+        self.population_key = str(pop_key).lower()
         
 
     def __repr__(self):
