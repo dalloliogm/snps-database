@@ -515,7 +515,9 @@ class Annotations(Entity):
 
 class Stats(Entity):
     using_options(tablename = 'stats')
-    snp = ManyToOne('SNP')
+    snp = ManyToOne('SNP', primary_key = True)
+
+    population_key = Field(String(30), primary_key = True)
 
 class Population(Entity):
     """ Table 'Population'
