@@ -48,6 +48,7 @@ class SNP(Entity):
     id                  = Field(String(30), primary_key=True, unique=True)
     chromosome          = Field(String(10), index=True)
     physical_position   = Field(Integer)
+    genetic_position    = Field(Integer)
     original_strand     = Field(String(1))
 
 #    next_snp            = ManyToOne('SNP')   # next SNP on the chromosome
