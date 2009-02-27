@@ -57,7 +57,8 @@ class SNP(Entity):
     # allele1 can be only A or T. allele2 only C or G
     allele1             = Field(Enum(values=('A', 'T', '-')))
     allele2             = Field(Enum(values=('C', 'G', '-')))
-    derived_allele      = Field(String(1))
+    derived_allele      = Field(Enum(values=('A', 'C', 'T', 'G', '-')))
+    ancestral_allele    = Field(Enum(values=('A', 'C', 'T', 'G', '-')))
 #    dbSNP_ref           = Field(String(10)) # TODO: check if necessary ()
     
     genotypes           = Field(Text(2000), default='')  
