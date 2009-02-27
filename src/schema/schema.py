@@ -523,7 +523,7 @@ class Stats(Entity):
 
     iHS = Field(Float(2, 32))      # which is the best precision?
 #    iHS_raw = Field(Float(2, 32))   # not storing this for the moment
-    frequency = Field(Float(2, 10))
+    daf_iHS = Field(Float(2, 10))
 
     def __init__(self, snp, pop_key):
         if isinstance(snp, str):
