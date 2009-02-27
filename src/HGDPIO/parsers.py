@@ -11,7 +11,10 @@ def iHS_all_parser(handle, session, metadata):
     >>> from schema.debug_database import * 
     >>> from StringIO import StringIO
 
-    >>> snps = (SNP('rs10907192'), SNP('rs16824500'), SNP('rs4648592'), SNP('rs7525092'))
+    >>> snps = (SNP('rs10907192', physical_position = 1782971L), 
+    ...            SNP('rs16824500', physical_position = 1783072L), 
+    ...            SNP('rs4648592', physical_position = 1790894L), 
+    ...            SNP('rs7525092', physical_position = 1799950L))
     >>> session.commit()
 
     >>> iHS_all_file = StringIO(
@@ -20,10 +23,23 @@ def iHS_all_parser(handle, session, metadata):
     ... 1       rs16824500      1.1171806204    1783072 A       G       A       NA      NA      NA      NA      NA      NA      NA      NA      NA      NA      NA   NA      NA      NA      NA      0.796   0.487   0.415106391256120       0.752   -0.499  -0.122547389464255
     ... 1       rs4648592       1.117763149     1790894 A       G       G       0.094   0.721   0.117070264658037       0.174   1.321   0.690723748986451       0.122   0.983   0.549206740586772       0.239   0.985   0.351044493463773       0.206   0.992   0.281080754514218       NA      NA      NA      0.099   -0.312  -2.14970667471286
     ... 1       rs7525092       1.1178159302    1799950 T       C       C       0.094   0.721   0.117070264658037       0.174   1.321   0.690723748986451       0.164   0.883   0.430366296275457       0.239   0.985   0.351044493463773       0.212   0.904   0.158312286773808       NA      NA      NA      0.139   -0.38   -2.13341547242042''')
+    >>> iHS_all_file.name = ''
 
     >>> iHS_all_parser(iHS_all_file, session, metadata)
 
+#    >>> session.query(SNP.id, SNP.ancestral_allele, SNP.derived_allele).all()
+
+    >>> session.query(Stats).all()[:2]
+    [stats on SNP SNP rs10907192 on easia: iHS 0.39598396298, daf 0.118, stats on SNP SNP rs10907192 on ssafr: iHS 1.69078796331, daf 0.465]
+
     """ 
+    try:
+        filename = handle.name
+        file_lastmodif = os.stat(handle.name).st_mtime
+    except:
+        filename = ''
+        file_lastmodif = ''
+
     for line in handle:
         fields = line.split()
 
@@ -32,8 +48,39 @@ def iHS_all_parser(handle, session, metadata):
             snp_id = fields[1]
 
             snp = session.query(SNP).filter_by(id = snp_id).one()
-            print snp
+            logging.debug(snp)
 
+            snp.genetic_position = float(fields[2])
+            assert snp.physical_position == int(fields[3])
+#            assert snp.allele1 == fields[4]
+#            assert snp.allele2 == fields[5]
+            ancestral_allele = fields[6]
+            if ancestral_allele == 'NA':
+                snp.ancestral_allele = '-'
+            else:
+                snp.ancestral_allele = ancestral_allele
+
+            stat_indexes = {'AME': (7, 9), 'CSASIA': (10, 12), 'EASIA': (13, 15),
+                            'EUR': (16, 18), 'MENA': (19, 21), 'OCE': (22, 24),
+                            'SSAFR': (25, 27)}
+
+            for (popkey, indexes) in stat_indexes.items():
+                stat = Stats(snp, popkey)
+               
+                daf = fields[indexes[0]]
+                if daf == 'NA':
+                    stat.daf_iHS = None
+                else:
+                    stat.daf_iHS = float(daf)
+
+                iHS = fields[indexes[1]]
+                if iHS == 'NA':
+                    stat.iHS = None
+                else:
+                    stat.iHS = float(iHS)
+ 
+                stat.iHS_file = filename
+                stat.iHS_file_lastmodification = file_lastmodif
 
 
 def refseqgenes_parser(handle):

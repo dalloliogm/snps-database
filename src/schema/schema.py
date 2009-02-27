@@ -57,8 +57,8 @@ class SNP(Entity):
     # allele1 can be only A or T. allele2 only C or G
     allele1             = Field(Enum(values=('A', 'T', '-')))
     allele2             = Field(Enum(values=('C', 'G', '-')))
-    derived_allele      = Field(Enum(values=('A', 'C', 'T', 'G', '-')))
-    ancestral_allele    = Field(Enum(values=('A', 'C', 'T', 'G', '-')))
+    derived_allele      = Field(Enum(values=('A', 'C', 'T', 'G', '-')), default = '-')
+    ancestral_allele    = Field(Enum(values=('A', 'C', 'T', 'G', '-')), default = '-',)
 #    dbSNP_ref           = Field(String(10)) # TODO: check if necessary ()
     
     genotypes           = Field(Text(2000), default='')  
@@ -536,7 +536,7 @@ class Stats(Entity):
         
 
     def __repr__(self):
-        repr = 'stats on SNP %s on %s: iHS %s, frequency %s' % (self.snp, self.population_key, self.iHS, self.frequency)
+        repr = 'stats on SNP %s on %s: iHS %s, daf %s' % (self.snp, self.population_key, self.iHS, self.daf_iHS)
         return repr
         
 
