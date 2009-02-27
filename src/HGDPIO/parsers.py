@@ -6,8 +6,34 @@ import csv
 from sqlalchemy.orm.exc import NoResultFound
 
 
-def iHS_all_parser(handle):
-    
+def iHS_all_parser(handle, session, metadata):
+    """
+    >>> from schema.debug_database import * 
+    >>> from StringIO import StringIO
+
+    >>> snps = (SNP('rs10907192'), SNP('rs16824500'), SNP('rs4648592'), SNP('rs7525092'))
+    >>> session.commit()
+
+    >>> iHS_all_file = StringIO(
+    ... '''chromosome      snpID   position.cM     position        allele1 allele2 ancestralAllele daf.AME  ihs.raw.AME     ihs.std.AME     daf.CSASIA      ihs.raw.CSASIA  ihs.std.CSASIA  daf.EASIA    ihs.raw.EASIA   ihs.std.EASIA   daf.EUR ihs.raw.EUR     ihs.std.EUR     daf.MENA        ihs.raw.MENA    ihs.std.MENA    daf.OCE ihs.raw.OCE     ihs.std.OCE     daf.SSAFR       ihs.raw.SSAFR   ihs.std.SSAFR
+    ... 1       rs10907192      1.1171738152    1782971 A       G       G       0.07    1.994   1.79669447708548        0.234   1.07    0.422834558885843       0.118   0.883   0.395983962980141       NA      NA      NA      0.178   0.991   0.176012616404265       0.074   0.386   -0.142779233287260      0.465   1.231   1.69078796331248
+    ... 1       rs16824500      1.1171806204    1783072 A       G       A       NA      NA      NA      NA      NA      NA      NA      NA      NA      NA      NA   NA      NA      NA      NA      0.796   0.487   0.415106391256120       0.752   -0.499  -0.122547389464255
+    ... 1       rs4648592       1.117763149     1790894 A       G       G       0.094   0.721   0.117070264658037       0.174   1.321   0.690723748986451       0.122   0.983   0.549206740586772       0.239   0.985   0.351044493463773       0.206   0.992   0.281080754514218       NA      NA      NA      0.099   -0.312  -2.14970667471286
+    ... 1       rs7525092       1.1178159302    1799950 T       C       C       0.094   0.721   0.117070264658037       0.174   1.321   0.690723748986451       0.164   0.883   0.430366296275457       0.239   0.985   0.351044493463773       0.212   0.904   0.158312286773808       NA      NA      NA      0.139   -0.38   -2.13341547242042''')
+
+    >>> iHS_all_parser(iHS_all_file, session, metadata)
+
+    """ 
+    for line in handle:
+        fields = line.split()
+
+        if fields and not line.startswith('chromosome'):
+            chromosome = fields[0]
+            snp_id = fields[1]
+
+            snp = session.query(SNP).filter_by(id = snp_id).one()
+            print snp
+
 
 
 def refseqgenes_parser(handle):
@@ -64,7 +90,7 @@ def rosenberg_parser(handle, session, metadata):
     ... 705	81	"Colombian"	"Colombia"	"AMERICA"	"m"	1	1	1	1	1	0	0	1	0	0	705	81	"Colombian"	1	3	108	5	883	"HGDP00705"	"Colombian"	"FALSE"	"AME"	"TRUE"
     ... 793	81	"Colombian"	"Colombia"	"AMERICA"	"f"	1	1	1	1	1	0	0	1	0	0	793	81	"Colombian"	2	139	131	1	727	"HGDP00793"	"Colombian"	"FALSE"	"AME"	"TRUE"
     ... 709	81	"Colombian"	"Colombia"	"AMERICA"	"m"	1	1	1	1	1	0	0	1	0	0	709	81	"Colombian"	1	1	104	7	887	"HGDP00709"	"Colombian"	"FALSE"	"AME"	"TRUE"
-    ... '''
+    ... ''')
     """
     # I won't use the csv module because it has problems with the field 21
     headers = handle.readline().split()
@@ -162,11 +188,15 @@ def genotypes_parser(handle, ):
     ... MitoA14583G    AA    AA    AA    AA    AA    AA    AA    AA    AA    AA
     ... MitoA14906G    GG    GG    GG    GG    GG    GG    GG    GG    GG    GG
     ... MitoA15219G    AA    AA    AA    GG    AA    AA    AA    AA    AA    AA''')
+
+    # fix required only for StringIO objects
+    >>> genotypes_file.name = 'stringio object'
     
     running this script will add all the genotypes to the snp database:
     >>> genotypes_parser(genotypes_file)
 
-    >>> SNP.query().limit(3)
+    >>> SNP.query().limit(3).all()
+    [SNP rs1112390, SNP rs1112391, SNP MitoA11252G]
     
     """
     # read the header, containing the Individuals names
