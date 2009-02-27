@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: try zope component architecture
+desc: ""
+type: :task
+component: database schema
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-27 10:18:14.646366 Z
+references: []
+
+id: 4f293ebbe241cf4cbe1807a3192703f89081a482
+log_events: 
+- - 2009-02-27 10:18:15.097563 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""

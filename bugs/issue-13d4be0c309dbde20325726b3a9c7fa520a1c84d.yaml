@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: implement a get_or_create behaviour for Stats
+desc: ""
+type: :task
+component: database schema
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-26 17:13:17.664702 Z
+references: []
+
+id: 13d4be0c309dbde20325726b3a9c7fa520a1c84d
+log_events: 
+- - 2009-02-26 17:13:18.078516 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""

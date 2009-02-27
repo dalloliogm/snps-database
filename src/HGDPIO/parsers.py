@@ -6,6 +6,10 @@ import csv
 from sqlalchemy.orm.exc import NoResultFound
 
 
+def iHS_all_parser(handle):
+    
+
+
 def refseqgenes_parser(handle):
     """
     Parse information for refseqgenes, from a table taken from ucsc
