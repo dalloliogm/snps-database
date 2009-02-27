@@ -34,3 +34,7 @@ upload_transcripts:
 	python setupdb/setup_refseqtranscripts.py
 	python setupdb/insert_refseqtranscripts.py
 
+upload_stats:
+	python setupdb/setup_statstable.py
+	python setupdb/insert_iHS_all.py
+

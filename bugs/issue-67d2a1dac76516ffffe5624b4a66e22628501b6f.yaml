@@ -1,0 +1,20 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: forgot to add original_file and file_lastmodification to Stats schema
+desc: |-
+  I forgot to define these two fields in Stats
+  The HGDPIO parser script alread tries to add these two fields, but they are not saved.
+type: :bugfix
+component: database schema
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-02-27 17:37:27.582748 Z
+references: []
+
+id: 67d2a1dac76516ffffe5624b4a66e22628501b6f
+log_events: 
+- - 2009-02-27 17:37:27.955869 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""
