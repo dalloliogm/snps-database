@@ -176,7 +176,7 @@ class SNP(Entity):
         - n -> numerical (0, 1, 2)
 
         >>> from connection import *
-        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp'
+        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
         >>> setup_all()
 
         >>> snp = SNP.get_by(id = 'rs13125929')
@@ -257,11 +257,11 @@ class SNP(Entity):
         Get all snps in a window of (upstream, downstream) bases
 
         >>> from connection import *
-        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp'
+        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
         >>> setup_all()
 
         >>> snp = SNP.get_by(id = 'rs13125929')
-        >>> print snp.get_nearby_snps(1000000, 1050000)
+        >>> print snp.get_nearby_snps(100000, 105000)
         [SNP rs9442372, SNP rs3737728, SNP rs11260588, SNP rs9442398, SNP rs6687776, SNP rs9651273, SNP rs4970405, SNP rs12726255]
         """
         if not isinstance(upstream, int) and not isinstance(downstream, int):
@@ -279,7 +279,7 @@ class SNP(Entity):
         """
         Get the snps within a region
         >>> from connection import *    # be careful - don't write anything to the db!
-        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp'
+        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
         >>> setup_all()
         >>> print SNP.get_snps_by_region('1', 1000000, 1050000)
         [SNP rs9442372, SNP rs3737728, SNP rs11260588, SNP rs9442398, SNP rs6687776, SNP rs9651273, SNP rs4970405, SNP rs12726255]
@@ -301,6 +301,16 @@ class SNP(Entity):
 
         snps.sort(key=lambda x:x.physical_position)
         return snps
+
+    def get_stats_by_continent(self):
+        """
+        >>> from connection import *    # be careful - don't write anything to the db!
+        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
+        >>> setup_all()
+        >>> snp = SNP.get_by(id = 'rs2887286')
+        >>> snp.stats
+        """
+        pass
     
     def get_next_snp(self):
         """get the next SNP on the chromosome
@@ -443,7 +453,7 @@ class Individual(Entity):
         - a list of SNP instances
 
         >>> from connection import *
-        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp'
+        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
         >>> setup_all()
 
         >>> snp1, snp2 = SNP.query().limit(2).all()
@@ -469,7 +479,7 @@ class Individual(Entity):
         get all individuals belonging to a population working unit
 
         >>> from connection import *
-        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp'
+        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
         >>> setup_all()
         >>> Individual.get_by_continent('Europe')[0:5]
         [Mrs. HGDP01401 (adygei), Mrs. HGDP01388 (adygei), Mr. HGDP01383 (adygei), Mr. HGDP01403 (adygei), Mrs. HGDP01387 (adygei)]
@@ -485,7 +495,7 @@ class Individual(Entity):
         get all individuals belonging to a population working unit
 
         >>> from connection import *
-        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp'
+        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
         >>> setup_all()
         >>> Individual.get_by_continent_code('EUR')[0:5]
         [Mrs. HGDP01401 (adygei), Mrs. HGDP01388 (adygei), Mr. HGDP01383 (adygei), Mr. HGDP01403 (adygei), Mrs. HGDP01387 (adygei)]
@@ -501,7 +511,7 @@ class Individual(Entity):
         get all individuals belonging to a population working unit
 
         >>> from connection import *
-        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp'
+        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
         >>> setup_all()
         >>> Individual.get_by_working_unit('colombian')
         [Mrs. HGDP00704 (colombian), Mrs. HGDP00706 (colombian), Mrs. HGDP00702 (colombian), Mr. HGDP00710 (colombian), Mrs. HGDP00970 (colombian), Mr. HGDP00703 (colombian), Mrs. HGDP00708 (colombian)]

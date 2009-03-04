@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: why sqlalchemy/elixir return Decimal objects for decimals?
+desc: ""
+type: :feature
+component: HGDP database
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-03-04 11:57:22.493549 Z
+references: []
+
+id: 76bb50d91d340dcd1daee64b1ee878256afb57c7
+log_events: 
+- - 2009-03-04 11:57:23.056993 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""

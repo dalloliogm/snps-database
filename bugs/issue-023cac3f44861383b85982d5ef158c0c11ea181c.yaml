@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: get_stats methods for SNP
+desc: implement methods to access the statistics for every SNP
+type: :task
+component: database schema
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-03-04 11:40:44.230144 Z
+references: []
+
+id: 023cac3f44861383b85982d5ef158c0c11ea181c
+log_events: 
+- - 2009-03-04 11:40:44.980629 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""
