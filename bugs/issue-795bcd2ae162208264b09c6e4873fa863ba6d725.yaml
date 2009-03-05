@@ -22,3 +22,13 @@ log_events:
   - Giovanni Dall'Olio <dalloliogm@gmail.com>
   - commented
   - along with the heterozygosity, frequency, or whatever, I will have to store the associated error.
+- - 2009-03-04 14:32:47.486171 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - commented
+  - |-
+    available options:
+    - a row for each pair of snp/population
+    - a column for every population
+    - a PickleType
+    
+    the most memory-space saving option is the third, however it would make the statistics not available from a quuery browser

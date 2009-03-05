@@ -529,9 +529,9 @@ class Stats(Entity):
     using_options(tablename = 'stats')
     snp = ManyToOne('SNP', primary_key = True)
 
-    population_key = Field(String(30), primary_key = True, default = None)
+    population_key = Field(String(30), primary_key = True, default = None, index=True)
 
-    iHS = Field(Float(2, 32))      # which is the best precision?
+    iHS = Field(Float(2, 32), index=True)      # which is the best precision?
 #    iHS_raw = Field(Float(2, 32))   # not storing this for the moment
     daf_iHS = Field(Float(2, 10))
 

@@ -16,3 +16,9 @@ log_events:
   - Giovanni Dall'Olio <dalloliogm@gmail.com>
   - created
   - ""
+- - 2009-03-05 12:17:46.857555 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - commented
+  - |-
+    example:
+    Stats.query().filter_by(population_key = 'eur').filter(Stats.iHS >= 0.5).all()
