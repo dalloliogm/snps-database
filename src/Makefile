@@ -1,6 +1,10 @@
 connect:
 	ipython -i -c 'from schema.connection import *'
 
+clean_pyc:
+	@echo 'removing all .pyc files'
+	find . -iname '*.pyc' -delete
+
 test_all: test_hgdpio test_schema test_known_values
 
 test_known_values:
