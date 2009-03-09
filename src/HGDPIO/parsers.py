@@ -50,7 +50,13 @@ def iHS_all_parser(handle, session, metadata):
             snp = session.query(SNP).filter_by(id = snp_id).one()
             logging.debug(snp)
 
-            snp.genetic_position = float(fields[2])
+            genetic_position = fields[2]
+            if genetic_position == 'NA':
+                snp.genetic_position = None
+            else:
+                snp.genetic_position = float(fields[2])
+#            else:
+#                raise TypeError('genetic position?? %s' % line)
             assert snp.physical_position == int(fields[3])
 #            assert snp.allele1 == fields[4]
 #            assert snp.allele2 == fields[5]
