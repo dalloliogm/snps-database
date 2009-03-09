@@ -548,7 +548,24 @@ class Stats(Entity):
     def __repr__(self):
         repr = 'stats on SNP %s on %s: iHS %s, daf %s' % (self.snp, self.population_key, self.iHS, self.daf_iHS)
         return repr
-        
+
+    def get_by_chromosome(self):
+        pass
+
+    def get_by_snp_id(self):
+        pass
+
+    def get_by_continent(self):
+        """
+        create aliases eur<->europe<->Europe etc...
+        """
+        pass
+    
+    def get_by_population(self):
+        """
+        get by working unit
+        """
+        pass
 
 class Population(Entity):
     """ Table 'Population'
