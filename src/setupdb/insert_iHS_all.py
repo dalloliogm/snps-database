@@ -3,6 +3,7 @@ Read the iHS all continent file and upload stats
 """
 
 from HGDPIO import parsers
+import logging
 
 def upload_iHS_stats(iHS_filehandle, session, metadata):
     """

@@ -57,7 +57,12 @@ def iHS_all_parser(handle, session, metadata):
                 snp.genetic_position = float(fields[2])
 #            else:
 #                raise TypeError('genetic position?? %s' % line)
-            assert snp.physical_position == int(fields[3])
+            try:
+                snp.physical_position == int(fields[3])
+            except:
+                logging.debug('snp.position not corresponding')
+                logging.debug(snp)
+                logging.debug(fields[3])
 #            assert snp.allele1 == fields[4]
 #            assert snp.allele2 == fields[5]
             ancestral_allele = fields[6]
