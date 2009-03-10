@@ -10,7 +10,7 @@ from schema.connection import *
 from sqlalchemy.sql import func
 
 
-class KnowValues(U.TestCase):
+class TestStats(U.TestCase):
     """
     Tests for known values
     """
@@ -19,7 +19,7 @@ class KnowValues(U.TestCase):
     def setUpAll(cls):
         logging.basicConfig(level = logging.DEBUG)
 
-    def test_AllStatsHaveBeenUploadedPerChromosome(self):
+    def test_ForEveryChromosomeThereIsAtLeastOneStatSaved(self):
         chromosomes = [str(chr) for chr in range(1, 22)]
         
         for chr in chromosomes:
