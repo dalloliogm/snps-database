@@ -184,7 +184,7 @@ class SNP(Entity):
         [193L]
 
         >>> snp.get_genotype_by_individuals(individuals = ('HGDP00001', 'HGDP01419'), format = 'n')
-        [193L, 791L]
+        ['0', '0']
         
         >>> snp.get_genotype_by_individuals(individuals = ('HGDP00001', 'HGDP01419'), format = 'c')
         ['TT', 'TT']
@@ -719,7 +719,7 @@ class RefSeqTranscript(Entity):
         >>> snp8 = SNP('snp8', chromosome = 1, physical_position = 1000L)   # not included (other chromosome)
         >>> snp4b = SNP('snp4b', chromosome = 11, physical_position = 1100L) # included and after snp4
 
-        >>> transcript1.get_snps(300L, 300L)
+        >>> transcript1.get_snps(300, 300)
         [SNP snp2, SNP snp3, SNP snp4, SNP snp4b, SNP snp5, SNP snp6]
 
         >>> session.close()
