@@ -299,7 +299,7 @@ class SNP(Entity):
                 filter(SNP.physical_position > lower_limit).\
                 filter(SNP.physical_position < upper_limit).all()
 
-        snps.sort(key=lambda x:x.physical_position)
+        snps.sort(key=lambda x:int(x.physical_position))
         return snps
 
     def get_stats_by_continent(self):
@@ -604,7 +604,6 @@ class Population(Entity):
     region              = Field(String(50))
     continent_macroarea = Field(String(30), index=True)
     continent_code      = Field(String(8), index=True)
-    # TODO: sort the input file by continent, working_unit, populations
     
 #    version                 = Column(Integer, ForeignKey('versions.id'))
 #    last_modified       = Field(DateTime, onupdate=datetime.now,
@@ -710,17 +709,17 @@ class RefSeqTranscript(Entity):
 
         >>> transcript1 = RefSeqTranscript('transcript1', 11, 1000, 1200)
 
-        >>> snp1 = SNP('snp1', chromosome = 11, physical_position = 500)    # not included
-        >>> snp2 = SNP('snp2', chromosome = 11, physical_position = 700)    # included
-        >>> snp3 = SNP('snp3', chromosome = 11, physical_position = 800)    # included
-        >>> snp4 = SNP('snp4', chromosome = 11, physical_position = 1000)   # included
-        >>> snp5 = SNP('snp5', chromosome = 11, physical_position = 1200)   # included
-        >>> snp6 = SNP('snp6', chromosome = 11, physical_position = 1500)   # included
-        >>> snp7 = SNP('snp7', chromosome = 11, physical_position = 1600)   # not included
-        >>> snp8 = SNP('snp8', chromosome = 1, physical_position = 1000)   # not included (other chromosome)
-        >>> snp4b = SNP('snp4b', chromosome = 11, physical_position = 1100) # included and after snp4
+        >>> snp1 = SNP('snp1', chromosome = 11, physical_position = 500L)    # not included
+        >>> snp2 = SNP('snp2', chromosome = 11, physical_position = 700L)    # included
+        >>> snp3 = SNP('snp3', chromosome = 11, physical_position = 800L)    # included
+        >>> snp4 = SNP('snp4', chromosome = 11, physical_position = 1000L)   # included
+        >>> snp5 = SNP('snp5', chromosome = 11, physical_position = 1200L)   # included
+        >>> snp6 = SNP('snp6', chromosome = 11, physical_position = 1500L)   # included
+        >>> snp7 = SNP('snp7', chromosome = 11, physical_position = 1600L)   # not included
+        >>> snp8 = SNP('snp8', chromosome = 1, physical_position = 1000L)   # not included (other chromosome)
+        >>> snp4b = SNP('snp4b', chromosome = 11, physical_position = 1100L) # included and after snp4
 
-        >>> transcript1.get_snps(300, 300)
+        >>> transcript1.get_snps(300L, 300L)
         [SNP snp2, SNP snp3, SNP snp4, SNP snp4b, SNP snp5, SNP snp6]
 
         >>> session.close()
@@ -738,7 +737,7 @@ class RefSeqTranscript(Entity):
         snps = SNP.query().filter_by(chromosome = self.chromosome).\
                                 filter(SNP.physical_position >= lower_limit).\
                                 filter(SNP.physical_position <= upper_limit).all()  
-        snps.sort(cmp=lambda x, y: x.physical_position - y.physical_position)
+        snps.sort(cmp=lambda x, y: int(x.physical_position) - int(y.physical_position))
         return snps
     
     
