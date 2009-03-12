@@ -157,6 +157,55 @@ class SNP(Entity):
                                         filter(RefSeqTranscript.cdsEnd <= upper_limit).all()
         return transcripts
 
+    def get_position_from_transcript(self, transcript_id):
+        """
+        determine the position with respect to a transcript (in the coding region, #n upstream/downstream, etc)
+
+        >>> from debug_database import *
+        >>> metadata.bind = 'sqlite:///:memory:'
+        >>> setup_all(); create_all()
+        >>> print metadata
+        MetaData(Engine(sqlite:///:memory:))
+        >>> rs1333 = SNP('rs1333')
+        >>> rs1333.chromosome = '11'
+        >>> rs1333.physical_position = 900
+
+
+        >>> transcript1 = RefSeqTranscript('transcript1', 11, 700, 800) # upstream
+        >>> transcript2 = RefSeqTranscript('transcript2', 11, 800, 910)
+        >>> transcript3 = RefSeqTranscript('transcript3', 11, 800, 900)
+        >>> transcript4 = RefSeqTranscript('transcript4', 11, 900, 1000)
+        >>> transcript5 = RefSeqTranscript('transcript5', 11, 1000, 1100)
+        
+        >>> rs1333.get_position_from_transcript(transcript1)
+        'upstream'
+        >>> rs1333.get_position_from_transcript('transcript1')
+        'upstream'
+
+        """
+        outputs = ['upstream', 'downstream', 'inside gene', 'coding', 'intronic', 'other chromosome']
+        position = ''
+        
+        if isinstance(transcript_id, RefSeqGene):
+            transcript = transcript_id
+        elif isinstance(transcript_id, str):   # todo: check for __str__ method?
+            transcript = RefSeqTranscript.get_by(transcript_id = transcript_id)
+        else:
+            transcript = None
+        if transcript is None:
+                raise ValueError('transcript %s not present in database' % transcript_id)
+
+        if transcript.chromosome != self.chromosome:
+            position = 'other chromosome'
+
+        elif snp.physical_position < transcript.txStart:
+            position = 'upstream'
+        elif transcript.txStart < snp.physical_position < transcript.txEnd:
+            position = 'inside gene'
+        elif snp.physical_position > transcript.txEnd:
+            position = 'downstream'
+
+        return position
 
     def add_genotype(self, genotype):
         """add genotypes"""
