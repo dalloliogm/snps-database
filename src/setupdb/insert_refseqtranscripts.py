@@ -13,10 +13,11 @@ def upload_annotations(refseq_annotations_fh, session, metadata):
     >>> from schema.debug_database import *
     >>> print metadata
     MetaData(Engine(sqlite:///:memory:))
+    >>> setup_all()
     >>> annotations = StringIO.StringIO('''\
-    ... "NR_024077" "chr1"  "-" 4268    14754   14754   14754   10  "4268,4832,5658,6469,"   "4692,4901,5810,6631,6918"   "WASH2P"    "unk"   "unk"   "-1,-1,-1,-1,"
-    ... "NM_001005484"  "chr1"  "+" 58953   59871   58953   59871   1   58953   59871   "OR4F5" "cmpl"  "cmpl"  0
-    ... "NM_001005224"  "chr1"  "+" 357521  358460  357521  358460  1   357521  358460  "OR4F3" "cmpl"  "cmpl"  0)
+    ... 12  "NR_024077" "chr1"  "-" 4268    14754   14754   14754   10  "4268,4832,5658,6469,"   "4692,4901,5810,6631,6918"   "WASH2P"    "unk"   "unk"   "-1,-1,-1,-1,"
+    ... 31  "NM_001005484"  "chr1"  "+" 58953   59871   58953   59871   1   58953   59871   "OR4F5" "cmpl"  "cmpl"  0
+    ... 13  "NM_001005224"  "chr1"  "+" 357521  358460  357521  358460  1   357521  358460  "OR4F3" "cmpl"  "cmpl"  0)
     >>> upload_annotations(annotations)
     >>> transcript = RefSeqTranscript.query().filter_by(ncbi_transcript_id = 'NR_024077')
     >>> print transcript.chromosome, transcript.strand, transcript.txStart
@@ -43,7 +44,7 @@ def upload_annotations(refseq_annotations_fh, session, metadata):
             logging.debug(fields)
             
             transcript.bin = fields[0]
-            transcript.ncbi_transcript_id = fields[1].replace('"', '')
+            transcript.transcript_id = fields[1].replace('"', '')
             chromosome = fields[2].replace('"', '')
             transcript.chromosome = re.findall('chr(.*)', chromosome)[0]
             transcript.strand = fields[3][1]
