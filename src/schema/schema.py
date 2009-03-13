@@ -706,6 +706,7 @@ class RefSeqTranscript(Entity):
     strand = Field(Enum(('-', '+', None)))
     txStart = Field(Integer)
     txEnd = Field(Integer)
+    txCenter = Field(Integer)
     cdsStart = Field(Integer)
     cdsEnd = Field(Integer)
     exonCount = Field(Integer)

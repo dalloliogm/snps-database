@@ -50,6 +50,7 @@ def upload_annotations(refseq_annotations_fh, session, metadata):
             transcript.strand = fields[3][1]
             transcript.txStart = int(fields[4])
             transcript.txEnd = int(fields[5])
+            transcript.txCenter = (transcript.txStart + transcript.txEnd) /2
             transcript.cdsStart = int(fields[6])
             transcript.cdsEnd = int(fields[7])
             transcript.exonCount = int(fields[8])
