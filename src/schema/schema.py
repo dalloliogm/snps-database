@@ -765,7 +765,7 @@ class RefSeqTranscript(Entity):
 
         Example: get all the snps with upstream=300, downstream=300
 
-        >>> transcript1 = RefSeqTranscript('transcript1', 11, 1000, 1200)
+        >>> transcript1 = RefSeqTranscript('transcript1', 11, 1000, 1200, relative_to = 'tx')
 
         >>> snp1 = SNP('snp1', chromosome = 11, physical_position = 500L)    # not included
         >>> snp2 = SNP('snp2', chromosome = 11, physical_position = 700L)    # included
@@ -788,14 +788,15 @@ class RefSeqTranscript(Entity):
         if (self.chromosome is None):   # should check also for cdsStart, etc..
             raise ValueError('unknown coordinates for current snp')
 
-        if relative_to in ('tr', 'transcript'):
+        if relative_to in ('tr', 'tx', 'transcript'):
 
             lower_limit = self.txStart - upstream
             upper_limit = self.txEnd + downstream
             logging.debug(lower_limit, upper_limit)
                     
         elif relative_to in ('center', 'txcenter'):
-            lower_limit = upper_limit = self.txCenter
+            lower_limit = self.txCenter - upstream
+            upper_limit = self.txCenter + downstream
 
         else:
             raise ValueError('unknown value for parameter "relative_to"')
