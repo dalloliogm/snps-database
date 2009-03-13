@@ -137,8 +137,9 @@ class SNP(Entity):
 
         >>> transcriptreverse = RefSeqTranscript('transcriptreverse', 11, 900, 800)   # included
 
-        >>> rs1333.get_transcripts(100, 100)
-        [transcript TRANSCRIPT3 on gene None on chromosome 11 (None-None), transcript TRANSCRIPT4 on gene None on chromosome 11 (None-None), transcript TRANSCRIPTREVERSE on gene None on chromosome 11 (None-None)]
+        >>> transcripts = rs1333.get_transcripts(100, 100)
+        >>> print [tr.transcript_id for tr in transcripts]
+        ['TRANSCRIPT3', 'TRANSCRIPT4', 'TRANSCRIPTREVERSE']
 
         >>> session.close()
         """
@@ -153,8 +154,8 @@ class SNP(Entity):
         upper_limit = self.physical_position + downstream
 
         transcripts = RefSeqTranscript.query().filter_by(chromosome = self.chromosome).\
-                                        filter(RefSeqTranscript.cdsStart >= lower_limit).\
-                                        filter(RefSeqTranscript.cdsEnd <= upper_limit).all()
+                                        filter(RefSeqTranscript.txStart >= lower_limit).\
+                                        filter(RefSeqTranscript.txEnd <= upper_limit).all()
         return transcripts
 
     def get_position_from_transcript(self, transcript_id):
@@ -171,38 +172,44 @@ class SNP(Entity):
         >>> rs1333.physical_position = 900
 
 
-        >>> transcript1 = RefSeqTranscript('transcript1', 11, 700, 800) # upstream
-        >>> transcript2 = RefSeqTranscript('transcript2', 11, 800, 910)
-        >>> transcript3 = RefSeqTranscript('transcript3', 11, 800, 900)
-        >>> transcript4 = RefSeqTranscript('transcript4', 11, 900, 1000)
-        >>> transcript5 = RefSeqTranscript('transcript5', 11, 1000, 1100)
+        >>> transcript1 = RefSeqTranscript('transcript1', 11, 700, 800) # downstream
+        >>> transcript2 = RefSeqTranscript('transcript2', 11, 800, 910) # within
+        >>> transcript3 = RefSeqTranscript('transcript3', 11, 890, 930) # within
+        >>> transcript4 = RefSeqTranscript('transcript4', 11, 910, 1000) # upstream
         
         >>> rs1333.get_position_from_transcript(transcript1)
-        'upstream'
+        'downstream'
         >>> rs1333.get_position_from_transcript('transcript1')
+        'downstream'
+        >>> rs1333.get_position_from_transcript(transcript2)
+        'inside gene'
+        >>> rs1333.get_position_from_transcript(transcript3)
+        'inside gene'
+        >>> rs1333.get_position_from_transcript(transcript4)
         'upstream'
 
         """
         outputs = ['upstream', 'downstream', 'inside gene', 'coding', 'intronic', 'other chromosome']
         position = ''
         
-        if isinstance(transcript_id, RefSeqGene):
+        if isinstance(transcript_id, RefSeqTranscript):
             transcript = transcript_id
         elif isinstance(transcript_id, str):   # todo: check for __str__ method?
-            transcript = RefSeqTranscript.get_by(transcript_id = transcript_id)
+            transcript = RefSeqTranscript.get_by(transcript_id = transcript_id.upper())
         else:
             transcript = None
         if transcript is None:
-                raise ValueError('transcript %s not present in database' % transcript_id)
+            raise ValueError('transcript %s not present in database' % transcript_id)
 
+        snp_position = self.physical_position
         if transcript.chromosome != self.chromosome:
             position = 'other chromosome'
 
-        elif snp.physical_position < transcript.txStart:
+        elif snp_position < transcript.txStart:
             position = 'upstream'
-        elif transcript.txStart < snp.physical_position < transcript.txEnd:
+        elif transcript.txStart < snp_position < transcript.txEnd:
             position = 'inside gene'
-        elif snp.physical_position > transcript.txEnd:
+        elif snp_position > transcript.txEnd:
             position = 'downstream'
 
         return position
@@ -310,8 +317,8 @@ class SNP(Entity):
         >>> setup_all()
 
         >>> snp = SNP.get_by(id = 'rs13125929')
-        >>> print snp.get_nearby_snps(100000, 105000)
-        [SNP rs9442372, SNP rs3737728, SNP rs11260588, SNP rs9442398, SNP rs6687776, SNP rs9651273, SNP rs4970405, SNP rs12726255]
+        >>> print snp.get_nearby_snps(100000, 105000)[:7]
+        [SNP rs4690284, SNP rs13114862, SNP rs11724335, SNP rs12509346, SNP rs10002444, SNP rs9884834, SNP rs2213704]
         """
         if not isinstance(upstream, int) and not isinstance(downstream, int):
             raise TypeError("SNP.get_nearby_snps requires two integers as input")
@@ -357,7 +364,8 @@ class SNP(Entity):
         >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
         >>> setup_all()
         >>> snp = SNP.get_by(id = 'rs2887286')
-        >>> snp.stats
+        >>> snp.stats[0]
+        stats on SNP SNP rs2887286 on ame: iHS 0.806953, daf 0.891
         """
         pass
     
