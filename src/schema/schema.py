@@ -752,7 +752,7 @@ class RefSeqTranscript(Entity):
         """get the url to ensembl (put this in RefSeqTranscript?)"""
         raise NotImplementedError
 
-    def get_snps(self, upstream, downstream):
+    def get_snps(self, upstream = 0, downstream = 0, relative_to = 'center'):
         """
         Get all the snps in an interval of (transcript.txstart - downstream, transcript.txEnd + upstream)
 
@@ -788,10 +788,18 @@ class RefSeqTranscript(Entity):
         if (self.chromosome is None):   # should check also for cdsStart, etc..
             raise ValueError('unknown coordinates for current snp')
 
-        lower_limit = self.txStart - upstream
-        upper_limit = self.txEnd + downstream
-        logging.debug(lower_limit, upper_limit)
-                
+        if relative_to in ('tr', 'transcript'):
+
+            lower_limit = self.txStart - upstream
+            upper_limit = self.txEnd + downstream
+            logging.debug(lower_limit, upper_limit)
+                    
+        elif relative_to in ('center', 'txcenter'):
+            lower_limit = upper_limit = self.txCenter
+
+        else:
+            raise ValueError('unknown value for parameter "relative_to"')
+
         snps = SNP.query().filter_by(chromosome = self.chromosome).\
                                 filter(SNP.physical_position >= lower_limit).\
                                 filter(SNP.physical_position <= upper_limit).all()  
