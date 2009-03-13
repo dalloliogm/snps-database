@@ -44,7 +44,7 @@ def upload_annotations(refseq_annotations_fh, session, metadata):
             logging.debug(fields)
             
             transcript.bin = fields[0]
-            transcript.transcript_id = fields[1].replace('"', '')
+            transcript.transcript_id = fields[1].replace('"', '').upper()
             chromosome = fields[2].replace('"', '')
             transcript.chromosome = re.findall('chr(.*)', chromosome)[0]
             transcript.strand = fields[3][1]
@@ -59,7 +59,7 @@ def upload_annotations(refseq_annotations_fh, session, metadata):
                 transcript.exonEnds = fields[10].replace('"', '')
                 if len(fields) > 11:
                     unknown = fields[11]
-                    transcript.alternateName = fields[12].replace('"', '')
+                    transcript.alternateName = fields[12].replace('"', '').upper()
                     transcript.cdsStartStat = fields[13].replace('"', '')
                     transcript.cdsEndStat = fields[14].replace('"', '')
                     transcript.exonFrames = fields[15].replace('"', '')
