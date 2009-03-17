@@ -723,10 +723,10 @@ class RefSeqTranscript(Entity):
         self.transcript_id = ncbi_id.upper()
         self.chromosome = str(chromosome).lower()
 
-        if txStart is not None:
+        if txEnd is not None and txStart is not None:
             self.txStart = int(txStart)
-        if txEnd is not None:
             self.txEnd = int(txEnd)
+            self.txCenter = (self.txEnd + self.txStart) / 2
 
     def __repr__(self):
         return "transcript %s on gene %s on chromosome %s (%s-%s)" % \
@@ -765,20 +765,24 @@ class RefSeqTranscript(Entity):
 
         Example: get all the snps with upstream=300, downstream=300
 
-        >>> transcript1 = RefSeqTranscript('transcript1', 11, 1000, 1200, relative_to = 'tx')
+        >>> transcript1 = RefSeqTranscript('transcript1', 11, 900, 1100) # txCenter: 1000
 
         >>> snp1 = SNP('snp1', chromosome = 11, physical_position = 500L)    # not included
-        >>> snp2 = SNP('snp2', chromosome = 11, physical_position = 700L)    # included
+        >>> snp2 = SNP('snp2', chromosome = 11, physical_position = 700L)    # not included
         >>> snp3 = SNP('snp3', chromosome = 11, physical_position = 800L)    # included
-        >>> snp4 = SNP('snp4', chromosome = 11, physical_position = 1000L)   # included
+        >>> snp4 = SNP('snp4', chromosome = 11, physical_position = 1000L)   # included, inside tr
         >>> snp5 = SNP('snp5', chromosome = 11, physical_position = 1200L)   # included
-        >>> snp6 = SNP('snp6', chromosome = 11, physical_position = 1500L)   # included
+        >>> snp6 = SNP('snp6', chromosome = 11, physical_position = 1300L)   # not included
         >>> snp7 = SNP('snp7', chromosome = 11, physical_position = 1600L)   # not included
-        >>> snp8 = SNP('snp8', chromosome = 1, physical_position = 1000L)   # not included (other chromosome)
+        >>> snp8 = SNP('snp8', chromosome = 1, physical_position = 1000L)    # not included (other chromosome)
         >>> snp4b = SNP('snp4b', chromosome = 11, physical_position = 1100L) # included and after snp4
 
         >>> transcript1.get_snps(300, 300)
         [SNP snp2, SNP snp3, SNP snp4, SNP snp4b, SNP snp5, SNP snp6]
+
+        Get all snps within the transcript (use 'tr' parameter)
+        >>> transcript1.get_snps(0, 0, 'center')
+        [SNP snp4]
 
         >>> session.close()
         """
