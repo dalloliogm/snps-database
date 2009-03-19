@@ -258,7 +258,8 @@ class SNP(Entity):
                 logging.debug(ind_obj)
                 ind_index = ind_obj.genotypes_index
             elif isinstance(individuals, Individual):
-                ind_index = individuals.genotypes_index
+                ind_obj = individuals
+                ind_index = ind_obj.genotypes_index
             if format == 'c':
                 genotypes.append(self.get_genotype_char(ind_index))
             else:
