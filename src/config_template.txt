@@ -5,7 +5,7 @@
 [Database configuration]
 DBMS = mysql
 # Data base name
-db_name = hgdp
+db_name = hgdp_test
 # Database Host
 host = 172.22.1.247
 # Data base connection port. Defaults: mysql 3306, postrgres 5432
