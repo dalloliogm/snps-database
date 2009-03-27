@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Population.get_genotypes_by_snp
+desc: ""
+type: :task
+component: database schema
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-03-27 18:46:30.224345 Z
+references: []
+
+id: 65124053ec40e285d913b3648bd6a79dea2b0905
+log_events: 
+- - 2009-03-27 18:46:30.600489 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""
