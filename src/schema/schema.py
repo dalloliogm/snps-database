@@ -778,11 +778,11 @@ class RefSeqTranscript(Entity):
         >>> snp8 = SNP('snp8', chromosome = 1, physical_position = 1000L)    # not included (other chromosome)
         >>> snp4b = SNP('snp4b', chromosome = 11, physical_position = 1100L) # included and after snp4
 
-        >>> transcript1.get_snps(300, 300)
+        >>> transcript1.get_snps(300, 300).all()
         [SNP snp2, SNP snp3, SNP snp4, SNP snp4b, SNP snp5, SNP snp6]
 
         Get all snps within the transcript (use 'tr' parameter)
-        >>> transcript1.get_snps(0, 0, 'center')
+        >>> transcript1.get_snps(0, 0, 'center').all()
         [SNP snp4]
 
         >>> session.close()
@@ -808,7 +808,7 @@ class RefSeqTranscript(Entity):
 
         snps = SNP.query().filter_by(chromosome = self.chromosome).\
                                 filter(SNP.physical_position >= lower_limit).\
-                                filter(SNP.physical_position <= upper_limit).all()  
+                                filter(SNP.physical_position <= upper_limit)
         snps.sort(cmp=lambda x, y: int(x.physical_position) - int(y.physical_position))
         return snps
     
