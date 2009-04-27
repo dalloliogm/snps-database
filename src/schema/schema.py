@@ -806,10 +806,10 @@ class RefSeqTranscript(Entity):
         else:
             raise ValueError('unknown value for parameter "relative_to"')
 
-        snps = SNP.query().filter_by(chromosome = self.chromosome).\
+        snps = SNP.query().order_by(SNP.physical_position).\
+                                filter_by(chromosome = self.chromosome).\
                                 filter(SNP.physical_position >= lower_limit).\
                                 filter(SNP.physical_position <= upper_limit)
-        snps.sort(cmp=lambda x, y: int(x.physical_position) - int(y.physical_position))
         return snps
     
     
