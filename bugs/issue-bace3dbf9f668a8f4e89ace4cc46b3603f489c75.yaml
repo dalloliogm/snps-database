@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: a separated table for every Stat type
+desc: as we discussed with Carlos
+type: :task
+component: database schema
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-04-30 12:25:52.159518 Z
+references: []
+
+id: bace3dbf9f668a8f4e89ace4cc46b3603f489c75
+log_events: 
+- - 2009-04-30 12:25:52.498202 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""

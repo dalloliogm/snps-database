@@ -5,8 +5,8 @@ type: :feature
 component: HGDP database
 release: 
 reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :wontfix
 creation_time: 2009-03-04 11:57:22.493549 Z
 references: []
 
@@ -16,3 +16,7 @@ log_events:
   - Giovanni Dall'Olio <dalloliogm@gmail.com>
   - created
   - ""
+- - 2009-04-30 12:24:29.058139 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - closed with disposition wontfix
+  - I don't think I can do anything with it..
