@@ -67,25 +67,6 @@ class SNP(Entity):
     annotations         = OneToMany('Annotations')
     stats               = OneToMany('Stats')
 
-    # Reference to closest transcript 
-#    refseqtranscript_id         = Field(String, default=None)
-#    gene_id          = Field(String, default=None)
-#    gene          = Field(String, default=None)
-#    refseqtranscript          = ManyToOne('RefSeqTranscript')       # deprecate!! 
-    # The following annotations come from a file called HumanHap650v3GeneAnnotation
-
-#    hap_chromosome = Field(String(10))
-#    hap_coordinate = Field(Integer)
-#    hap_genomebuild = Field(String(40))
-#    transcript_symbol = Field(Text)
-#    transcript = Field(Text)
-#    location = Field(Text)
-#    location_relative_to_transcript = Field(String(30))
-#    coding_status = Field(String(30))
-#    aminoacid_change = Field(String(40))
-#    id_with_mouse = Field(String(40))
-#    phast_conservation = Field(Integer) # TODO: supports negative numbers?
-
     # versioning
     snp_build           = Field(String(80))
     genotypes_file      = Field(String(80)) # input file containing the genotypes
