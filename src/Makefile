@@ -8,15 +8,14 @@ clean_pyc:
 test_all: test_hgdpio test_schema test_known_values
 
 test_known_values:
-	nosetests test/test_knowvalues.py
+	-nosetests test/test_knowvalues.py
 
 test_schema:
-	(cd schema; nosetests --with-doctest -v)
-#	python -c "import hotshot.stats ; stats = hotshot.stats.load('./profiles/schema.prof') ; stats.sort_stats('time', 'calls') ; stats.print_stats(200)"
-
+	-(cd schema; nosetests --with-doctest -v)
+#	- python -c "import hotshot.stats ; stats = hotshot.stats.load('./profiles/schema.prof') ; stats.sort_stats('time', 'calls') ; stats.print_stats(200)"
 test_hgdpio:
-	(cd HGDPIO; nosetests --with-profile --profile-stats-file=../profiles/HGDPIO.prof)
-	python -c "import hotshot.stats ; stats = hotshot.stats.load('./profiles/HGDPIO.prof') ; stats.sort_stats('time', 'calls') ; stats.print_stats(200)"
+	-(cd HGDPIO; nosetests --with-profile --profile-stats-file=../profiles/HGDPIO.prof)
+	-python -c "import hotshot.stats ; stats = hotshot.stats.load('./profiles/HGDPIO.prof') ; stats.sort_stats('time', 'calls') ; stats.print_stats(200)"
 
 upload_database: setupdb/create_database.py setupdb/insert_individuals.py setupdb/insert_genotypes.py
 	@echo "Dropping the database and uploading data again"
