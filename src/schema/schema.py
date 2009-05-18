@@ -778,7 +778,7 @@ class RefSeqTranscript(Entity):
 
             lower_limit = self.txStart - upstream
             upper_limit = self.txEnd + downstream
-            logging.debug(lower_limit, upper_limit)
+#            logging.debug(str(lower_limit + upper_limit))
                     
         elif relative_to in ('center', 'txcenter'):
             lower_limit = self.txCenter - upstream
