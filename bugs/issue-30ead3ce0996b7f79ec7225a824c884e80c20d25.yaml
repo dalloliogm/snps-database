@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: FAM138A and FAM138F genes are duplicated in UCSC data
+desc: ""
+type: :bugfix
+component: to discuss
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-04-27 13:29:34.835659 Z
+references: []
+
+id: 30ead3ce0996b7f79ec7225a824c884e80c20d25
+log_events: 
+- - 2009-04-27 13:29:35.324636 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""
