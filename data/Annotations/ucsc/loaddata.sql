@@ -1,1 +1,0 @@
-LOAD DATA LOCAL INFILE 'genes_refseq' into table refseqgenes FIELDS TERMINATED BY '\t' LINES TERMINATED BY '\n' (name, chrom, strand, txStart, txEnd, cdsStart, cdsEnd, exonCount, exonStarts, exonEnds, alternateName, cdsStartStat, cdsEndStat, exonFrames);
