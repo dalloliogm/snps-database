@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: "SNP.get_position_from_transcript: implement the distance"
+desc: ""
+type: :task
+component: database schema
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-05-19 14:04:29.766338 Z
+references: []
+
+id: db9cccf40f15e271c49cbec7527c2421fe677fb5
+log_events: 
+- - 2009-05-19 14:04:30.700910 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""
