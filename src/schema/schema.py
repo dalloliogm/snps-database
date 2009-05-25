@@ -674,6 +674,18 @@ class Population(Entity):
     def __ne__(self, other):
         return str(self.popname) == str(other).lower()
 
+    @classmethod
+    def all_working_units(self):
+        """ list all the working units in the table"""
+        units = Population.query().from_self(Population.working_unit).group_by(Population.working_unit).all()
+        return map(lambda x:x[0], units)
+
+    @classmethod
+    def all_continents(self):
+        """ list all the continent codes in the table"""
+        units = Population.query().from_self(Population.continent_code).group_by(Population.continent_code).all()
+        return map(lambda x:x[0], units)
+
 class RefSeqTranscript(Entity):
     """ Table 'RefSeqTranscript'
     name, chrom, strand, txStart, txEnd, cdsStart, cdsEnd, exonCount, exonStarts, exonEnds, alternateName, cdsStartStat, cdsEndStat, exonFrames
