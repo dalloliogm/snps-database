@@ -244,7 +244,7 @@ class SNP(Entity):
             if format == 'c':
                 genotypes.append(self.get_genotype_char(ind_index))
             else:
-                genotypes.append(ind_obj.genotypes_index)
+                genotypes.append(self.genotypes[ind_obj.genotypes_index])
  
         # case 2: individuals is a list of individuals
         elif isinstance(individuals, list) or isinstance(individuals, tuple):
