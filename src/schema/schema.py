@@ -804,6 +804,28 @@ class RefSeqTranscript(Entity):
                                 filter(SNP.physical_position >= lower_limit).\
                                 filter(SNP.physical_position <= upper_limit)
         return snps
+
+        def longest_transcript_by_gene(self, gene):
+            """
+            Given a gene name, return the longest transcript for it
+
+
+
+            >>> from debug_database import *
+            >>> metadata.bind = 'sqlite:///:memory:'
+            >>> setup_all(); create_all()
+            >>> print metadata
+            MetaData(Engine(sqlite:///:memory:))
+
+
+            Example: get all the snps with upstream=300, downstream=300
+
+            >>> transcript1 = RefSeqTranscript('transcript1', 11, 900, 1100) # txCenter: 1000
+
+            >>> snp1 = SNP('snp1', chromosome = 11, physical_position = 500L)    # not included
+                 
+            """
+            raise NotImplementedError
     
     
 def _test():
