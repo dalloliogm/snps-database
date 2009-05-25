@@ -474,12 +474,20 @@ class Individual(Entity):
     def __ne__(self, other):
         return self.name != str(other).upper()
    
-    def get_genotypes(self, list_of_snps):
+    def get_genotypes(self, list_of_snps, format = 'n'):
         """Given a list of snps, the their genotypes
         """
+        genotypes = []
         if hasattr([], '__iter__') and not isinstance(list_of_snps, str):
-            pass
-        pass
+            logging.debug("list_of_snps is a list")
+
+            for snp in list_of_snps:
+                if format == 'n':
+                    genotypes.append(snp.genotypes[self.genotypes_index])
+                else:
+                    genotype = snp.get_genotype_char(self.genotypes_index)
+                    genotypes.append(genotype)
+        return genotypes
           
     def get_genotype(self, snp):
         """Given a snp id, get the genotype
