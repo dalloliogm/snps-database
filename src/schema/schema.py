@@ -231,38 +231,21 @@ class SNP(Entity):
         """
         genotypes = []
 
-        # case 1: individuals is a single individual id, or object
         if isinstance(individuals, str) or isinstance(individuals, Individual):
             # TODO: may refactored by using recursion
-            if isinstance(individuals, str):
-                ind_obj = Individual.query().filter_by(name = individuals.strip()).first()
-                if ind_obj is None:
-                    return 'Could not find individual %s' % ind
-                logging.debug(ind_obj)
-                ind_index = ind_obj.genotypes_index
-            elif isinstance(individuals, Individual):
-                ind_obj = individuals
-                ind_index = ind_obj.genotypes_index
-            if format == 'c':
-                genotypes.append(self.get_genotype_char(ind_index))
-            else:
-                genotypes.append(self.genotypes[ind_obj.genotypes_index])
- 
-        # case 2: individuals is a list of individuals
-        elif isinstance(individuals, list) or isinstance(individuals, tuple):
-
-            ind_indexes = Individual.query.filter(Individual.name.in_(individuals)).from_self(Individual.genotypes_index).all()
-            ind_indexes = [int(i[0]) for i in ind_indexes]
-            
-            if format == 'c':
-                genotypes = map(self.get_genotype_char, ind_indexes)
-            else:
-                genotype_getter = operator.itemgetter(*ind_indexes)
-                genotypes = genotype_getter(self.genotypes) # TODO: convert to a list for backward compatibility?
-     
-        else:
+            individuals = (individuals, )
+        elif not (isinstance(individuals, list) or isinstance(individuals, tuple)):
             raise TypeError("individuals should be a list of string or Individual objects, or a single individual/string")
 
+        ind_indexes = Individual.query.filter(Individual.name.in_(individuals)).from_self(Individual.genotypes_index).all()
+        ind_indexes = [int(i[0]) for i in ind_indexes]
+        
+        if format == 'c':
+            genotypes = map(self.get_genotype_char, ind_indexes)
+        else:
+            genotype_getter = operator.itemgetter(*ind_indexes)
+            genotypes = genotype_getter(self.genotypes) # TODO: convert to a list for backward compatibility?
+ 
         return genotypes
 
     def get_genotype_char(self, ind_index):
