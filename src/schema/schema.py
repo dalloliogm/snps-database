@@ -229,7 +229,6 @@ class SNP(Entity):
 
         >>> session.close()
         """
-        genotypes = []
 
         if isinstance(individuals, str) or isinstance(individuals, Individual):
             # TODO: may refactored by using recursion
@@ -240,12 +239,15 @@ class SNP(Entity):
         ind_indexes = Individual.query.filter(Individual.name.in_(individuals)).from_self(Individual.genotypes_index).all()
         ind_indexes = [int(i[0]) for i in ind_indexes]
         
-        if format == 'c':
-            genotypes = map(self.get_genotype_char, ind_indexes)
+        if not ind_indexes:
+            genotypes = ()
         else:
-            genotype_getter = operator.itemgetter(*ind_indexes)
-            genotypes = genotype_getter(self.genotypes) # TODO: convert to a list for backward compatibility?
- 
+            if format == 'c':
+                genotypes = map(self.get_genotype_char, ind_indexes)
+            else:
+                genotype_getter = operator.itemgetter(*ind_indexes)
+                genotypes = genotype_getter(self.genotypes) # TODO: convert to a list for backward compatibility?
+     
         return genotypes
 
     def get_genotype_char(self, ind_index):
