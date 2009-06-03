@@ -219,13 +219,13 @@ class SNP(Entity):
 
         >>> snp = SNP.get_by(id = 'rs13125929')
         >>> snp.get_genotype_by_individuals('HGDP00001')
-        [193L]
+        '0'
 
         >>> snp.get_genotype_by_individuals(individuals = ('HGDP00001', 'HGDP01419'), format = 'n')
-        ['0', '0']
+        ('0', '0')
         
         >>> snp.get_genotype_by_individuals(individuals = ('HGDP00001', 'HGDP01419'), format = 'c')
-        ['TT', 'TT']
+        ('TT', 'TT')
 
         >>> session.close()
         """
@@ -243,7 +243,7 @@ class SNP(Entity):
             genotypes = ()
         else:
             if format == 'c':
-                genotypes = map(self.get_genotype_char, ind_indexes)
+                genotypes = tuple(map(self.get_genotype_char, ind_indexes))
             else:
                 genotype_getter = operator.itemgetter(*ind_indexes)
                 genotypes = genotype_getter(self.genotypes) # TODO: convert to a list for backward compatibility?
@@ -491,6 +491,7 @@ class Individual(Entity):
         '1'
         
         >>> ind1.get_genotypes((snp1, snp2))
+        ['0', '0']
 
         >>> session.close()
         """
