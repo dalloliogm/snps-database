@@ -737,6 +737,31 @@ class RefSeqTranscript(Entity):
         """get the url to ensembl (put this in RefSeqTranscript?)"""
         raise NotImplementedError
 
+    @classmethod
+    def get_by_geneids(cls, genes_list):
+        """
+        For every gene in list_genes, get the longest transcript
+
+        >>> from connection import *
+        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
+        >>> setup_all()
+                                 
+        >>> transcripts = RefSeqTranscript.get_by_geneids(['ALG2', 'ALG11'])
+        >>> print [transcript.transcript_id for transcript in transcripts]
+        ['NM_001004127', 'NR_024532']
+
+        >>> RefSeqTranscript.get_by_geneids('ALG2')
+        [transcript NR_024532 on gene ALG2 on chromosome 9 (101018527-101024067)]
+        """
+        if isinstance(genes_list, str):
+            transcripts = RefSeqTranscript.query.filter(RefSeqTranscript.alternateName == genes_list).group_by(RefSeqTranscript.alternateName).all()
+        else:
+            transcripts = RefSeqTranscript.query.filter(RefSeqTranscript.alternateName.in_(genes_list)).group_by(RefSeqTranscript.alternateName).all()
+         
+
+        return transcripts
+
+
     def get_snps(self, upstream = 0, downstream = 0, relative_to = 'center'):
         """
         Get all the snps in an interval of (transcript.txstart - downstream, transcript.txEnd + upstream)
