@@ -313,13 +313,15 @@ class SNP(Entity):
         # note: doesn't work if self.physical_position is none.
         if upper_limit == -1:
             snps = SNP.query.filter(SNP.chromosome == str(chromosome).upper()).\
-                filter(SNP.physical_position > lower_limit).all()
+                filter(SNP.physical_position > lower_limit).\
+                order_by(SNP.physical_position)#.all()
         else:
             snps = SNP.query.filter(SNP.chromosome == str(chromosome).upper()).\
                 filter(SNP.physical_position > lower_limit).\
-                filter(SNP.physical_position < upper_limit).all()
+                filter(SNP.physical_position < upper_limit).\
+                order_by(SNP.physical_position)#.all()
 
-        snps.sort(key=lambda x:int(x.physical_position))
+#        snps.sort(key=lambda x:int(x.physical_position))
         return snps
 
     def get_stats_by_continent(self):
@@ -814,10 +816,11 @@ class RefSeqTranscript(Entity):
         else:
             raise ValueError('unknown value for parameter "relative_to"')
 
-        snps = SNP.query().order_by(SNP.physical_position).\
-                                filter_by(chromosome = self.chromosome).\
-                                filter(SNP.physical_position >= lower_limit).\
-                                filter(SNP.physical_position <= upper_limit)
+#        snps = SNP.query().order_by(SNP.physical_position).\
+#                                filter_by(chromosome = self.chromosome).\
+#                                filter(SNP.physical_position >= lower_limit).\
+#                                filter(SNP.physical_position <= upper_limit)
+        snps = SNP.get_snps_by_region(self.chromosome, lower_limit, upper_limit)
         return snps
 
     def longest_transcript_by_gene(self, gene):
