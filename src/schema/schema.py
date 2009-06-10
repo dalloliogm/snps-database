@@ -41,7 +41,7 @@ class SNP(Entity):
     >>> rs1333.add_genotype('200109')
     Traceback (most recent call last):
     ...
-    NotImplementedError
+    NotImplementedError: Sorry, not implemented yet!
     >>> session.close()
     """
     using_options(tablename = 'snps')
@@ -200,7 +200,7 @@ class SNP(Entity):
         """add genotypes"""
         # check that 'genotype' only contains 0, 1, 2
         # update table
-        raise NotImplementedError
+        raise NotImplementedError('Sorry, not implemented yet!')
 
     def get_genotype_by_individuals(self, individuals, format='n'):
         """Given a list of individuals, get its genotype
@@ -333,7 +333,7 @@ class SNP(Entity):
         >>> snp.stats[0]
         stats on SNP SNP rs2887286 on ame: iHS 0.806953, daf 0.891
         """
-        pass
+        raise NotImplementedError('Sorry, not implemented yet')
     
     def get_next_snp(self):
         """get the next SNP on the chromosome
@@ -582,22 +582,22 @@ class Stats(Entity):
         return repr
 
     def get_by_chromosome(self):
-        pass
+        raise NotImplementedError('Sorry, not implemented yet!')
 
     def get_by_snp_id(self):
-        pass
+        raise NotImplementedError('Sorry, not implemented yet!')
 
     def get_by_continent(self):
         """
         create aliases eur<->europe<->Europe etc...
         """
-        pass
+        raise NotImplementedError('Sorry, not implemented yet!')
     
     def get_by_population(self):
         """
         get by working unit
         """
-        pass
+        raise NotImplementedError('Sorry, not implemented yet!')
 
 class Population(Entity):
     """ Table 'Population'
