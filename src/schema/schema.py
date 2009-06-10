@@ -290,8 +290,8 @@ class SNP(Entity):
         lower_limit = self.physical_position - upstream
         upper_limit = self.physical_position + downstream
 
-        snps = SNP.get_snps_by_region(self.chromosome, lower_limit, upper_limit)
-        snps.pop(snps.index(self))
+        snps = SNP.get_snps_by_region(self.chromosome, lower_limit, upper_limit).filter(SNP.id != self.id)
+#        snps.pop(snps.index(self))
         return snps
     
     @classmethod
