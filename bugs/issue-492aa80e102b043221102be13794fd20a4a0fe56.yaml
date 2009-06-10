@@ -1,0 +1,20 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: "WARNING: transcripts ACHE and TRANSCRIPT1 are being added somewhere to the db"
+desc: |-
+  I have foudn these two transcripts in the db, they may have been added by some test
+  Look for the error and always keep in mind this in case you upload the db again.
+type: :bugfix
+component: HGDP database
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-06-10 14:05:13.401323 Z
+references: []
+
+id: 492aa80e102b043221102be13794fd20a4a0fe56
+log_events: 
+- - 2009-06-10 14:05:14.004627 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""

@@ -36,6 +36,7 @@ upload_database: setupdb/create_database.py setupdb/insert_individuals.py setupd
 upload_transcripts:
 	python setupdb/setup_refseqtranscripts.py
 	python setupdb/insert_refseqtranscripts.py
+	python setupdb/fix_transcripts.py
 
 upload_stats:
 	python setupdb/setup_statstable.py
