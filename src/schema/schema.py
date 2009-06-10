@@ -301,11 +301,11 @@ class SNP(Entity):
         >>> from connection import *    # be careful - don't write anything to the db!
         >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
         >>> setup_all()
-        >>> print SNP.get_snps_by_region('1', 1000000, 1050000)
+        >>> print SNP.get_snps_by_region('1', 1000000, 1050000).all()
         [SNP rs9442372, SNP rs3737728, SNP rs11260588, SNP rs9442398, SNP rs6687776, SNP rs9651273, SNP rs4970405, SNP rs12726255]
 
         note: if upper_limit == -1, get all the snps until the end of the chr.
-        >>> SNP.get_snps_by_region('Y', -1, 13000000)
+        >>> SNP.get_snps_by_region('Y', -1, 13000000).all()
         [SNP rs2058276, SNP rs1865680]
 
         >>> session.close()
@@ -788,11 +788,11 @@ class RefSeqTranscript(Entity):
         >>> snp8 = SNP('snp8', chromosome = 1, physical_position = 1000L)    # not included (other chromosome)
         >>> snp4b = SNP('snp4b', chromosome = 11, physical_position = 1100L) # included and after snp4
 
-        >>> transcript1.get_snps(300, 300).all()
+        >>> transcript1.get_snps(300, 300, 'tr').all()
         [SNP snp2, SNP snp3, SNP snp4, SNP snp4b, SNP snp5, SNP snp6]
 
         Get all snps within the transcript (use 'tr' parameter)
-        >>> transcript1.get_snps(0, 0, 'center').all()
+        >>> transcript1.get_snps(0, 0, 'tr').all()
         [SNP snp4]
 
         >>> session.close()
