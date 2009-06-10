@@ -763,7 +763,7 @@ class RefSeqTranscript(Entity):
         return transcripts
 
 
-    def get_snps(self, upstream = 0, downstream = 0, relative_to = 'center'):
+    def get_snps(self, upstream = 0, downstream = 0, relative_to = 'tr'):
         """
         Get all the snps in an interval of (transcript.txstart - downstream, transcript.txEnd + upstream)
 
