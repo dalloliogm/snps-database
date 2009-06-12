@@ -8,7 +8,8 @@ from schema.schema import *
 def setup_randomdb():
     connection_line = 'sqlite:///:memory:'
     metadata.bind = connection_line
-    setup_all
+#    metadata.bind.echo = True
+    setup_all()
     create_all()
 
     for x in xrange(200):
@@ -25,4 +26,4 @@ def setup_randomdb():
     
 
 if __name__ == '__main__':
-    setup_randomdb()
+    s = setup_randomdb()

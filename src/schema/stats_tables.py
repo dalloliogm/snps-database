@@ -56,7 +56,7 @@ class _Base_SNPbyContinent_Stat(Entity):
 #        self.value = value
 
     def __repr__(self):
-        return 'stat on snp %s on pop %s' % (self.snp_id, self.population_key)
+        return 'stat on snp %s' % (self.snp_id) 
 
 class _BaseStat(Entity):
     position = Text(30)
