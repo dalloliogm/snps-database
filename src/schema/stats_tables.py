@@ -50,6 +50,10 @@ class _Base_SNPbyContinent_Stat(Entity):
     ssafr_p = Field(Float(2, 32))
     ssafr_q = Field(Float(2, 32))
 
+
+    original_file = Field(Text)
+    version = Field(Text)
+
     def __init__(self, snp_id):
         self.snp_id = str(snp_id).lower().strip()
 #        self.population_key = popkey.upper().strip()
