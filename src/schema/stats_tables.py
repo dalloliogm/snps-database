@@ -14,7 +14,7 @@ import logging
 import operator
 
 
-class _BaseSNPStats(Entity):
+class _Base_SNPbyContinent_Stat(Entity):
     snp_id = Field(Text(20))
     population_key = Field(Text(50))
     value = Field(Float(2, 32), index=True)
@@ -62,13 +62,13 @@ class _BaseStat(Entity):
     position = Text(30)
     chromosome = Text(6)
 
-class iHS(_BaseSNPStats):
+class iHS(_Base_SNPbyContinent_Stat):
     using_options(tablename = 'ihs', inheritance = 'concrete')
 
-class XPEHH(_BaseSNPStats):
+class XPEHH(_Base_SNPbyContinent_Stat):
     using_options(tablename = 'xpehh', inheritance = 'concrete')
 
-class Fst(_BaseSNPStats):
+class Fst(_Base_SNPbyContinent_Stat):
     using_options(tablename = 'fst', inheritance = 'concrete')
 
 def _test():

@@ -2,10 +2,10 @@ from nose import with_setup
 import unittest
 import random
 from elixir import session, metadata, setup_all, create_all
+from schema.stats_tables import *
+from schema.schema import *
 
 def setup_randomdb():
-    from schema.stats_tables import *
-    from schema.schema import *
     connection_line = 'sqlite:///:memory:'
     metadata.bind = connection_line
     setup_all
@@ -22,4 +22,7 @@ def setup_randomdb():
         i.ssafr = random.random()
 
     session.commit()
+    
 
+if __name__ == '__main__':
+    setup_randomdb()
