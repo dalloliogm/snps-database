@@ -19,9 +19,12 @@ class _BaseSNPStats(Entity):
     population_key = Field(Text(50))
     value = Field(Float(2, 32), index=True)
 
+    mean = Field(Float(2, 32))
+    dev_std = Field(Float(2, 32))
+
     ame = Field(Float(2, 32))
     ame_p = Field(Float(2, 32))
-    ame_q = = Field(Float(2, 32)) 
+    ame_q = Field(Float(2, 32)) 
 
     csasia = Field(Float(2, 32))
     csasia_p = Field(Float(2, 32))
@@ -47,10 +50,10 @@ class _BaseSNPStats(Entity):
     ssafr_p = Field(Float(2, 32))
     ssafr_q = Field(Float(2, 32))
 
-    def __init__(self, snp_id, popkey, value):
-        self.snp_id = snp_id.lower().strip()
-        self.population_key = popkey.upper().strip()
-        self.value = value
+    def __init__(self, snp_id):
+        self.snp_id = str(snp_id).lower().strip()
+#        self.population_key = popkey.upper().strip()
+#        self.value = value
 
     def __repr__(self):
         return 'stat on snp %s on pop %s' % (self.snp_id, self.population_key)
@@ -77,7 +80,7 @@ def _test():
     setup_all()
     create_all()
 
-    [iHS('snp_%s' % i, 'pop', random.random()) for i in xrange(10)]
+    [iHS('snp_%s' % i, ) for i in xrange(10)]
 
 if __name__ == '__main__':
     _test()
