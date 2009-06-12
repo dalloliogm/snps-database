@@ -19,6 +19,34 @@ class _BaseSNPStats(Entity):
     population_key = Field(Text(50))
     value = Field(Float(2, 32), index=True)
 
+    ame = Field(Float(2, 32))
+    ame_p = Field(Float(2, 32))
+    ame_q = = Field(Float(2, 32)) 
+
+    csasia = Field(Float(2, 32))
+    csasia_p = Field(Float(2, 32))
+    csasia_q = Field(Float(2, 32))
+
+    easia = Field(Float(2, 32))
+    easia_p = Field(Float(2, 32))
+    easia_q = Field(Float(2, 32))
+
+    eur = Field(Float(2, 32))
+    eur_p = Field(Float(2, 32))
+    eur_q = Field(Float(2, 32))
+
+    mena = Field(Float(2, 32))
+    mena_p = Field(Float(2, 32))
+    mena_q = Field(Float(2, 32))
+
+    oce = Field(Float(2, 32))
+    oce_p = Field(Float(2, 32))
+    oce_q = Field(Float(2, 32))
+
+    ssafr = Field(Float(2, 32))
+    ssafr_p = Field(Float(2, 32))
+    ssafr_q = Field(Float(2, 32))
+
     def __init__(self, snp_id, popkey, value):
         self.snp_id = snp_id.lower().strip()
         self.population_key = popkey.upper().strip()
