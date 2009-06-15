@@ -1,9 +1,21 @@
 #!/usr/bin/env perl
 
 import ConfigParser
+import os
+import logging
+
+#if os.path.exists('../config.txt'):
+#    configfile = '../config.txt'
+
+if os.path.exists('config.txt'):
+    logging.debug('using customized config file')
+    configfile = 'config.txt'
+else:
+    logging.debug('using default config file with guest privilegies')
+    configfile = '/home/gioby/workspace/HGDP_database/src/config_guest.txt'
 
 config = ConfigParser.RawConfigParser()
-config.read('/home/gioby/workspace/HGDP_database/src/config.txt')
+config.read(configfile)
 
 
 DBMS = config.get('Database configuration', 'DBMS')
