@@ -15,7 +15,7 @@ import operator
 
 
 class _Base_SNPbyContinent_Stat(Entity):
-    snp_id = Field(Text(20))
+    snp_id = Field(Text(20)) # composite key (snp_id + popkey)?
     population_key = Field(Text(50))
     value = Field(Float(2, 32), index=True)
 
@@ -73,6 +73,12 @@ class XPEHH(_Base_SNPbyContinent_Stat):
     using_options(tablename = 'xpehh', inheritance = 'concrete')
 
 class Fst(_Base_SNPbyContinent_Stat):
+    """
+    Fst are calculated by comparing two different populations.
+
+    Therefore, any entry in this table refer to the Fst values with respect of 
+    the population saved in the 'population_key' field.
+    """
     using_options(tablename = 'fst', inheritance = 'concrete')
 
 def _test():

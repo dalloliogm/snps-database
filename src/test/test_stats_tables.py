@@ -12,9 +12,9 @@ def setup_randomdb():
     setup_all()
     create_all()
 
-    for stat in ['iHS', 'Fst', 'XPEHH']:
+    for stat in ['iHS', 'XPEHH']:
         for x in xrange(200):
-            i = eval(stat + "('snp_ ' + str(x))")
+            i = eval(stat + ('snp_' + str(x)))
             i.ame = random.random()
             i.csasia = random.random()
             i.easia = random.random()
@@ -24,6 +24,24 @@ def setup_randomdb():
             i.ssafr = random.random()
 
             i.version = 0
+
+    # Fst requires a different setup
+    pops = 'ame csasia easia eur mena oce ssafr'.upper().split()
+
+    for pop in pops:
+        for x in xrange(200):
+            f = Fst(x)
+            f.population_key = pop
+            f.ame = random.random()
+            f.csasia = random.random()
+            f.easia = random.random()
+            f.eur = random.random()
+            f.mena = random.random()
+            f.oce = random.random()
+            f.ssafr = random.random()
+
+            f.version = 0
+
 
     session.commit()
     

@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: add a 'pathway' field to SNP, or a Pathway table?
+desc: ""
+type: :task
+component: database schema
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-06-15 08:53:34.579369 Z
+references: []
+
+id: b312919a18bd0a70f58b8eb5dec81e8259c88c67
+log_events: 
+- - 2009-06-15 08:53:35.088252 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""
