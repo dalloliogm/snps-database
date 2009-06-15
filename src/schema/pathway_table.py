@@ -31,8 +31,8 @@ class Pathway(Entity):
     title = Field(Text)
     kegg_id = Field(Text(20))
 
-    genes = OneToMany('RefSeqTranscript')
-    snps = OneToMany('SNP')
+    genes = ManyToMany('RefSeqTranscript')#, inverse='transcript_id')
+    snps = ManyToMany('SNP')#, inverse='SNP.snp_id')
     
 
 

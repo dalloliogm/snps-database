@@ -19,6 +19,7 @@ import operator
 
 
 from pathway_table import Pathway
+from stats_tables import Fst, iHS, XPEHH
 
 
 class SNP(Entity):
@@ -68,7 +69,7 @@ class SNP(Entity):
     stats               = OneToMany('Stats')
 
     # Pathways and genes
-    genes               = ManyToMany('RefSeqTranscripts') # ManyToOne w.b. better?
+    genes               = ManyToMany('RefSeqTranscript')#, inverse='RefSeqTranscript.transcript_id') # ManyToOne w.b. better?
     pathways            = ManyToMany('Pathway')
 
     # versioning
