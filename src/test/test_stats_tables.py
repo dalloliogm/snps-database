@@ -14,7 +14,7 @@ def setup_randomdb():
 
     for stat in ['iHS', 'XPEHH']:
         for x in xrange(200):
-            i = eval(stat + ('snp_' + str(x)))
+            i = eval('%s("snp_%s")' % (stat, str(x)))
             i.ame = random.random()
             i.csasia = random.random()
             i.easia = random.random()
