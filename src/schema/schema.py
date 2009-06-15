@@ -17,9 +17,8 @@ from datetime import datetime
 import logging
 import operator
 
-#from PopGen.Gio.Individual import Individual
-#from PopGen.Gio.SNP import SNP
-#from PopGen.Gio.Individual import Individual
+
+from pathway_table import Pathway
 
 
 class SNP(Entity):
@@ -67,6 +66,10 @@ class SNP(Entity):
     
     annotations         = OneToMany('Annotations')
     stats               = OneToMany('Stats')
+
+    # Pathways and genes
+    genes               = ManyToMany('RefSeqTranscripts') # ManyToOne w.b. better?
+    pathways            = ManyToMany('Pathway')
 
     # versioning
     snp_build           = Field(String(80))
