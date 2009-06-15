@@ -28,6 +28,7 @@ class Pathway(Entity):
     >>> path.genes = genes
     >>> print path.genes
     """
+    using_options(tablename = 'pathways')
     title = Field(Text)
     kegg_id = Field(Text(20))
 
