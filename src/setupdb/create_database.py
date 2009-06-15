@@ -13,7 +13,9 @@ def create_new_database():
     setup_all()
     
     # Drop all the existing database. Warning!!
-    metadata.drop_all()
+    choice = raw_input('drop all existing data? [y/N]')
+    if choice in ('y', 'Y', 'yes', 'Yes', '1'):
+        metadata.drop_all()
     
     # Issue the commands to the local database
     create_all()
