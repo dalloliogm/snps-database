@@ -48,7 +48,7 @@ class SNP(Entity):
     
     id                  = Field(String(30), primary_key=True, unique=True)
     chromosome          = Field(String(10), index=True)
-    physical_position   = Field(Integer)
+    physical_position   = Field(Integer, index=True)
     genetic_position    = Field(Integer)
     original_strand     = Field(String(1))
 
