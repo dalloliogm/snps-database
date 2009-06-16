@@ -19,7 +19,7 @@ import operator
 
 
 from pathway_table import Pathway
-from stats_tables import Fst, iHS, XPEHH
+from stats_tables import Stats, Fst, iHS, XPEHH
 
 
 class SNP(Entity):
@@ -46,7 +46,7 @@ class SNP(Entity):
     """
     using_options(tablename = 'snps')
     
-    id                  = Field(String(30), primary_key=True, unique=True)
+    id                  = Field(String(30), primary_key=True, unique=True, index=True)
     chromosome          = Field(String(10), index=True)
     physical_position   = Field(Integer, index=True)
     genetic_position    = Field(Integer)
@@ -647,11 +647,11 @@ class RefSeqTranscript(Entity):
     """
     using_options(tablename = 'refseqtranscripts')
 
-    transcript_id = Field(String(15))
+    transcript_id = Field(String(15), index=True)
 
     genomic_build = Field(String(20))
 
-    chromosome = Field(String(10))
+    chromosome = Field(String(10), index=True)
     strand = Field(Enum(('-', '+', None)))
     txStart = Field(Integer)
     txEnd = Field(Integer)
@@ -785,6 +785,7 @@ class RefSeqTranscript(Entity):
         snps = SNP.get_snps_by_region(self.chromosome, lower_limit, upper_limit)
         return snps
 
+    @classmethod
     def longest_transcript_by_gene(self, gene):
         """
         Given a gene name, return the longest transcript for it
