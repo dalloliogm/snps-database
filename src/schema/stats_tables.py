@@ -16,8 +16,8 @@ import operator
 
 class _Base_SNPbyContinent_Stat(Entity):
     snp_id = Field(Text(20)) # composite key (snp_id + popkey)?
-    population_key = Field(Text(50))
-    value = Field(Float(2, 32), index=True)
+#    population_key = Field(Text(50))
+#    value = Field(Float(2, 32), index=True)
 
     mean = Field(Float(2, 32))
     dev_std = Field(Float(2, 32))
@@ -80,6 +80,8 @@ class Fst(_Base_SNPbyContinent_Stat):
     the population saved in the 'population_key' field.
     """
     using_options(tablename = 'fst', inheritance = 'concrete')
+
+    population_key = Field(Text)
 
 def _test():
     import random
