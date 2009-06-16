@@ -14,6 +14,50 @@ import logging
 import operator
 
 
+class Stats(Entity):
+    using_options(tablename = 'stats')
+    snp = ManyToOne('SNP', primary_key = True)
+
+    population_key = Field(String(30), primary_key = True, default = None, index=True)
+
+    iHS = Field(Float(2, 32), index=True)      # which is the best precision?
+#    iHS_raw = Field(Float(2, 32))   # not storing this for the moment
+    daf_iHS = Field(Float(2, 10))
+
+    def __init__(self, snp, pop_key):
+        if isinstance(snp, str):
+            snp = SNP.get_by(id = str)
+        elif not isinstance(snp, SNP):
+            raise TypeError('snp should be a SNP instance or a string')
+        self.snp = snp
+
+        self.population_key = str(pop_key).lower()
+        
+
+    def __repr__(self):
+        repr = 'stats on SNP %s on %s: iHS %s, daf %s' % (self.snp, self.population_key, self.iHS, self.daf_iHS)
+        return repr
+
+    def get_by_chromosome(self):
+        raise NotImplementedError('Sorry, not implemented yet!')
+
+    def get_by_snp_id(self):
+        raise NotImplementedError('Sorry, not implemented yet!')
+
+    def get_by_continent(self):
+        """
+        create aliases eur<->europe<->Europe etc...
+        """
+        raise NotImplementedError('Sorry, not implemented yet!')
+    
+    def get_by_population(self):
+        """
+        get by working unit
+        """
+        raise NotImplementedError('Sorry, not implemented yet!')
+
+
+
 class _Base_SNPbyContinent_Stat(Entity):
     snp_id = Field(Text(20)) # composite key (snp_id + popkey)?
 #    population_key = Field(Text(50))
