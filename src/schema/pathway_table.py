@@ -29,13 +29,19 @@ class Pathway(Entity):
     >>> print path.genes
     """
     using_options(tablename = 'pathways')
+    name = Field(String(50), primary_key = True)
     title = Field(Text)
+    description = Field(Text)
     kegg_id = Field(Text(20))
 
     genes = ManyToMany('RefSeqTranscript')#, inverse='transcript_id')
     snps = ManyToMany('SNP')#, inverse='SNP.snp_id')
     
+    def __init__(self, title):
+        self.title = str(title).lower()
 
+    def __repr__(self):
+        return 'pathway %s' % self.title
 
 
 
