@@ -661,7 +661,7 @@ class RefSeqTranscript(Entity):
     exonCount = Field(Integer)
     exonStarts = Field(Text)
     exonEnds = Field(Text)
-    alternateName = Field(String(100))
+    alternateName = Field(String(100), index=True)
     cdsStartStat = Field(Integer)
     cdsEndStat = Field(Integer)
     exonFrames = Field(Text)
