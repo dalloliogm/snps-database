@@ -168,14 +168,14 @@ class SNP(Entity):
         >>> rs1333.get_position_from_transcript('transcript1')
         'downstream'
         >>> rs1333.get_position_from_transcript(transcript2)
-        'inside gene'
+        'inside_gene'
         >>> rs1333.get_position_from_transcript(transcript3)
-        'inside gene'
+        'inside_gene'
         >>> rs1333.get_position_from_transcript(transcript4)
         'upstream'
 
         """
-        outputs = ['upstream', 'downstream', 'inside gene', 'coding', 'intronic', 'other chromosome']
+        outputs = ['upstream', 'downstream', 'inside_gene', 'coding', 'intronic', 'other_chromosome']
         position = ''
         
         if isinstance(transcript_id, RefSeqTranscript):
@@ -189,12 +189,12 @@ class SNP(Entity):
 
         snp_position = self.physical_position
         if transcript.chromosome != self.chromosome:
-            position = 'other chromosome'
+            position = 'other_chromosome'
 
         elif snp_position < transcript.txStart:
             position = 'upstream'
         elif transcript.txStart < snp_position < transcript.txEnd:
-            position = 'inside gene'
+            position = 'inside_gene'
         elif snp_position > transcript.txEnd:
             position = 'downstream'
 

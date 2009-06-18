@@ -20,9 +20,11 @@ class Stats(Entity):
 
     population_key = Field(String(30), primary_key = True, default = None, index=True)
 
-    iHS = Field(Float(2, 32), index=True)      # which is the best precision?
+    iHS = Field(Float(2, 32))      # which is the best precision?
 #    iHS_raw = Field(Float(2, 32))   # not storing this for the moment
     daf_iHS = Field(Float(2, 10))
+
+#    iHS_bis = OneToOne('iHS')
 
     def __init__(self, snp, pop_key):
         if isinstance(snp, str):
@@ -59,7 +61,8 @@ class Stats(Entity):
 
 
 class _Base_SNPbyContinent_Stat(Entity):
-    snp_id = Field(Text(20)) # composite key (snp_id + popkey)?
+    snp_id = Field(Text(20), index=True) # composite key (snp_id + popkey)?
+#    stat = ManyToOne('Stats')
 #    population_key = Field(Text(50))
 #    value = Field(Float(2, 32), index=True)
 
@@ -107,8 +110,9 @@ class _Base_SNPbyContinent_Stat(Entity):
         return 'stat on snp %s' % (self.snp_id) 
 
 class _BaseStat(Entity):
-    position = Text(30)
-    chromosome = Text(6)
+    position = Field(Text(30))
+    chromosome = Field(Text(6))
+    value = Field(Float(2, 32))
 
 class iHS(_Base_SNPbyContinent_Stat):
     using_options(tablename = 'ihs', inheritance = 'concrete')
@@ -126,6 +130,10 @@ class Fst(_Base_SNPbyContinent_Stat):
     using_options(tablename = 'fst', inheritance = 'concrete')
 
     population_key = Field(Text)
+
+class CLR(_BaseStat):
+    using_options(tablename = 'clr', inheritance = 'concrete')    
+    
 
 def _test():
     import random
