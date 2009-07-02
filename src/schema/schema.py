@@ -20,7 +20,7 @@ import operator
 
 from pathway_table import Pathway
 from stats_tables import Stats, Fst, iHS, XPEHH
-
+from sqlalchemy import desc
 
 class SNP(Entity):
     """ Table 'SNPs'.
@@ -705,6 +705,7 @@ class RefSeqTranscript(Entity):
     def get_by_geneids(cls, genes_list):
         """
         For every gene in list_genes, get the longest transcript
+        Only the longest transcript is returned
 
         >>> from connection import *
         >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
@@ -718,9 +719,12 @@ class RefSeqTranscript(Entity):
         [transcript NR_024532 on gene ALG2 on chromosome 9 (101018527-101024067)]
         """
         if isinstance(genes_list, str):
-            transcripts = RefSeqTranscript.query.filter(RefSeqTranscript.alternateName == genes_list).group_by(RefSeqTranscript.alternateName).all()
-        else:
-            transcripts = RefSeqTranscript.query.filter(RefSeqTranscript.alternateName.in_(genes_list)).group_by(RefSeqTranscript.alternateName).all()
+            genes_list = list(genes_list)
+#            transcripts = RefSeqTranscript.query.filter(RefSeqTranscript.alternateName == genes_list).group_by(RefSeqTranscript.alternateName).all()
+
+        transcripts = RefSeqTranscript.query.filter(RefSeqTranscript.alternateName.in_(genes_list)).\
+            order_by(desc(RefSeqTranscript.txEnd - RefSeqTranscript.txStart)).\
+            group_by(RefSeqTranscript.alternateName).all()
          
         return transcripts
 
