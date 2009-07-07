@@ -339,6 +339,31 @@ class SNP(Entity):
         """
         raise NotImplementedError('Sorry, not implemented yet')
     
+    def all_stats(self):
+        """
+        Get all stats in a list 
+        automatically convert it to floats or keep them to None
+
+        >>> from connection import *    # be careful - don't write anything to the db!
+        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
+        >>> setup_all()
+        >>> snp = SNP.get_by(id = 'rs2887286')
+
+#        >>> print snp.all_stats()
+
+        >>> print "%1.2f " * 7 % tuple(snp.all_stats())
+        0.81 -1.49 0.08 -2.56 -1.94 0.47 -0.22 
+        """
+        stats = []
+        for stat in sorted(self.stats, key=lambda x:x.population_key):
+#            print stat
+            if stat.iHS is not None:
+#                print stat
+                stats.append(float(stat.iHS))
+            else:
+                stats.append(stat)
+        return stats
+
     def get_next_snp(self):
         """get the next SNP on the chromosome
         """
