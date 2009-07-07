@@ -744,7 +744,7 @@ class RefSeqTranscript(Entity):
         [transcript NR_024532 on gene ALG2 on chromosome 9 (101018527-101024067)]
         """
         if isinstance(genes_list, str):
-            genes_list = list(genes_list)
+            genes_list = (genes_list, )     # this must be a list or a tuple
 #            transcripts = RefSeqTranscript.query.filter(RefSeqTranscript.alternateName == genes_list).group_by(RefSeqTranscript.alternateName).all()
 
         transcripts = RefSeqTranscript.query.filter(RefSeqTranscript.alternateName.in_(genes_list)).\
