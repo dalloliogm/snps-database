@@ -7,7 +7,7 @@ script) to use the existing MySql database on my computer.
 Refer to tutorial.txt for an introduction
 """
 
-from elixir import Entity, Field, Unicode, Integer, UnicodeText, String, Text, Float
+from elixir import Entity, Field, Unicode, Integer, UnicodeText, String, Text, Float, Boolean
 from recipes.enum import Enum
 from elixir import ManyToOne, OneToMany, OneToOne, ManyToMany, DateTime
 from elixir import metadata, using_options
@@ -65,7 +65,7 @@ class SNP(Entity):
     genotypes           = Field(Text(2000), default='')  
     haplotypes_index    = Field(Integer)
     
-    annotations         = OneToMany('Annotations')
+    annotations         = OneToOne('Annotations')
     stats               = OneToMany('Stats')
 
     # Pathways and genes
@@ -585,6 +585,7 @@ class Individual(Entity):
 class Annotations(Entity):
     using_options(tablename = 'annotations')
     snp = ManyToOne('SNP')
+    centrosomic = Field(Boolean)
 
 class Population(Entity):
     """ Table 'Population'
