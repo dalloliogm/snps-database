@@ -1,3 +1,5 @@
+CHROMOSOMES = 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X XY Y
+
 connect:
 	ipython -i -c 'from schema.connection import *'
 
@@ -41,4 +43,8 @@ upload_transcripts:
 upload_stats:
 	python setupdb/setup_statstable.py
 	python setupdb/insert_iHS_all.py
+
+upload_centrosome_annotations_%: 
+	python setupdb/centrosomic.py $*
+upload_all_centromosomes: $(addprefix upload_centrosome_annotations_, $(CHROMOSOMES))
 
