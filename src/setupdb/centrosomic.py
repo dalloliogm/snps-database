@@ -4,6 +4,7 @@ for every snp in the db, upload the information on whether it is in a centrosome
 """
 from schema.connection import *
 import sys
+metadata.bind.echo = True
 
 try:
     chromosome = sys.argv[1] 
@@ -30,11 +31,12 @@ centromeric_snps = SNP.get_snps_by_region(chromosome, centromeres[chromosome][0]
 #    snp.annotations.centrosomic = True
 
 for snp in centromeric_snps:
-    is snp.annotations is None:
+    if snp.annotations is None:
         snp.annotations = Annotations()
-    snp.annotations.centromeric = True
+    snp.annotations.centrosomic = True
+session.commit()
 
-
+print snp.annotations
 
 if __name__ == '__main__':
     pass
