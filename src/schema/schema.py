@@ -86,7 +86,8 @@ class SNP(Entity):
         self.allele2 = allele2
         if physical_position is not None:
             self.physical_position = int(physical_position)
-            
+        self.annotations = Annotations()        
+
     def __repr__(self):
         # this method will be called when, in python code, you will do 'print SNP'.
         return 'SNP '  + self.id
