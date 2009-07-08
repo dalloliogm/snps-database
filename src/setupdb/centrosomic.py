@@ -33,10 +33,10 @@ centromeric_snps = SNP.get_snps_by_region(chromosome, centromeres[chromosome][0]
 for snp in centromeric_snps:
     if snp.annotations is None:
         snp.annotations = Annotations()
-    snp.annotations.centrosomic = True
+    snp.annotations.centromeric = True
 session.commit()
 
-print snp.annotations
+#print snp.annotations
 
 if __name__ == '__main__':
     pass

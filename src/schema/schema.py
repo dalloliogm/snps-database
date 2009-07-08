@@ -586,7 +586,7 @@ class Individual(Entity):
 class Annotations(Entity):
     using_options(tablename = 'annotations')
     snp = ManyToOne('SNP')
-    centrosomic = Field(Boolean)
+    centromeric = Field(Boolean)
 #    gene = OneToMany('RefSeqTranscript')
 
 class Population(Entity):
