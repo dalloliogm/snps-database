@@ -339,7 +339,7 @@ class SNP(Entity):
         """
         raise NotImplementedError('Sorry, not implemented yet')
     
-    def all_stats(self):
+    def all_ihs(self):
         """
         Get all stats in a list 
         automatically convert it to floats or keep them to None
@@ -349,9 +349,9 @@ class SNP(Entity):
         >>> setup_all()
         >>> snp = SNP.get_by(id = 'rs2887286')
 
-#        >>> print snp.all_stats()
+#        >>> print snp.all_ihs()
 
-        >>> print "%1.2f " * 7 % tuple(snp.all_stats())
+        >>> print "%1.2f " * 7 % tuple(snp.all_ihs())
         0.81 -1.49 0.08 -2.56 -1.94 0.47 -0.22 
         """
         stats = []
@@ -361,7 +361,7 @@ class SNP(Entity):
 #                print stat
                 stats.append(float(stat.iHS))
             else:
-                stats.append(stat)
+                stats.append(None)
         return stats
 
     def get_next_snp(self):
