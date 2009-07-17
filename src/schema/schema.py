@@ -365,6 +365,66 @@ class SNP(Entity):
                 stats.append(None)
         return stats
 
+    @classmethod
+    def get_stats(self, snplist, stat, pops=None):
+        """
+        Get a statistical value related to the snp
+
+        For the moment, it can only retrieve a stat at a time
+
+        >>> from connection import *    # be careful - don't write anything to the db!
+        >>> metadata.bind = 'mysql://guest:@localhost:3306/hgdp_test'
+        >>> setup_all()
+        >>> snp = SNP.get_by(id = 'rs2887286')
+
+        >>> snp.get_stats(snp, 'XPEHH', ['ame', 'csasia'])
+        """
+        # Warning: this function makes use of eval
+        # This function doesn't even try to validate user input
+
+        if snplist is None:
+            raise TypeError('select at least a snp')
+        if isinstance(snplist, list) or isinstance(snplist, tuple):
+            snplist_cleaned = []
+            for snp in snplist:
+                if isinstance(snp, SNP):
+                    snplist_cleaned.append(snp.id)
+                else:
+                    snplist_cleaned.append(snp)
+            snplist = snplist_cleaned
+        else:   # assume snplist is a string or snp instance containing a single value
+            if isinstance(snplist, SNP):
+                snplist = (snplist.id, )
+            else:
+                snplist = (snplist.lower(), )
+
+        if pops is None:
+            # return all the populations
+            pops = 'ame csasia easia eur mena oce ssafr'.split()
+        if isinstance(pops, list) or isinstance(pops, tuple):
+            pops = [p.lower() for p in pops]
+        else:
+            pops = (pops.lower(), )
+
+#        if stats is None:
+#            raise TypeError('select a stat')
+#        elif isinstance(stats, list) or isinstance(stats, tuple):
+#            stats = [s.upper() for s in stats]
+#        else:
+#            stats = (stats.upper(), )
+
+        queryline = stat + ".query().filter(" + stat + ".snp_id.in_(" + str(snplist) + ")).from_self("
+        for pop in pops:
+            queryline += stat + '.' + pop + ', '
+
+        queryline += ')'
+
+        print queryline
+        stat = eval(queryline).all()
+        return stat
+
+
+
     def get_next_snp(self):
         """get the next SNP on the chromosome
         """
