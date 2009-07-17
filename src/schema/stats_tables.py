@@ -26,7 +26,7 @@ class Stats(Entity):
 
 #    iHS_bis = OneToOne('iHS')
 
-    def __init__(self, snp, pop_key):
+    def __init__(self, snp, pop_key=None):
         if isinstance(snp, str):
             snp = SNP.get_by(id = str)
         elif not isinstance(snp, SNP):
@@ -61,7 +61,7 @@ class Stats(Entity):
 
 
 class _Base_SNPbyContinent_Stat(Entity):
-    snp_id = Field(Text(20), index=True) # composite key (snp_id + popkey)?
+    snp_id = Field(String(20), index=True, unique=True) # composite key (snp_id + popkey)?
 #    stat = ManyToOne('Stats')
 #    population_key = Field(Text(50))
 #    value = Field(Float(2, 32), index=True)
