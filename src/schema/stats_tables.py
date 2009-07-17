@@ -3,6 +3,8 @@
 Tables to contain various stats
 
 """
+from schema import *
+import schema
 from elixir import Entity, EntityMeta, Field, Unicode, Integer, UnicodeText, String, Text, Float
 from recipes.enum import Enum
 from elixir import ManyToOne, OneToMany, OneToOne, ManyToMany, DateTime
@@ -61,10 +63,11 @@ class Stats(Entity):
 
 
 class _Base_SNPbyContinent_Stat(Entity):
-    snp_id = Field(String(20), index=True, unique=True) # composite key (snp_id + popkey)?
+#    snp_id = Field(String(20), index=True, unique=True) # composite key (snp_id + popkey)?
 #    stat = ManyToOne('Stats')
 #    population_key = Field(Text(50))
 #    value = Field(Float(2, 32), index=True)
+    snp = ManyToOne('SNP', primary_key=True, backref = "snp_id", inverse='stats', viewonly=True)
 
     mean = Field(Float(2, 32))
     dev_std = Field(Float(2, 32))

@@ -1,4 +1,5 @@
 CHROMOSOMES = 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X XY Y
+AUTOSOMAL_CHROMOSOMES = 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22
 
 connect:
 	ipython -i -c 'from schema.connection import *'
@@ -43,6 +44,14 @@ upload_transcripts:
 upload_stats:
 	python setupdb/setup_statstable.py
 	python setupdb/insert_iHS_all.py
+
+##### XPEHH
+upload_xpehh: setup_xpehh $(addprefix upload__xpehh_, $(AUTOSOMAL_CHROMOSOMES))
+setup_xpehh:
+	python setupdb/setup_XPEHH.py
+upload__xpehh_%:
+	python setupdb/insert_XPEHH.py $*
+
 
 upload_centrosome_annotations_%: 
 	python setupdb/centrosomic.py $*
