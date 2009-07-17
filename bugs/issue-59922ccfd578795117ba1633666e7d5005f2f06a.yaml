@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: Fix the relationship _Base_SNP_Stat <-> Stat (e.g. on XPEHH)
+desc: ""
+type: :task
+component: database schema
+release: 
+reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-07-17 13:04:03.802086 Z
+references: []
+
+id: 59922ccfd578795117ba1633666e7d5005f2f06a
+log_events: 
+- - 2009-07-17 13:04:04.329918 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - created
+  - ""
