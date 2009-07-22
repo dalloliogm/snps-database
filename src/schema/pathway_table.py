@@ -47,12 +47,16 @@ class Pathway(Entity):
         """
         Add a gene to the pathway, and automatically add references to all snps in 400,000 bp of each gene
         """
-        pass
+        genes = (gene, )
+        self.add_genes(genes)
 
     def add_genes(self, genes):
         """
         Add multiple genes to the pathway, along with their sorrounding snps (400,000)
         """
+        if not (isinstance(genes, list) or isinstance(genes, tuple)):
+            print 'not list'
+            pass 
         pass
 
 
