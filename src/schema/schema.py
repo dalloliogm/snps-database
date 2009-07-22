@@ -366,7 +366,7 @@ class SNP(Entity):
         return stats
 
     @classmethod
-    def get_stats(self, snplist, stat, pops=None):
+    def get_stats_by_snps(cls, snplist, stat, pops=None):
         """
         Get a statistical value related to the snp
 
@@ -377,7 +377,7 @@ class SNP(Entity):
         >>> setup_all()
         >>> snp = SNP.get_by(id = 'rs2887286')
 
-        >>> snp.get_stats(snp, 'XPEHH', ['ame', 'csasia'])
+        >>> snp.get_stats_by_snps(snp, 'XPEHH', ['ame', 'csasia'])
         """
         # Warning: this function makes use of eval
         # This function doesn't even try to validate user input
@@ -419,9 +419,17 @@ class SNP(Entity):
 
         queryline += ')'
 
-        print queryline
-        stat = eval(queryline).all()
-        return stat
+#        print queryline
+        raw_stats = eval(queryline).all()
+        stats = []
+
+        for stat in raw_stats:
+            if stat is None:
+                stats.append(None)
+            else:
+                stats.append(float(stat))
+#            [float(stat) for stat in stats]
+        return stats
 
 
 
