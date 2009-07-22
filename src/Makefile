@@ -51,8 +51,12 @@ setup_xpehh:
 	python setupdb/setup_XPEHH.py
 upload__xpehh_%:
 	python setupdb/insert_XPEHH.py $*
+#xpehh_by_snp_table:
+#	mysql 
 
 
+
+######
 upload_centrosome_annotations_%: 
 	python setupdb/centrosomic.py $*
 upload_all_centromosomes: $(addprefix upload_centrosome_annotations_, $(CHROMOSOMES))
