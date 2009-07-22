@@ -182,7 +182,7 @@ class SNP(Entity):
         if isinstance(transcript_id, RefSeqTranscript):
             transcript = transcript_id
         elif isinstance(transcript_id, str):   # todo: check for __str__ method?
-            transcript = RefSeqTranscript.get_by(transcript_id = transcript_id.upper())
+            transcript = RefSeqTranscript.get_by(alternateName = transcript_id.upper())
         else:
             transcript = None
         if transcript is None:
