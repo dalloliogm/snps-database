@@ -46,13 +46,14 @@ upload_stats:
 	python setupdb/insert_iHS_all.py
 
 ##### XPEHH
-upload_xpehh: setup_xpehh $(addprefix upload__xpehh_, $(AUTOSOMAL_CHROMOSOMES))
+upload_xpehh: setup_xpehh $(addprefix upload__xpehh_, $(AUTOSOMAL_CHROMOSOMES)) xpehh_by_snp_table 
 setup_xpehh:
 	python setupdb/setup_XPEHH.py
 upload__xpehh_%:
 	python setupdb/insert_XPEHH.py $*
-#xpehh_by_snp_table:
-#	mysql 
+xpehh_by_snp_table:
+	-echo "SELECT snp_id, s.chromosome, s.physical_position, ame, ame_p, csasia, csasia_p, easia, easia_p, eur, eur_p, mena, mena_p, oce, oce_p, ssafr, ssafr_p INTO OUTFILE '/home/gioby/Data/HGDP/Results/XPEHH/Rsb_7continents_Pvalue_22chromosomes/xpehh_by_snp.csv' FIELDS TERMINATED BY '\t' FROM xpehh x join snps s on x.snp_id = s.id" | mysql hgdp_test -u guest
+
 
 
 
