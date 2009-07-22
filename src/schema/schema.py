@@ -406,13 +406,6 @@ class SNP(Entity):
         else:
             pops = (pops.lower(), )
 
-#        if stats is None:
-#            raise TypeError('select a stat')
-#        elif isinstance(stats, list) or isinstance(stats, tuple):
-#            stats = [s.upper() for s in stats]
-#        else:
-#            stats = (stats.upper(), )
-
         queryline = stat + ".query().filter(" + stat + ".snp_id.in_(" + str(snplist) + ")).from_self("
         for pop in pops:
             queryline += stat + '.' + pop + ', '
@@ -422,12 +415,15 @@ class SNP(Entity):
 #        print queryline
         raw_stats = eval(queryline).all()
         stats = []
+#        print raw_stats
 
-        for stat in raw_stats:
-            if stat is None:
-                stats.append(None)
-            else:
-                stats.append(float(stat))
+        for snp in raw_stats:
+            for stat in snp:
+                if stat is None:
+                    stats.append(None)
+                else:
+#                    print stat, type(stat)
+                    stats.append(float(stat))
 #            [float(stat) for stat in stats]
         return stats
 
