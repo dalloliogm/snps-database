@@ -68,7 +68,7 @@ for line in xpehh_file:
         if fields[3] != 'nan':
             xp.csasia = float(fields[3])
         if fields[4] != 'nan':
-            xp.eas5a = float(fields[4])
+            xp.easia = float(fields[4])
         if fields[5] != 'nan':
             xp.eur = float(fields[5])
         if fields[6] != 'nan':
