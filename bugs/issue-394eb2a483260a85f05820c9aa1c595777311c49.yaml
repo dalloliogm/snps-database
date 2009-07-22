@@ -7,8 +7,8 @@ type: :task
 component: database setup
 release: 
 reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2009-03-11 18:08:07.045388 Z
 references: []
 
@@ -18,3 +18,7 @@ log_events:
   - Giovanni Dall'Olio <dalloliogm@gmail.com>
   - created
   - ""
+- - 2009-07-22 09:33:20.856411 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - closed with disposition fixed
+  - done in test/test_stats.py

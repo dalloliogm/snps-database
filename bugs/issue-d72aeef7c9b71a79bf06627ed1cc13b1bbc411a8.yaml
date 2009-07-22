@@ -5,8 +5,8 @@ type: :bugfix
 component: database schema
 release: 
 reporter: Giovanni Dall'Olio <dalloliogm@gmail.com>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2009-02-11 11:03:45.391637 Z
 references: []
 
@@ -16,3 +16,7 @@ log_events:
   - Giovanni Dall'Olio <dalloliogm@gmail.com>
   - created
   - ""
+- - 2009-07-22 09:29:26.648548 Z
+  - Giovanni Dall'Olio <dalloliogm@gmail.com>
+  - closed with disposition fixed
+  - implemented!
