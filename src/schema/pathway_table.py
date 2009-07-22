@@ -43,6 +43,17 @@ class Pathway(Entity):
     def __repr__(self):
         return 'pathway %s' % self.title
 
+    def add_gene(self, gene):
+        """
+        Add a gene to the pathway, and automatically add references to all snps in 400,000 bp of each gene
+        """
+        pass
+
+    def add_genes(self, genes):
+        """
+        Add multiple genes to the pathway, along with their sorrounding snps (400,000)
+        """
+        pass
 
 
 if __name__ == '__main__':
