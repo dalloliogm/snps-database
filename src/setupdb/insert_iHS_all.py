@@ -10,6 +10,7 @@ def upload_iHS_stats(iHS_filehandle, session, metadata):
     """
     upload individuals from the rosenberg files.
     """
+    session.query(iHS).delete()
     parsers.iHS_parser_new(iHS_filehandle, session, metadata)
 #    session.add_all(individuals)
 
