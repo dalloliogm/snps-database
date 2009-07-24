@@ -41,8 +41,11 @@ upload_transcripts:
 	python setupdb/insert_refseqtranscripts.py
 	python setupdb/fix_transcripts.py
 
-upload_stats:
-	python setupdb/setup_statstable.py
+#upload_stats:
+#	python setupdb/setup_statstable.py
+#	python setupdb/insert_iHS_all.py
+
+upload_iHS:
 	python setupdb/insert_iHS_all.py
 
 ##### XPEHH
