@@ -48,34 +48,15 @@ def iHS_parser_new(handle, session, metadata):
 
             snp = session.query(SNP).filter_by(id = snp_id).one()
             logging.debug(snp)
+            assert isinstance(snp, SNP)
 
-            genetic_position = fields[2]
-            if genetic_position == 'NA':
-                snp.genetic_position = None
-            else:
-                snp.genetic_position = float(fields[2])
-#            else:
-#                raise TypeError('genetic position?? %s' % line)
-            try:
-                snp.physical_position == int(fields[3])
-            except:
-                logging.debug('snp.position not corresponding')
-                logging.debug(snp)
-                logging.debug(fields[3])
-#            assert snp.allele1 == fields[4]
-#            assert snp.allele2 == fields[5]
-            ancestral_allele = fields[6]
-#            if ancestral_allele == 'NA':
-#                snp.ancestral_allele = '-'
-#            else:
-#                snp.ancestral_allele = ancestral_allele
 
             stat_indexes = {'AME': (7, 9), 'CSASIA': (10, 12), 'EASIA': (13, 15),
                             'EUR': (16, 18), 'MENA': (19, 21), 'OCE': (22, 24),
                             'SSAFR': (25, 27)}
 
             for (popkey, indexes) in stat_indexes.items():
-                stat = Stats(snp, popkey)
+                stat = iHS(snp, )
                
                 daf = fields[indexes[0]]
                 if daf == 'NA':
