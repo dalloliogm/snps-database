@@ -66,15 +66,16 @@ def iHS_parser_new(handle, session, metadata):
                 if iHS_value == 'NA':
                     iHS_value = None
 
-                cmdstatement = "stat.%s = %s" % (popkey, str(iHS_value))
+                cmdstatement = "stat.%s = %s" % (popkey.lower(), str(iHS_value))
                 logging.debug(cmdstatement)
                 print cmdstatement
                 exec(cmdstatement)  # I am sorry I have to use exec
 
 #                stat.iHS_value = float(iHS_value)
  
-            stat.iHS_file = filename
-            stat.iHS_file_lastmodification = file_lastmodif
+            stat.original_file = filename
+            stat.version = file_lastmodif
+            session.commit()
 #        raw_input()
 
 #
