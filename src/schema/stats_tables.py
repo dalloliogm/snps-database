@@ -135,6 +135,15 @@ class Fst(_Base_SNPbyContinent_Stat):
 
     population_key = Field(Text)
 
+class FstGlobal(_Base_SNPbyContinent_Stat):
+    """
+    Fst are calculated by comparing two different populations.
+
+    Therefore, any entry in this table refer to the Fst values with respect of 
+    the population saved in the 'population_key' field.
+    """
+    using_options(tablename = 'fst_global', inheritance = 'concrete')
+
 class CLR(_BaseStat):
     using_options(tablename = 'clr', inheritance = 'concrete')    
     
