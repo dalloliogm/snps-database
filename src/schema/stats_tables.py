@@ -67,7 +67,8 @@ class _Base_SNPbyContinent_Stat(Entity):
 #    stat = ManyToOne('Stats')
 #    population_key = Field(Text(50))
 #    value = Field(Float(2, 32), index=True)
-    snp = ManyToOne('SNP', primary_key=True, backref = "snp_id", inverse='stats', viewonly=True, index=True)
+    snp = ManyToOne('SNP', primary_key=True, backref = "snp_id", inverse='stats', viewonly=True)
+#    snp_id = String(20, index=True)
 
     mean = Field(Float(2, 32))
     dev_std = Field(Float(2, 32))
