@@ -490,7 +490,7 @@ class Individual(Entity):
     using_options(tablename = 'individuals')
     
     name                = Field(String(30), unique=True, index=True)    # TODO: rename with 'id'?
-    hgdp_individual_number = Field(String(10), unique = True)
+    hgdp_individual_number = Field(String(10))
     population          = ManyToOne('Population')   # TODO: how to index?
     sex                 = Field(Enum(('m', 'u', 'f', None)))
     
