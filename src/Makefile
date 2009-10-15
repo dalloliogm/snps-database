@@ -48,6 +48,11 @@ upload_transcripts:
 upload_iHS:
 	python setupdb/insert_iHS_all.py
 
+upload_fst_all: $(addprefix upload__fst_, $(AUTOSOMAL_CHROMOSOMES))
+upload__fst_%:
+	python setupdb/insert_Fst.py $*
+
+
 ##### XPEHH
 upload_xpehh: setup_xpehh $(addprefix upload__xpehh_, $(AUTOSOMAL_CHROMOSOMES)) xpehh_by_snp_table 
 setup_xpehh:
