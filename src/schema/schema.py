@@ -867,12 +867,12 @@ class RefSeqTranscript(Entity):
             upper_limit = self.txEnd + downstream
 #            logging.debug(str(lower_limit + upper_limit))
                     
-        elif relative_to in ('center', 'txcenter'):
+        elif relative_to in ('ce', 'center', 'txcenter'):
             lower_limit = self.txCenter - upstream
             upper_limit = self.txCenter + downstream
 
         else:
-            raise ValueError('unknown value for parameter "relative_to"')
+            raise ValueError('unknown value for parameter "relative_to", accepted values: "center" or "tr"')
 
 #        snps = SNP.query().order_by(SNP.physical_position).\
 #                                filter_by(chromosome = self.chromosome).\
